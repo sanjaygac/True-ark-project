@@ -22,12 +22,12 @@ export default function LoginPage() {
   return (
     <main className="min-h-screen bg-surface-container-low/50 flex items-center justify-center p-8">
       <div className="w-full max-w-md bg-surface-container-lowest border border-outline-variant rounded-lg p-8 shadow-lg shadow-shadow/5">
-        {/* TrueArk Logo + Heading */}
+        {/* Company Logo + Heading */}
         <div className="flex flex-col items-center text-center gap-4 mb-7">
           <img
-            src="https://lh3.googleusercontent.com/aida/ALJJyrDfaZxRPtpONLYzIZpPJxvUID-nJoYMbf6H0UkQSJFT3skYxSjmQ9fVQh5g1XqNDEWcljqXK_hBerFqmB_TOvZdbt9d0kKQrAEBSh-qdN0T9FrgyfufURh5up5H75iPdNiS0gbvDgO-mzcIcMdJoFowK5x6SzoDYEtC0ty_R29UmR1A00QjiOdS0yFfDGV9f2-xfOmF83ZyX4PB2E_SNp3IKCVsWYV_eccQGSs-hxDROXpHw40HQUUDgA"
-            alt="TrueArk"
-            className="w-40 h-11 object-cover object-[50%_43.5%] mix-blend-multiply"
+            src="/company-logo.png"
+            alt="Glopixcel"
+            className="h-12 w-auto object-contain"
           />
           <h2 className="font-headline text-headline-md text-primary">Welcome Back</h2>
         </div>

@@ -22,9 +22,9 @@ export default function SaasAdminSidebar() {
         <div className="flex flex-col gap-3 px-2 pt-1">
           <div className="flex items-center">
             <img
-              src="https://lh3.googleusercontent.com/aida/ALJJyrDfaZxRPtpONLYzIZpPJxvUID-nJoYMbf6H0UkQSJFT3skYxSjmQ9fVQh5g1XqNDEWcljqXK_hBerFqmB_TOvZdbt9d0kKQrAEBSh-qdN0T9FrgyfufURh5up5H75iPdNiS0gbvDgO-mzcIcMdJoFowK5x6SzoDYEtC0ty_R29UmR1A00QjiOdS0yFfDGV9f2-xfOmF83ZyX4PB2E_SNp3IKCVsWYV_eccQGSs-hxDROXpHw40HQUUDgA"
-              alt="TrueArk"
-              className="w-36 h-10 object-cover object-[50%_43.5%] mix-blend-multiply"
+              src="/company-logo.png"
+              alt="Glopixcel"
+              className="h-9 w-auto object-contain"
             />
           </div>
           <div>

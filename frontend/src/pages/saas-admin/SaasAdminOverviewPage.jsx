@@ -16,17 +16,17 @@ export default function SaasAdminOverviewPage() {
       {/* Left Sidebar */}
       <SaasAdminSidebar />
 
-      {/* Main Content Column */}
-      <div className="flex-1 min-w-0 flex flex-col h-screen overflow-y-auto">
+      {/* Main Content Column - Fully non-scrollable on desktop */}
+      <div className="flex-1 min-w-0 flex flex-col h-screen overflow-hidden">
         {/* Top Header */}
         <SaasAdminHeader title="SaaS Platform Overview" />
 
         {/* Main Workspace */}
-        <main className="p-6 lg:p-8 flex flex-col gap-6">
+        <main className="p-4 lg:p-5 flex-1 flex flex-col justify-between gap-4 overflow-hidden">
           {/* Top KPI Row (4 White Cards) */}
-          <section aria-label="Platform Key Metrics" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 items-stretch">
+          <section aria-label="Platform Key Metrics" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 items-stretch shrink-0">
             {/* Active Organizations */}
-            <article className="h-full bg-surface-container-lowest border border-outline-variant rounded-md p-5 shadow-sm flex flex-col justify-between gap-3">
+            <article className="bg-surface-container-lowest border border-outline-variant rounded-md p-3.5 shadow-sm flex flex-col justify-between gap-1.5">
               <header className="flex items-center justify-between gap-2">
                 <h2 className="font-label text-label-sm text-on-surface-variant whitespace-nowrap">Active Organizations</h2>
                 <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label text-label-sm tabular-nums shrink-0">
@@ -37,7 +37,7 @@ export default function SaasAdminOverviewPage() {
             </article>
 
             {/* Total Valuations Generated */}
-            <article className="h-full bg-surface-container-lowest border border-outline-variant rounded-md p-5 shadow-sm flex flex-col justify-between gap-3">
+            <article className="bg-surface-container-lowest border border-outline-variant rounded-md p-3.5 shadow-sm flex flex-col justify-between gap-1.5">
               <header className="flex items-center justify-between gap-2">
                 <h2 className="font-label text-label-sm text-on-surface-variant whitespace-nowrap">Total Valuations Generated</h2>
                 <span className="material-symbols-outlined text-secondary text-title-md shrink-0">verified</span>
@@ -46,7 +46,7 @@ export default function SaasAdminOverviewPage() {
             </article>
 
             {/* Monthly Recurring Revenue */}
-            <article className="h-full bg-surface-container-lowest border border-outline-variant rounded-md p-5 shadow-sm flex flex-col justify-between gap-3">
+            <article className="bg-surface-container-lowest border border-outline-variant rounded-md p-3.5 shadow-sm flex flex-col justify-between gap-1.5">
               <header className="flex items-center justify-between gap-2">
                 <h2 className="font-label text-label-sm text-on-surface-variant whitespace-nowrap">Monthly Recurring Revenue</h2>
                 <span className="material-symbols-outlined text-primary text-title-md shrink-0">payments</span>
@@ -55,7 +55,7 @@ export default function SaasAdminOverviewPage() {
             </article>
 
             {/* Active Valuer Seats */}
-            <article className="h-full bg-surface-container-lowest border border-outline-variant rounded-md p-5 shadow-sm flex flex-col justify-between gap-3">
+            <article className="bg-surface-container-lowest border border-outline-variant rounded-md p-3.5 shadow-sm flex flex-col justify-between gap-1.5">
               <header className="flex items-center justify-between gap-2">
                 <h2 className="font-label text-label-sm text-on-surface-variant whitespace-nowrap">Active Valuer Seats</h2>
                 <span className="material-symbols-outlined text-primary text-title-md shrink-0">group</span>
@@ -65,31 +65,31 @@ export default function SaasAdminOverviewPage() {
           </section>
 
           {/* Main Content Area: Left Chart / Right Onboarding Table */}
-          <section className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+          <section className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-stretch flex-1 min-h-0 overflow-hidden">
             {/* Left (7 cols ~60%): Monthly Valuation Volume & Tenant Growth */}
-            <div className="lg:col-span-7 bg-surface-container-lowest border border-outline-variant rounded-md p-6 shadow-sm flex flex-col justify-between gap-5">
-              <div className="flex flex-wrap items-center justify-between gap-4">
+            <div className="lg:col-span-7 bg-surface-container-lowest border border-outline-variant rounded-md p-4 shadow-sm flex flex-col justify-between gap-3 overflow-hidden">
+              <div className="flex flex-wrap items-center justify-between gap-3 shrink-0">
                 <div>
                   <h2 className="font-headline text-headline-sm text-primary">Monthly Valuation Volume &amp; Tenant Growth</h2>
                   <p className="font-body text-body-sm text-on-surface-variant">Last 8 months across all active multi-tenant organizations</p>
                 </div>
-                <div className="flex items-center gap-4">
-                  <div className="flex items-center gap-2">
-                    <span className="w-3 h-3 rounded-sm bg-primary inline-block"></span>
+                <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-1.5">
+                    <span className="w-2.5 h-2.5 rounded-sm bg-primary inline-block"></span>
                     <span className="font-label text-label-sm text-on-surface-variant">Valuation Volume</span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <span className="w-3 h-3 rounded-full bg-secondary inline-block"></span>
+                  <div className="flex items-center gap-1.5">
+                    <span className="w-2.5 h-2.5 rounded-full bg-secondary inline-block"></span>
                     <span className="font-label text-label-sm text-on-surface-variant">Tenant Growth</span>
                   </div>
                 </div>
               </div>
 
               {/* Crisp SVG Combo Bar & Line Chart */}
-              <div className="w-full">
+              <div className="w-full flex-1 flex items-center justify-center min-h-0">
                 <svg
                   viewBox="0 0 720 280"
-                  className="w-full h-auto"
+                  className="w-full h-auto max-h-[220px] 2xl:max-h-[260px]"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
                   role="img"
@@ -145,12 +145,12 @@ export default function SaasAdminOverviewPage() {
             </div>
 
             {/* Right (5 cols ~40%): Recent Tenant Onboarding */}
-            <div className="lg:col-span-5 bg-surface-container-lowest border border-outline-variant rounded-md p-6 shadow-sm flex flex-col justify-between gap-5">
-              <div className="flex flex-wrap items-center justify-between gap-3">
+            <div className="lg:col-span-5 bg-surface-container-lowest border border-outline-variant rounded-md p-4 shadow-sm flex flex-col justify-between gap-3 overflow-hidden">
+              <div className="flex flex-wrap items-center justify-between gap-2 shrink-0">
                 <h2 className="font-headline text-headline-sm text-primary whitespace-nowrap">Recent Tenant Onboarding</h2>
                 <button
                   type="button"
-                  className="inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded bg-tertiary text-on-tertiary font-label text-label-sm hover:opacity-95 transition-colors duration-state-change whitespace-nowrap shrink-0"
+                  className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded bg-tertiary text-on-tertiary font-label text-label-sm hover:opacity-95 transition-colors duration-state-change whitespace-nowrap shrink-0"
                 >
                   <span className="material-symbols-outlined text-title-sm" aria-hidden="true">add</span>
                   <span>Add Organization</span>
@@ -158,17 +158,17 @@ export default function SaasAdminOverviewPage() {
               </div>
 
               {/* Table */}
-              <div className="border border-outline-variant rounded-md overflow-hidden">
+              <div className="border border-outline-variant rounded-md overflow-hidden flex-1 flex flex-col justify-between">
                 <table className="w-full text-left border-collapse">
                   <thead className="bg-surface-container-low border-b border-outline-variant">
                     <tr>
-                      <th scope="col" className="px-3.5 py-3 font-label text-label-sm text-on-surface-variant whitespace-nowrap">
+                      <th scope="col" className="px-3.5 py-2 font-label text-label-sm text-on-surface-variant whitespace-nowrap">
                         Company Name
                       </th>
-                      <th scope="col" className="px-3 py-3 font-label text-label-sm text-on-surface-variant whitespace-nowrap">
+                      <th scope="col" className="px-3 py-2 font-label text-label-sm text-on-surface-variant whitespace-nowrap">
                         Plan Tier
                       </th>
-                      <th scope="col" className="px-3.5 py-3 font-label text-label-sm text-on-surface-variant text-right whitespace-nowrap">
+                      <th scope="col" className="px-3.5 py-2 font-label text-label-sm text-on-surface-variant text-right whitespace-nowrap">
                         Status
                       </th>
                     </tr>
@@ -176,15 +176,15 @@ export default function SaasAdminOverviewPage() {
                   <tbody className="divide-y divide-outline-variant">
                     {recentTenants.map((tenant, idx) => (
                       <tr key={idx} className="hover:bg-surface-container-low/50">
-                        <td className="px-3.5 py-3.5 font-title text-title-sm text-primary whitespace-nowrap">
+                        <td className="px-3.5 py-2.5 font-title text-title-sm text-primary whitespace-nowrap">
                           {tenant.company}
                         </td>
-                        <td className="px-3 py-3.5 font-body text-body-sm text-on-surface-variant whitespace-nowrap">
+                        <td className="px-3 py-2.5 font-body text-body-sm text-on-surface-variant whitespace-nowrap">
                           {tenant.plan}
                         </td>
-                        <td className="px-3.5 py-3.5 text-right whitespace-nowrap">
+                        <td className="px-3.5 py-2.5 text-right whitespace-nowrap">
                           <span
-                            className={`inline-flex items-center px-2.5 py-0.5 rounded-full font-label text-label-sm ${
+                            className={`inline-flex items-center px-2 py-0.5 rounded-full font-label text-label-sm ${
                               tenant.isPending
                                 ? 'bg-warning-container text-on-warning-container'
                                 : 'bg-secondary-container text-on-secondary-container'
