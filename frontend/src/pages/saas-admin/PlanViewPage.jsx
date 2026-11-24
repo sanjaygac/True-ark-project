@@ -145,12 +145,12 @@ export default function PlanViewPage() {
   };
 
   return (
-    <div className="min-h-screen flex bg-surface text-on-surface font-body antialiased relative">
+    <div className="h-screen flex bg-surface text-on-surface font-body antialiased overflow-hidden relative">
       {/* Left Navigation Sidebar */}
       <SaasAdminSidebar />
 
       {/* Main Content Column */}
-      <div className="flex-1 min-w-0 flex flex-col">
+      <div className="flex-1 min-w-0 flex flex-col h-screen overflow-y-auto">
         {/* Contextual Header */}
         <header className="bg-surface-container-lowest border-b border-outline-variant px-6 lg:px-8 py-4 flex flex-wrap items-center justify-between gap-4">
           <div className="flex flex-col gap-1">

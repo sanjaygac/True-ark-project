@@ -12,12 +12,12 @@ const recentTenants = [
 
 export default function SaasAdminOverviewPage() {
   return (
-    <div className="min-h-screen flex bg-surface text-on-surface font-body antialiased">
+    <div className="h-screen flex bg-surface text-on-surface font-body antialiased overflow-hidden">
       {/* Left Sidebar */}
       <SaasAdminSidebar />
 
       {/* Main Content Column */}
-      <div className="flex-1 min-w-0 flex flex-col">
+      <div className="flex-1 min-w-0 flex flex-col h-screen overflow-y-auto">
         {/* Top Header */}
         <SaasAdminHeader title="SaaS Platform Overview" />
 

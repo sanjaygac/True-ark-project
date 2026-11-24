@@ -57,12 +57,12 @@ export default function PlanMasterPage() {
   const [billingCycle, setBillingCycle] = useState('monthly');
 
   return (
-    <div className="min-h-screen flex bg-surface text-on-surface font-body antialiased relative">
+    <div className="h-screen flex bg-surface text-on-surface font-body antialiased overflow-hidden relative">
       {/* Left Navigation Sidebar */}
       <SaasAdminSidebar />
 
       {/* Main Content Column */}
-      <div className="flex-1 min-w-0 flex flex-col">
+      <div className="flex-1 min-w-0 flex flex-col h-screen overflow-y-auto">
         {/* Top Header */}
         <header className="bg-surface-container-lowest border-b border-outline-variant px-6 py-4 flex flex-wrap items-center justify-between gap-4">
           <div>

@@ -15,7 +15,7 @@ export default function SaasAdminSidebar() {
   return (
     <aside
       aria-label="SaaS Admin Sidebar"
-      className="w-60 shrink-0 bg-surface-container-lowest border-r border-outline-variant min-h-screen flex flex-col justify-between p-5"
+      className="w-60 shrink-0 bg-surface-container-lowest border-r border-outline-variant h-screen sticky top-0 flex flex-col justify-between p-5 overflow-y-auto z-20"
     >
       <div className="flex flex-col gap-6">
         {/* Brand + SAAS ADMIN Pill */}
