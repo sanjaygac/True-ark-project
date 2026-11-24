@@ -8,6 +8,7 @@ import CompanyViewPage from './pages/saas-admin/CompanyViewPage';
 import PlanMasterPage from './pages/saas-admin/PlanMasterPage';
 import AddEditPlanPage from './pages/saas-admin/AddEditPlanPage';
 import PlanViewPage from './pages/saas-admin/PlanViewPage';
+import CompanyAdminUnderDevPage from './pages/company-admin/CompanyAdminUnderDevPage';
 
 export default function App() {
   return (
@@ -36,6 +37,10 @@ export default function App() {
         <Route path="/saas-admin/plan-master/view" element={<PlanViewPage />} />
         <Route path="/saas-admin/plans" element={<Navigate to="/saas-admin/plan-master" replace />} />
         
+        {/* Company Admin (Tenant) routes */}
+        <Route path="/company-admin" element={<CompanyAdminUnderDevPage />} />
+        <Route path="/company-admin/*" element={<CompanyAdminUnderDevPage />} />
+
         {/* Fallback route */}
         <Route path="/saas-admin/*" element={<SaasAdminOverviewPage />} />
       </Routes>

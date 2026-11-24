@@ -66,7 +66,7 @@ export default function PlanMasterPage() {
         {/* Top Header */}
         <header className="bg-surface-container-lowest border-b border-outline-variant px-6 py-4 flex flex-wrap items-center justify-between gap-4">
           <div>
-            <h1 className="font-headline text-headline-md text-primary">Plan Master</h1>
+            <h1 className="font-headline text-[16px] lg:text-[17px] font-semibold text-primary">Plan Master</h1>
             <p className="font-body text-body-sm text-on-surface-variant">
               Configure SaaS subscription tiers, valuation quotas, and included plan features
             </p>

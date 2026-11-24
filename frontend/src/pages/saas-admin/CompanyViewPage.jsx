@@ -154,7 +154,7 @@ export default function CompanyViewPage() {
               <span>Back to Company Master</span>
             </Link>
             <div className="flex flex-wrap items-center gap-3">
-              <h1 className="font-headline text-headline-md text-primary">{company.name}</h1>
+              <h1 className="font-headline text-[16px] lg:text-[17px] font-semibold text-primary">{company.name}</h1>
               <span className="font-mono text-mono-md text-primary bg-surface-container-low px-2.5 py-0.5 rounded border border-outline-variant">
                 {company.code}
               </span>

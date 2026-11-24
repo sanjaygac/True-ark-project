@@ -154,7 +154,7 @@ export default function AddEditPlanPage() {
               </span>
               <span>Back to Plan Master</span>
             </Link>
-            <h1 className="font-headline text-headline-md text-primary">
+            <h1 className="font-headline text-[16px] lg:text-[17px] font-semibold text-primary">
               {code ? 'Edit Subscription Plan' : 'Add Subscription Plan'}
             </h1>
             <p className="font-body text-body-sm text-on-surface-variant">

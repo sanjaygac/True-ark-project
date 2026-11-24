@@ -81,7 +81,7 @@ export default function AddNewCompanyPage() {
               </span>
               <span>Back to Company Master</span>
             </Link>
-            <h1 className="font-headline text-headline-md text-primary">Add New Company</h1>
+            <h1 className="font-headline text-[16px] lg:text-[17px] font-semibold text-primary">Add New Company</h1>
             <p className="font-body text-body-sm text-on-surface-variant">
               Register a valuation firm, bank, or NBFC tenant and configure subscription limits
             </p>

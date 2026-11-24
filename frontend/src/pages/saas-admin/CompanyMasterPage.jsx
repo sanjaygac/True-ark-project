@@ -132,7 +132,7 @@ export default function CompanyMasterPage() {
         {/* Top Header */}
         <header className="bg-surface-container-lowest border-b border-outline-variant px-6 lg:px-8 py-4 flex flex-wrap items-center justify-between gap-4">
           <div>
-            <h1 className="font-headline text-headline-md text-primary">Company Master</h1>
+            <h1 className="font-headline text-[16px] lg:text-[17px] font-semibold text-primary">Company Master</h1>
             <p className="font-body text-body-sm text-on-surface-variant">
               Manage registered valuation firms, banks, and tenant subscriptions
             </p>
