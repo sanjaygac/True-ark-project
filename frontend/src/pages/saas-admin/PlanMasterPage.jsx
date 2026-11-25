@@ -55,27 +55,41 @@ const plansData = [
 
 export default function PlanMasterPage() {
   const [billingCycle, setBillingCycle] = useState('monthly');
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
     <div className="h-screen flex bg-surface text-on-surface font-body antialiased overflow-hidden relative">
       {/* Left Navigation Sidebar */}
-      <SaasAdminSidebar />
+      <SaasAdminSidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
       {/* Main Content Column */}
       <div className="flex-1 min-w-0 flex flex-col h-screen overflow-y-auto">
         {/* Top Header */}
-        <header className="bg-surface-container-lowest border-b border-outline-variant px-6 py-4 flex flex-wrap items-center justify-between gap-4">
-          <div>
-            <h1 className="font-headline text-[16px] lg:text-[17px] font-semibold text-primary">Plan Master</h1>
-            <p className="font-body text-body-sm text-on-surface-variant">
+        <header className="bg-surface-container-lowest border-b border-outline-variant px-3 sm:px-6 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
+          <div className="flex flex-col gap-1">
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => setSidebarOpen((prev) => !prev)}
+                className="lg:hidden inline-flex items-center justify-center w-8 h-8 rounded text-on-surface-variant hover:bg-surface-container-low hover:text-primary transition-colors duration-state-change shrink-0"
+                aria-label="Open sidebar menu"
+              >
+                <span className="material-symbols-outlined text-[20px]">menu</span>
+              </button>
+              <h1 className="font-headline text-[15px] sm:text-[16px] lg:text-[17px] font-semibold text-primary">
+                Plan Master
+              </h1>
+            </div>
+            <p className="font-body text-body-sm text-on-surface-variant pl-10 lg:pl-0">
               Configure SaaS subscription tiers, valuation quotas, and included plan features
             </p>
           </div>
 
-          <div className="flex items-center gap-3">
+          {/* Action buttons in a single row */}
+          <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto justify-between sm:justify-start">
             {/* Billing Cycle Toggle Pill */}
             <div
-              className="inline-flex items-center rounded-full bg-surface-container-low p-1 border border-outline-variant"
+              className="inline-flex items-center rounded-full bg-surface-container-low p-1 border border-outline-variant shrink-0"
               role="group"
               aria-label="Billing Cycle"
             >
@@ -83,7 +97,7 @@ export default function PlanMasterPage() {
                 type="button"
                 id="btn-monthly"
                 onClick={() => setBillingCycle('monthly')}
-                className={`px-3.5 py-1.5 rounded-full font-label text-label-sm transition-colors duration-state-change whitespace-nowrap ${
+                className={`px-3 sm:px-3.5 py-1.5 rounded-full font-label text-label-sm transition-colors duration-state-change whitespace-nowrap ${
                   billingCycle === 'monthly'
                     ? 'bg-primary text-on-primary'
                     : 'text-on-surface-variant hover:text-primary'
@@ -95,7 +109,7 @@ export default function PlanMasterPage() {
                 type="button"
                 id="btn-yearly"
                 onClick={() => setBillingCycle('yearly')}
-                className={`px-3.5 py-1.5 rounded-full font-label text-label-sm transition-colors duration-state-change whitespace-nowrap ${
+                className={`px-3 sm:px-3.5 py-1.5 rounded-full font-label text-label-sm transition-colors duration-state-change whitespace-nowrap ${
                   billingCycle === 'yearly'
                     ? 'bg-primary text-on-primary'
                     : 'text-on-surface-variant hover:text-primary'
@@ -108,7 +122,7 @@ export default function PlanMasterPage() {
             {/* Primary Create Button */}
             <Link
               to="/saas-admin/plan-master/add"
-              className="inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded bg-tertiary text-on-tertiary font-label text-label-md hover:opacity-95 transition-colors duration-state-change whitespace-nowrap"
+              className="inline-flex items-center justify-center gap-1.5 px-3.5 sm:px-4 py-2 rounded bg-tertiary text-on-tertiary font-label text-label-md hover:opacity-95 transition-colors duration-state-change whitespace-nowrap shrink-0"
             >
               <span className="material-symbols-outlined text-title-sm" aria-hidden="true">
                 add

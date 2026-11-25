@@ -63,6 +63,7 @@ const plansDetailMap = {
 export default function AddEditPlanPage() {
   const navigate = useNavigate();
   const { code } = useParams();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const initialPlan = (code && plansDetailMap[code]) || plansDetailMap['PLN-PRO'];
 
@@ -138,12 +139,12 @@ export default function AddEditPlanPage() {
   return (
     <div className="h-screen flex bg-surface text-on-surface font-body antialiased overflow-hidden relative">
       {/* Left Navigation Sidebar */}
-      <SaasAdminSidebar />
+      <SaasAdminSidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
       {/* Main Content Column */}
       <div className="flex-1 min-w-0 flex flex-col h-screen overflow-y-auto">
         {/* Contextual Header */}
-        <header className="bg-surface-container-lowest border-b border-outline-variant px-6 lg:px-8 py-4 flex flex-wrap items-center justify-between gap-4">
+        <header className="bg-surface-container-lowest border-b border-outline-variant px-3 sm:px-6 lg:px-8 py-4 flex flex-wrap items-center justify-between gap-4">
           <div className="flex flex-col gap-1">
             <Link
               to="/saas-admin/plan-master"
@@ -154,18 +155,28 @@ export default function AddEditPlanPage() {
               </span>
               <span>Back to Plan Master</span>
             </Link>
-            <h1 className="font-headline text-[16px] lg:text-[17px] font-semibold text-primary">
-              {code ? 'Edit Subscription Plan' : 'Add Subscription Plan'}
-            </h1>
-            <p className="font-body text-body-sm text-on-surface-variant">
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => setSidebarOpen((prev) => !prev)}
+                className="lg:hidden inline-flex items-center justify-center w-8 h-8 rounded text-on-surface-variant hover:bg-surface-container-low hover:text-primary transition-colors duration-state-change shrink-0"
+                aria-label="Open sidebar menu"
+              >
+                <span className="material-symbols-outlined text-[20px]">menu</span>
+              </button>
+              <h1 className="font-headline text-[15px] sm:text-[16px] lg:text-[17px] font-semibold text-primary">
+                {code ? 'Edit Subscription Plan' : 'Add Subscription Plan'}
+              </h1>
+            </div>
+            <p className="font-body text-body-sm text-on-surface-variant pl-10 lg:pl-0">
               Configure pricing, usage limits, and included plan features
             </p>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto justify-end">
             <Link
               to="/saas-admin/plan-master"
-              className="px-4 py-2 rounded bg-surface-container-lowest border border-outline-variant text-primary font-label text-label-md hover:bg-surface-container-low transition-colors duration-state-change whitespace-nowrap"
+              className="flex-1 sm:flex-none px-4 py-2 rounded bg-surface-container-lowest border border-outline-variant text-primary font-label text-label-md hover:bg-surface-container-low transition-colors duration-state-change whitespace-nowrap text-center"
             >
               <span>Cancel</span>
             </Link>
@@ -173,7 +184,7 @@ export default function AddEditPlanPage() {
             <button
               type="submit"
               form="add-edit-plan-form"
-              className="px-5 py-2 rounded bg-primary text-on-primary font-label text-label-md hover:opacity-95 transition-colors duration-state-change whitespace-nowrap"
+              className="flex-1 sm:flex-none px-5 py-2 rounded bg-primary text-on-primary font-label text-label-md hover:opacity-95 transition-colors duration-state-change whitespace-nowrap text-center"
             >
               <span>Save Plan</span>
             </button>

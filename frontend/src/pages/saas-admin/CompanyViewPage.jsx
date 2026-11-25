@@ -103,6 +103,7 @@ const companyDetailsData = {
 
 export default function CompanyViewPage() {
   const { id } = useParams();
+  const [sidebarOpen, setSidebarOpen] = React.useState(false);
   const company = companyDetailsData[id] || companyDetailsData['CMP-001'];
 
   const getStatusBadge = (status) => {
@@ -137,12 +138,12 @@ export default function CompanyViewPage() {
   return (
     <div className="h-screen flex bg-surface text-on-surface font-body antialiased overflow-hidden relative">
       {/* Left Navigation Sidebar */}
-      <SaasAdminSidebar />
+      <SaasAdminSidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
       {/* Main Content Column */}
       <div className="flex-1 min-w-0 flex flex-col h-screen overflow-y-auto">
         {/* Contextual Header */}
-        <header className="bg-surface-container-lowest border-b border-outline-variant px-6 lg:px-8 py-4 flex flex-wrap items-center justify-between gap-4">
+        <header className="bg-surface-container-lowest border-b border-outline-variant px-3 sm:px-6 lg:px-8 py-4 flex flex-wrap items-center justify-between gap-4">
           <div className="flex flex-col gap-1">
             <Link
               to="/saas-admin/company-master"
@@ -153,8 +154,16 @@ export default function CompanyViewPage() {
               </span>
               <span>Back to Company Master</span>
             </Link>
-            <div className="flex flex-wrap items-center gap-3">
-              <h1 className="font-headline text-[16px] lg:text-[17px] font-semibold text-primary">{company.name}</h1>
+            <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+              <button
+                type="button"
+                onClick={() => setSidebarOpen((prev) => !prev)}
+                className="lg:hidden inline-flex items-center justify-center w-8 h-8 rounded text-on-surface-variant hover:bg-surface-container-low hover:text-primary transition-colors duration-state-change shrink-0"
+                aria-label="Open sidebar menu"
+              >
+                <span className="material-symbols-outlined text-[20px]">menu</span>
+              </button>
+              <h1 className="font-headline text-[15px] sm:text-[16px] lg:text-[17px] font-semibold text-primary">{company.name}</h1>
               <span className="font-mono text-mono-md text-primary bg-surface-container-low px-2.5 py-0.5 rounded border border-outline-variant">
                 {company.code}
               </span>

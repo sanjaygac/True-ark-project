@@ -50,6 +50,7 @@ export default function CompanyMasterPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('All Status');
   const [activeMenuId, setActiveMenuId] = useState(null);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const tableRef = useRef(null);
 
   // Close open dropdown menu when clicking outside
@@ -125,22 +126,34 @@ export default function CompanyMasterPage() {
   return (
     <div className="h-screen flex bg-surface text-on-surface font-body antialiased overflow-hidden relative">
       {/* Left Navigation Sidebar */}
-      <SaasAdminSidebar />
+      <SaasAdminSidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
       {/* Main Content Column */}
       <div className="flex-1 min-w-0 flex flex-col h-screen overflow-y-auto">
         {/* Top Header */}
-        <header className="bg-surface-container-lowest border-b border-outline-variant px-6 lg:px-8 py-4 flex flex-wrap items-center justify-between gap-4">
-          <div>
-            <h1 className="font-headline text-[16px] lg:text-[17px] font-semibold text-primary">Company Master</h1>
-            <p className="font-body text-body-sm text-on-surface-variant">
+        <header className="bg-surface-container-lowest border-b border-outline-variant px-3 sm:px-6 lg:px-8 py-4 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3 sm:gap-4">
+          <div className="flex flex-col gap-1">
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => setSidebarOpen((prev) => !prev)}
+                className="lg:hidden inline-flex items-center justify-center w-8 h-8 rounded text-on-surface-variant hover:bg-surface-container-low hover:text-primary transition-colors duration-state-change shrink-0"
+                aria-label="Open sidebar menu"
+              >
+                <span className="material-symbols-outlined text-[20px]">menu</span>
+              </button>
+              <h1 className="font-headline text-[15px] sm:text-[16px] lg:text-[17px] font-semibold text-primary">
+                Company Master
+              </h1>
+            </div>
+            <p className="font-body text-body-sm text-on-surface-variant pl-10 lg:pl-0">
               Manage registered valuation firms, banks, and tenant subscriptions
             </p>
           </div>
 
-          <div className="flex flex-wrap items-center gap-3">
-            {/* Search Input */}
-            <div className="relative w-72">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3 w-full lg:w-auto">
+            {/* Search Input in a Separate Full-Width Row on Mobile */}
+            <div className="relative w-full sm:w-72">
               <span
                 aria-hidden="true"
                 className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-title-md select-none"
@@ -156,30 +169,33 @@ export default function CompanyMasterPage() {
               />
             </div>
 
-            {/* Status Filter Dropdown */}
-            <select
-              aria-label="Filter by Status"
-              value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}
-              className="rounded border border-outline-variant bg-surface-container-lowest px-3 py-2 font-label text-label-md text-on-surface focus:border-primary focus:ring-2 focus:ring-primary/20"
-            >
-              <option value="All Status">All Status</option>
-              <option value="Active">Active</option>
-              <option value="Trial">Trial</option>
-              <option value="Expired">Expired</option>
-              <option value="Inactive">Inactive</option>
-            </select>
+            {/* Other two controls (Filter + Add Company) in a Single Row */}
+            <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto">
+              {/* Status Filter Dropdown */}
+              <select
+                aria-label="Filter by Status"
+                value={statusFilter}
+                onChange={(e) => setStatusFilter(e.target.value)}
+                className="flex-1 sm:flex-none rounded border border-outline-variant bg-surface-container-lowest px-3 py-2 font-label text-label-md text-on-surface focus:border-primary focus:ring-2 focus:ring-primary/20"
+              >
+                <option value="All Status">All Status</option>
+                <option value="Active">Active</option>
+                <option value="Trial">Trial</option>
+                <option value="Expired">Expired</option>
+                <option value="Inactive">Inactive</option>
+              </select>
 
-            {/* Primary Add Button */}
-            <Link
-              to="/saas-admin/company-master/add"
-              className="inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded bg-tertiary text-on-tertiary font-label text-label-md hover:opacity-95 transition-colors duration-state-change whitespace-nowrap"
-            >
-              <span className="material-symbols-outlined text-title-sm" aria-hidden="true">
-                add
-              </span>
-              <span>Add New Company</span>
-            </Link>
+              {/* Primary Add Button */}
+              <Link
+                to="/saas-admin/company-master/add"
+                className="flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-3.5 sm:px-4 py-2 rounded bg-tertiary text-on-tertiary font-label text-label-md hover:opacity-95 transition-colors duration-state-change whitespace-nowrap"
+              >
+                <span className="material-symbols-outlined text-title-sm" aria-hidden="true">
+                  add
+                </span>
+                <span>Add New Company</span>
+              </Link>
+            </div>
           </div>
         </header>
 
