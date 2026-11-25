@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import SaasAdminSidebar from '../../components/saas-admin/SaasAdminSidebar';
 import SaasAdminHeader from '../../components/saas-admin/SaasAdminHeader';
 
 const recentTenants = [
-  { company: 'Apex Valuations', plan: 'Enterprise', status: 'Active', isPending: false },
-  { company: 'Southern Advisors', plan: 'Pro', status: 'Pending', isPending: true },
-  { company: 'Kaveri Finance', plan: 'Enterprise', status: 'Active', isPending: false },
-  { company: 'Deccan Realty', plan: 'Pro', status: 'Active', isPending: false },
-  { company: 'Metro Surveyors', plan: 'Pro', status: 'Pending', isPending: true },
+  { company: 'Apex Valuations', plan: 'Enterprise', quota: 'Unlimited', date: '24 Nov 2026', status: 'Active', isPending: false },
+  { company: 'Southern Advisors', plan: 'Pro', quota: '300 / mo', date: '22 Nov 2026', status: 'Pending', isPending: true },
+  { company: 'Kaveri Finance', plan: 'Enterprise', quota: 'Unlimited', date: '19 Nov 2026', status: 'Active', isPending: false },
+  { company: 'Deccan Realty', plan: 'Pro', quota: '300 / mo', date: '14 Nov 2026', status: 'Active', isPending: false },
+  { company: 'Metro Surveyors', plan: 'Pro', quota: '300 / mo', date: '10 Nov 2026', status: 'Pending', isPending: true },
 ];
 
 export default function SaasAdminOverviewPage() {
@@ -29,15 +30,15 @@ export default function SaasAdminOverviewPage() {
           onMenuToggle={() => setSidebarOpen((prev) => !prev)}
         />
 
-        {/* Main Workspace - scrollable on mobile, fitted on desktop */}
-        <main className="p-3 sm:p-3.5 lg:p-4 flex-1 flex flex-col gap-3 overflow-y-auto lg:overflow-hidden lg:justify-between">
-          {/* Top KPI Row (4 White Cards) */}
-          <section aria-label="Platform Key Metrics" className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 items-stretch shrink-0">
+        {/* Main Workspace - fitted cleanly on desktop, scrollable on mobile */}
+        <main className="p-3 sm:p-3.5 lg:p-4 flex-1 flex flex-col gap-2.5 sm:gap-3 overflow-y-auto lg:overflow-hidden lg:justify-between">
+          {/* Top KPI Row (4 Compact Cards) */}
+          <section aria-label="Platform Key Metrics" className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 items-stretch shrink-0">
             {/* Active Organizations */}
             <article className="bg-surface-container-lowest border border-outline-variant rounded-md p-2.5 sm:p-3 shadow-sm flex flex-col justify-between gap-1">
               <header className="flex items-center justify-between gap-1 sm:gap-2">
                 <h2 className="font-label text-[10px] sm:text-[11px] text-on-surface-variant whitespace-nowrap">Active Organizations</h2>
-                <span className="inline-flex items-center px-1 sm:px-1.5 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label text-[9px] sm:text-[10px] tabular-nums shrink-0">
+                <span className="inline-flex items-center px-1.5 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label text-[9px] sm:text-[10px] tabular-nums shrink-0">
                   +12%
                 </span>
               </header>
@@ -72,142 +73,270 @@ export default function SaasAdminOverviewPage() {
             </article>
           </section>
 
-          {/* Main Content Area: Chart + Onboarding Table */}
-          <section className="grid grid-cols-1 lg:grid-cols-12 gap-3 items-stretch lg:flex-1 lg:min-h-0 lg:overflow-hidden">
-            {/* Left (7 cols ~60%): Monthly Valuation Volume & Tenant Growth Card */}
-            <div className="lg:col-span-7 bg-surface-container-lowest border border-outline-variant rounded-md p-3 sm:p-3.5 shadow-sm flex flex-col justify-between gap-2 overflow-hidden">
+          {/* Analytical Charts Row: Valuation Volume & Sales Growth side by side */}
+          <section className="grid grid-cols-1 lg:grid-cols-2 gap-2.5 sm:gap-3 items-stretch shrink-0">
+            {/* Chart 1: Monthly Valuation Volume & Tenant Growth */}
+            <div className="bg-surface-container-lowest border border-outline-variant rounded-md p-2.5 sm:p-3 shadow-sm flex flex-col gap-1.5 overflow-hidden">
               <div className="flex flex-wrap items-center justify-between gap-2 shrink-0">
                 <div>
                   <h2 className="font-headline text-[12px] sm:text-[13px] font-semibold text-primary">Monthly Valuation Volume &amp; Tenant Growth</h2>
-                  <p className="font-body text-[10px] sm:text-[11px] text-on-surface-variant">Last 8 months across all active multi-tenant organizations</p>
+                  <p className="font-body text-[10px] sm:text-[11px] text-on-surface-variant">Last 8 months across all active organizations</p>
                 </div>
                 <div className="flex items-center gap-3">
                   <div className="flex items-center gap-1.5">
                     <span className="w-2 h-2 rounded-sm bg-primary inline-block"></span>
-                    <span className="font-label text-[10px] sm:text-[11px] text-on-surface-variant">Valuation Volume</span>
+                    <span className="font-label text-[10px] sm:text-[11px] text-on-surface-variant">Valuation Vol</span>
                   </div>
                   <div className="flex items-center gap-1.5">
                     <span className="w-2 h-2 rounded-full bg-secondary inline-block"></span>
-                    <span className="font-label text-[10px] sm:text-[11px] text-on-surface-variant">Tenant Growth</span>
+                    <span className="font-label text-[10px] sm:text-[11px] text-on-surface-variant">Tenants</span>
                   </div>
                 </div>
               </div>
 
-              {/* Crisp SVG Combo Bar & Line Chart */}
-              <div className="w-full flex-1 flex items-center justify-center min-h-[150px] sm:min-h-[160px] lg:min-h-0 py-1">
+              {/* Crisp SVG Combo Bar & Line Chart without empty top gap */}
+              <div className="w-full h-[145px] sm:h-[155px] lg:h-[150px] flex items-center justify-center">
                 <svg
-                  viewBox="0 0 720 280"
-                  className="w-full h-auto max-h-[150px] sm:max-h-[175px] 2xl:max-h-[210px]"
+                  viewBox="0 0 580 145"
+                  className="w-full h-full"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
                   role="img"
                   aria-label="Monthly Valuation Volume and Tenant Growth Chart"
                 >
-                  <line x1="48" y1="30" x2="700" y2="30" stroke="#E2E8F0" strokeDasharray="4 4" />
-                  <line x1="48" y1="85" x2="700" y2="85" stroke="#E2E8F0" strokeDasharray="4 4" />
-                  <line x1="48" y1="140" x2="700" y2="140" stroke="#E2E8F0" strokeDasharray="4 4" />
-                  <line x1="48" y1="195" x2="700" y2="195" stroke="#E2E8F0" strokeDasharray="4 4" />
-                  <line x1="48" y1="245" x2="700" y2="245" stroke="#CBD5E1" />
+                  {/* Grid Lines */}
+                  <line x1="42" y1="18" x2="565" y2="18" stroke="#E2E8F0" strokeDasharray="3 3" />
+                  <line x1="42" y1="46" x2="565" y2="46" stroke="#E2E8F0" strokeDasharray="3 3" />
+                  <line x1="42" y1="74" x2="565" y2="74" stroke="#E2E8F0" strokeDasharray="3 3" />
+                  <line x1="42" y1="102" x2="565" y2="102" stroke="#E2E8F0" strokeDasharray="3 3" />
+                  <line x1="42" y1="126" x2="565" y2="126" stroke="#CBD5E1" />
 
-                  <text x="38" y="34" textAnchor="end" fill="#64748B" fontFamily="Reddit Sans, sans-serif" fontSize="11">3.5k</text>
-                  <text x="38" y="89" textAnchor="end" fill="#64748B" fontFamily="Reddit Sans, sans-serif" fontSize="11">2.6k</text>
-                  <text x="38" y="144" textAnchor="end" fill="#64748B" fontFamily="Reddit Sans, sans-serif" fontSize="11">1.8k</text>
-                  <text x="38" y="199" textAnchor="end" fill="#64748B" fontFamily="Reddit Sans, sans-serif" fontSize="11">900</text>
-                  <text x="38" y="248" textAnchor="end" fill="#64748B" fontFamily="Reddit Sans, sans-serif" fontSize="11">0</text>
+                  {/* Y-Axis Labels */}
+                  <text x="34" y="21" textAnchor="end" fill="#64748B" fontFamily="Reddit Sans, sans-serif" fontSize="10">3.5k</text>
+                  <text x="34" y="49" textAnchor="end" fill="#64748B" fontFamily="Reddit Sans, sans-serif" fontSize="10">2.6k</text>
+                  <text x="34" y="77" textAnchor="end" fill="#64748B" fontFamily="Reddit Sans, sans-serif" fontSize="10">1.8k</text>
+                  <text x="34" y="105" textAnchor="end" fill="#64748B" fontFamily="Reddit Sans, sans-serif" fontSize="10">900</text>
+                  <text x="34" y="129" textAnchor="end" fill="#64748B" fontFamily="Reddit Sans, sans-serif" fontSize="10">0</text>
 
-                  <rect x="74" y="165" width="36" height="80" rx="4" fill="#0F294A" fillOpacity="0.88" />
-                  <rect x="154" y="145" width="36" height="100" rx="4" fill="#0F294A" fillOpacity="0.88" />
-                  <rect x="234" y="132" width="36" height="113" rx="4" fill="#0F294A" fillOpacity="0.88" />
-                  <rect x="314" y="114" width="36" height="131" rx="4" fill="#0F294A" fillOpacity="0.88" />
-                  <rect x="394" y="96" width="36" height="149" rx="4" fill="#0F294A" fillOpacity="0.88" />
-                  <rect x="474" y="80" width="36" height="165" rx="4" fill="#0F294A" fillOpacity="0.88" />
-                  <rect x="554" y="62" width="36" height="183" rx="4" fill="#0F294A" fillOpacity="0.88" />
-                  <rect x="634" y="42" width="36" height="203" rx="4" fill="#0F294A" />
+                  {/* Valuation Volume Bars */}
+                  <rect x="62" y="80" width="28" height="46" rx="3" fill="#0F294A" fillOpacity="0.88" />
+                  <rect x="126" y="68" width="28" height="58" rx="3" fill="#0F294A" fillOpacity="0.88" />
+                  <rect x="190" y="60" width="28" height="66" rx="3" fill="#0F294A" fillOpacity="0.88" />
+                  <rect x="254" y="50" width="28" height="76" rx="3" fill="#0F294A" fillOpacity="0.88" />
+                  <rect x="318" y="40" width="28" height="86" rx="3" fill="#0F294A" fillOpacity="0.88" />
+                  <rect x="382" y="32" width="28" height="94" rx="3" fill="#0F294A" fillOpacity="0.88" />
+                  <rect x="446" y="24" width="28" height="102" rx="3" fill="#0F294A" fillOpacity="0.88" />
+                  <rect x="510" y="18" width="28" height="108" rx="3" fill="#0F294A" />
 
+                  {/* Tenant Growth Trend Line */}
                   <path
-                    d="M92 182 L172 164 L252 150 L332 132 L412 112 L492 94 L572 74 L652 52"
+                    d="M76 88 L140 78 L204 70 L268 59 L332 49 L396 40 L460 30 L524 20"
+                    stroke="#2E8B57"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <circle cx="76" cy="88" r="3.5" fill="#FFFFFF" stroke="#2E8B57" strokeWidth="2" />
+                  <circle cx="140" cy="78" r="3.5" fill="#FFFFFF" stroke="#2E8B57" strokeWidth="2" />
+                  <circle cx="204" cy="70" r="3.5" fill="#FFFFFF" stroke="#2E8B57" strokeWidth="2" />
+                  <circle cx="268" cy="59" r="3.5" fill="#FFFFFF" stroke="#2E8B57" strokeWidth="2" />
+                  <circle cx="332" cy="49" r="3.5" fill="#FFFFFF" stroke="#2E8B57" strokeWidth="2" />
+                  <circle cx="396" cy="40" r="3.5" fill="#FFFFFF" stroke="#2E8B57" strokeWidth="2" />
+                  <circle cx="460" cy="30" r="3.5" fill="#FFFFFF" stroke="#2E8B57" strokeWidth="2" />
+                  <circle cx="524" cy="20" r="4.5" fill="#2E8B57" stroke="#FFFFFF" strokeWidth="1.5" />
+
+                  {/* X-Axis Month Labels */}
+                  <text x="76" y="140" textAnchor="middle" fill="#475569" fontFamily="Reddit Sans, sans-serif" fontSize="10">Apr</text>
+                  <text x="140" y="140" textAnchor="middle" fill="#475569" fontFamily="Reddit Sans, sans-serif" fontSize="10">May</text>
+                  <text x="204" y="140" textAnchor="middle" fill="#475569" fontFamily="Reddit Sans, sans-serif" fontSize="10">Jun</text>
+                  <text x="268" y="140" textAnchor="middle" fill="#475569" fontFamily="Reddit Sans, sans-serif" fontSize="10">Jul</text>
+                  <text x="332" y="140" textAnchor="middle" fill="#475569" fontFamily="Reddit Sans, sans-serif" fontSize="10">Aug</text>
+                  <text x="396" y="140" textAnchor="middle" fill="#475569" fontFamily="Reddit Sans, sans-serif" fontSize="10">Sep</text>
+                  <text x="460" y="140" textAnchor="middle" fill="#475569" fontFamily="Reddit Sans, sans-serif" fontSize="10">Oct</text>
+                  <text x="524" y="140" textAnchor="middle" fill="#0F294A" fontWeight="600" fontFamily="Reddit Sans, sans-serif" fontSize="10">Nov</text>
+                </svg>
+              </div>
+            </div>
+
+            {/* Chart 2: Sales Growth (MRR & Subscription Sales Trajectory) */}
+            <div className="bg-surface-container-lowest border border-outline-variant rounded-md p-2.5 sm:p-3 shadow-sm flex flex-col gap-1.5 overflow-hidden">
+              <div className="flex flex-wrap items-center justify-between gap-2 shrink-0">
+                <div>
+                  <div className="flex items-center gap-2">
+                    <h2 className="font-headline text-[12px] sm:text-[13px] font-semibold text-primary">Sales &amp; Revenue Growth</h2>
+                    <span className="inline-flex items-center px-1.5 py-0.2 rounded bg-secondary-container text-on-secondary-container font-label text-[9px] font-semibold">
+                      +18.4% MRR
+                    </span>
+                  </div>
+                  <p className="font-body text-[10px] sm:text-[11px] text-on-surface-variant">Monthly recurring subscription sales (in ₹ Lakhs)</p>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-secondary inline-block"></span>
+                    <span className="font-label text-[10px] sm:text-[11px] text-on-surface-variant">Actual MRR</span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <span className="w-2.5 h-0.5 bg-outline inline-block"></span>
+                    <span className="font-label text-[10px] sm:text-[11px] text-on-surface-variant">Target (₹16L)</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Crisp SVG Gradient Area & Trend Chart */}
+              <div className="w-full h-[145px] sm:h-[155px] lg:h-[150px] flex items-center justify-center">
+                <svg
+                  viewBox="0 0 580 145"
+                  className="w-full h-full"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  role="img"
+                  aria-label="Sales and MRR Growth Trajectory Chart"
+                >
+                  <defs>
+                    <linearGradient id="salesGradient" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#2E8B57" stopOpacity="0.32" />
+                      <stop offset="85%" stopColor="#2E8B57" stopOpacity="0.04" />
+                      <stop offset="100%" stopColor="#2E8B57" stopOpacity="0.0" />
+                    </linearGradient>
+                  </defs>
+
+                  {/* Grid Lines */}
+                  <line x1="42" y1="18" x2="565" y2="18" stroke="#E2E8F0" strokeDasharray="3 3" />
+                  <line x1="42" y1="46" x2="565" y2="46" stroke="#E2E8F0" strokeDasharray="3 3" />
+                  <line x1="42" y1="74" x2="565" y2="74" stroke="#E2E8F0" strokeDasharray="3 3" />
+                  <line x1="42" y1="102" x2="565" y2="102" stroke="#E2E8F0" strokeDasharray="3 3" />
+                  <line x1="42" y1="126" x2="565" y2="126" stroke="#CBD5E1" />
+
+                  {/* Y-Axis Labels */}
+                  <text x="34" y="21" textAnchor="end" fill="#64748B" fontFamily="Reddit Sans, sans-serif" fontSize="10">₹18L</text>
+                  <text x="34" y="49" textAnchor="end" fill="#64748B" fontFamily="Reddit Sans, sans-serif" fontSize="10">₹14L</text>
+                  <text x="34" y="77" textAnchor="end" fill="#64748B" fontFamily="Reddit Sans, sans-serif" fontSize="10">₹10L</text>
+                  <text x="34" y="105" textAnchor="end" fill="#64748B" fontFamily="Reddit Sans, sans-serif" fontSize="10">₹6L</text>
+                  <text x="34" y="129" textAnchor="end" fill="#64748B" fontFamily="Reddit Sans, sans-serif" fontSize="10">₹0</text>
+
+                  {/* Target Benchmark Line (Dashed) */}
+                  <line x1="76" y1="92" x2="524" y2="28" stroke="#94A3B8" strokeWidth="1.5" strokeDasharray="4 4" />
+
+                  {/* Area Fill Under Sales Curve */}
+                  <path
+                    d="M76 100 Q140 88 204 78 T332 58 T460 38 L524 24 L524 126 L76 126 Z"
+                    fill="url(#salesGradient)"
+                  />
+
+                  {/* Main Sales Trend Curve */}
+                  <path
+                    d="M76 100 Q140 88 204 78 T332 58 T460 38 L524 24"
                     stroke="#2E8B57"
                     strokeWidth="3"
                     strokeLinecap="round"
                     strokeLinejoin="round"
                   />
-                  <circle cx="92" cy="182" r="4.5" fill="#FFFFFF" stroke="#2E8B57" strokeWidth="2.5" />
-                  <circle cx="172" cy="164" r="4.5" fill="#FFFFFF" stroke="#2E8B57" strokeWidth="2.5" />
-                  <circle cx="252" cy="150" r="4.5" fill="#FFFFFF" stroke="#2E8B57" strokeWidth="2.5" />
-                  <circle cx="332" cy="132" r="4.5" fill="#FFFFFF" stroke="#2E8B57" strokeWidth="2.5" />
-                  <circle cx="412" cy="112" r="4.5" fill="#FFFFFF" stroke="#2E8B57" strokeWidth="2.5" />
-                  <circle cx="492" cy="94" r="4.5" fill="#FFFFFF" stroke="#2E8B57" strokeWidth="2.5" />
-                  <circle cx="572" cy="74" r="4.5" fill="#FFFFFF" stroke="#2E8B57" strokeWidth="2.5" />
-                  <circle cx="652" cy="52" r="5" fill="#2E8B57" stroke="#FFFFFF" strokeWidth="2" />
 
-                  <text x="92" y="268" textAnchor="middle" fill="#475569" fontFamily="Reddit Sans, sans-serif" fontSize="12">Apr</text>
-                  <text x="172" y="268" textAnchor="middle" fill="#475569" fontFamily="Reddit Sans, sans-serif" fontSize="12">May</text>
-                  <text x="252" y="268" textAnchor="middle" fill="#475569" fontFamily="Reddit Sans, sans-serif" fontSize="12">Jun</text>
-                  <text x="332" y="268" textAnchor="middle" fill="#475569" fontFamily="Reddit Sans, sans-serif" fontSize="12">Jul</text>
-                  <text x="412" y="268" textAnchor="middle" fill="#475569" fontFamily="Reddit Sans, sans-serif" fontSize="12">Aug</text>
-                  <text x="492" y="268" textAnchor="middle" fill="#475569" fontFamily="Reddit Sans, sans-serif" fontSize="12">Sep</text>
-                  <text x="572" y="268" textAnchor="middle" fill="#475569" fontFamily="Reddit Sans, sans-serif" fontSize="12">Oct</text>
-                  <text x="652" y="268" textAnchor="middle" fill="#0F294A" fontWeight="600" fontFamily="Reddit Sans, sans-serif" fontSize="12">Nov</text>
+                  {/* Data Points */}
+                  <circle cx="76" cy="100" r="3.5" fill="#FFFFFF" stroke="#2E8B57" strokeWidth="2" />
+                  <circle cx="140" cy="90" r="3.5" fill="#FFFFFF" stroke="#2E8B57" strokeWidth="2" />
+                  <circle cx="204" cy="78" r="3.5" fill="#FFFFFF" stroke="#2E8B57" strokeWidth="2" />
+                  <circle cx="268" cy="68" r="3.5" fill="#FFFFFF" stroke="#2E8B57" strokeWidth="2" />
+                  <circle cx="332" cy="58" r="3.5" fill="#FFFFFF" stroke="#2E8B57" strokeWidth="2" />
+                  <circle cx="396" cy="48" r="3.5" fill="#FFFFFF" stroke="#2E8B57" strokeWidth="2" />
+                  <circle cx="460" cy="38" r="3.5" fill="#FFFFFF" stroke="#2E8B57" strokeWidth="2" />
+                  <circle cx="524" cy="24" r="5" fill="#2E8B57" stroke="#FFFFFF" strokeWidth="2" />
+
+                  {/* Highlight Badge for Current Month Nov */}
+                  <rect x="494" y="6" width="60" height="15" rx="3" fill="#0F294A" />
+                  <text x="524" y="17" textAnchor="middle" fill="#FFFFFF" fontWeight="700" fontFamily="Reddit Sans, sans-serif" fontSize="9">₹14.8L</text>
+
+                  {/* X-Axis Month Labels */}
+                  <text x="76" y="140" textAnchor="middle" fill="#475569" fontFamily="Reddit Sans, sans-serif" fontSize="10">Apr</text>
+                  <text x="140" y="140" textAnchor="middle" fill="#475569" fontFamily="Reddit Sans, sans-serif" fontSize="10">May</text>
+                  <text x="204" y="140" textAnchor="middle" fill="#475569" fontFamily="Reddit Sans, sans-serif" fontSize="10">Jun</text>
+                  <text x="268" y="140" textAnchor="middle" fill="#475569" fontFamily="Reddit Sans, sans-serif" fontSize="10">Jul</text>
+                  <text x="332" y="140" textAnchor="middle" fill="#475569" fontFamily="Reddit Sans, sans-serif" fontSize="10">Aug</text>
+                  <text x="396" y="140" textAnchor="middle" fill="#475569" fontFamily="Reddit Sans, sans-serif" fontSize="10">Sep</text>
+                  <text x="460" y="140" textAnchor="middle" fill="#475569" fontFamily="Reddit Sans, sans-serif" fontSize="10">Oct</text>
+                  <text x="524" y="140" textAnchor="middle" fill="#0F294A" fontWeight="600" fontFamily="Reddit Sans, sans-serif" fontSize="10">Nov</text>
                 </svg>
               </div>
             </div>
+          </section>
 
-            {/* Right (5 cols ~40%): Recent Tenant Onboarding Card */}
-            <div className="lg:col-span-5 bg-surface-container-lowest border border-outline-variant rounded-md p-3 sm:p-3.5 shadow-sm flex flex-col justify-between gap-2 overflow-hidden">
-              <div className="flex flex-wrap items-center justify-between gap-2 shrink-0">
+          {/* Bottom Area: Recent Tenant Onboarding Table */}
+          <section className="bg-surface-container-lowest border border-outline-variant rounded-md p-2.5 sm:p-3 shadow-sm flex flex-col justify-between gap-2 overflow-hidden flex-1 min-h-[160px] lg:min-h-0">
+            <div className="flex flex-wrap items-center justify-between gap-2 shrink-0">
+              <div>
                 <h2 className="font-headline text-[12px] sm:text-[13px] font-semibold text-primary whitespace-nowrap">Recent Tenant Onboarding</h2>
-                <button
-                  type="button"
-                  className="inline-flex items-center justify-center gap-1 px-2 sm:px-2.5 py-1 rounded bg-tertiary text-on-tertiary font-label text-[10px] sm:text-[11px] hover:opacity-95 transition-colors duration-state-change whitespace-nowrap shrink-0"
+                <p className="font-body text-[10px] sm:text-[11px] text-on-surface-variant">Latest valuation firms and banks provisioned on TrueArk</p>
+              </div>
+              <div className="flex items-center gap-2">
+                <Link
+                  to="/saas-admin/company-master"
+                  className="font-label text-[10px] sm:text-[11px] text-tertiary hover:underline"
+                >
+                  View All Companies →
+                </Link>
+                <Link
+                  to="/saas-admin/company-master/add"
+                  className="inline-flex items-center justify-center gap-1 px-2.5 py-1 rounded bg-tertiary text-on-tertiary font-label text-[10px] sm:text-[11px] hover:opacity-95 transition-colors duration-state-change whitespace-nowrap shrink-0"
                 >
                   <span className="material-symbols-outlined text-[13px] sm:text-[14px]" aria-hidden="true">add</span>
-                  <span className="hidden xs:inline sm:inline">Add Organization</span>
-                  <span className="xs:hidden sm:hidden">Add</span>
-                </button>
+                  <span>Add Organization</span>
+                </Link>
               </div>
+            </div>
 
-              {/* Table with compact row heights - horizontally scrollable on tiny screens */}
-              <div className="border border-outline-variant rounded-md overflow-hidden flex-1 flex flex-col justify-between">
-                <div className="overflow-x-auto">
-                  <table className="w-full text-left border-collapse min-w-[280px]">
-                    <thead className="bg-surface-container-low border-b border-outline-variant">
-                      <tr>
-                        <th scope="col" className="px-2 sm:px-3 py-1.5 font-label text-[10px] sm:text-[11px] text-on-surface-variant whitespace-nowrap">
-                          Company Name
-                        </th>
-                        <th scope="col" className="px-2 sm:px-2.5 py-1.5 font-label text-[10px] sm:text-[11px] text-on-surface-variant whitespace-nowrap">
-                          Plan Tier
-                        </th>
-                        <th scope="col" className="px-2 sm:px-3 py-1.5 font-label text-[10px] sm:text-[11px] text-on-surface-variant text-right whitespace-nowrap">
-                          Status
-                        </th>
+            {/* Compact Table */}
+            <div className="border border-outline-variant rounded-md overflow-hidden flex-1 flex flex-col justify-between min-h-0">
+              <div className="overflow-x-auto h-full">
+                <table className="w-full text-left border-collapse min-w-[540px]">
+                  <thead className="bg-surface-container-low border-b border-outline-variant">
+                    <tr>
+                      <th scope="col" className="px-3 py-1.5 font-label text-[10px] sm:text-[11px] text-on-surface-variant whitespace-nowrap">
+                        Company Name
+                      </th>
+                      <th scope="col" className="px-2.5 py-1.5 font-label text-[10px] sm:text-[11px] text-on-surface-variant whitespace-nowrap">
+                        Plan Tier
+                      </th>
+                      <th scope="col" className="px-2.5 py-1.5 font-label text-[10px] sm:text-[11px] text-on-surface-variant whitespace-nowrap">
+                        Valuation Quota
+                      </th>
+                      <th scope="col" className="px-2.5 py-1.5 font-label text-[10px] sm:text-[11px] text-on-surface-variant whitespace-nowrap">
+                        Onboarded Date
+                      </th>
+                      <th scope="col" className="px-3 py-1.5 font-label text-[10px] sm:text-[11px] text-on-surface-variant text-right whitespace-nowrap">
+                        Status
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-outline-variant">
+                    {recentTenants.map((tenant, idx) => (
+                      <tr key={idx} className="hover:bg-surface-container-low/50">
+                        <td className="px-3 py-1.5 font-title text-[11px] sm:text-[12px] font-medium text-primary whitespace-nowrap">
+                          {tenant.company}
+                        </td>
+                        <td className="px-2.5 py-1.5 font-body text-[10px] sm:text-[11px] text-on-surface-variant whitespace-nowrap">
+                          {tenant.plan}
+                        </td>
+                        <td className="px-2.5 py-1.5 font-body text-[10px] sm:text-[11px] text-on-surface-variant whitespace-nowrap">
+                          {tenant.quota}
+                        </td>
+                        <td className="px-2.5 py-1.5 font-body text-[10px] sm:text-[11px] text-on-surface-variant whitespace-nowrap">
+                          {tenant.date}
+                        </td>
+                        <td className="px-3 py-1.5 text-right whitespace-nowrap">
+                          <span
+                            className={`inline-flex items-center px-1.5 py-0.5 rounded-full font-label text-[9px] sm:text-[10px] ${
+                              tenant.isPending
+                                ? 'bg-warning-container text-on-warning-container'
+                                : 'bg-secondary-container text-on-secondary-container'
+                            }`}
+                          >
+                            {tenant.status}
+                          </span>
+                        </td>
                       </tr>
-                    </thead>
-                    <tbody className="divide-y divide-outline-variant">
-                      {recentTenants.map((tenant, idx) => (
-                        <tr key={idx} className="hover:bg-surface-container-low/50">
-                          <td className="px-2 sm:px-3 py-1.5 font-title text-[11px] sm:text-[12px] font-medium text-primary whitespace-nowrap">
-                            {tenant.company}
-                          </td>
-                          <td className="px-2 sm:px-2.5 py-1.5 font-body text-[10px] sm:text-[11px] text-on-surface-variant whitespace-nowrap">
-                            {tenant.plan}
-                          </td>
-                          <td className="px-2 sm:px-3 py-1.5 text-right whitespace-nowrap">
-                            <span
-                              className={`inline-flex items-center px-1.5 py-0.5 rounded-full font-label text-[9px] sm:text-[10px] ${
-                                tenant.isPending
-                                  ? 'bg-warning-container text-on-warning-container'
-                                  : 'bg-secondary-container text-on-secondary-container'
-                              }`}
-                            >
-                              {tenant.status}
-                            </span>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
+                    ))}
+                  </tbody>
+                </table>
               </div>
             </div>
           </section>
@@ -216,3 +345,4 @@ export default function SaasAdminOverviewPage() {
     </div>
   );
 }
+
