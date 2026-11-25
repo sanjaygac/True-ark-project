@@ -173,26 +173,43 @@ export default function AddNewCompanyPage() {
                     type="file"
                     ref={fileInputRef}
                     onChange={handleFileChange}
-                    accept="image/png, image/svg+xml"
+                    accept="image/png, image/svg+xml, image/jpeg, image/jpg, image/webp"
                     className="hidden"
                   />
-                  <div className="border border-dashed border-outline-variant rounded bg-surface px-4 py-3 flex items-center justify-between gap-3">
-                    <div className="flex items-center gap-2.5 truncate">
-                      <span className="material-symbols-outlined text-secondary text-title-md shrink-0" aria-hidden="true">
-                        cloud_upload
+                  <button
+                    type="button"
+                    onClick={() => fileInputRef.current && fileInputRef.current.click()}
+                    className="w-full border border-dashed border-outline-variant hover:border-primary/60 rounded bg-surface hover:bg-surface-container-low px-4 py-3 flex items-center justify-between gap-3 text-left transition-colors duration-state-change group cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/20"
+                  >
+                    <div className="flex items-center gap-2.5 min-w-0">
+                      <span
+                        className={`material-symbols-outlined text-title-md shrink-0 transition-colors ${
+                          logoFile ? 'text-secondary' : 'text-secondary group-hover:text-primary'
+                        }`}
+                        aria-hidden="true"
+                      >
+                        {logoFile ? 'check_circle' : 'cloud_upload'}
                       </span>
-                      <span className="font-body text-body-sm text-on-surface-variant truncate">
+                      <span className="font-body text-body-sm text-on-surface-variant group-hover:text-primary truncate">
                         {logoFile || 'Upload PNG or SVG (max 2MB)'}
                       </span>
                     </div>
-                    <button
-                      type="button"
-                      onClick={() => fileInputRef.current && fileInputRef.current.click()}
-                      className="font-label text-label-sm text-primary hover:underline shrink-0"
-                    >
-                      Browse File
-                    </button>
-                  </div>
+
+                    {logoFile && (
+                      <span
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setLogoFile(null);
+                          if (fileInputRef.current) fileInputRef.current.value = '';
+                        }}
+                        className="inline-flex items-center justify-center w-6 h-6 rounded-full hover:bg-surface-container text-outline hover:text-error transition-colors"
+                        title="Remove file"
+                        aria-label="Remove uploaded logo"
+                      >
+                        <span className="material-symbols-outlined text-[16px]">close</span>
+                      </span>
+                    )}
+                  </button>
                 </div>
               </div>
             </section>
