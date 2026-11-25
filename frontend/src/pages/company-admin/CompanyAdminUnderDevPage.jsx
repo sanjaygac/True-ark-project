@@ -9,7 +9,7 @@ export default function CompanyAdminUnderDevPage() {
         <div className="flex items-center gap-3">
           <img
             src="/company-logo.png"
-            alt="Glopixcel"
+            alt="TrueArk"
             className="h-9 w-auto object-contain"
           />
           <span className="inline-flex items-center px-2.5 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label text-label-sm tracking-wider">

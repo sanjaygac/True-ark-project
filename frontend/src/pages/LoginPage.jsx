@@ -31,7 +31,7 @@ export default function LoginPage() {
         <div className="flex flex-col items-center text-center gap-3.5 mb-6">
           <img
             src="/company-logo.png"
-            alt="Glopixcel"
+            alt="TrueArk"
             className="h-11 w-auto object-contain"
           />
           <h2 className="font-headline text-[17px] lg:text-[18px] font-semibold text-primary">Welcome Back</h2>

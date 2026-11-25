@@ -39,7 +39,7 @@ export default function SaasAdminSidebar({ isOpen, onClose }) {
             <div className="flex items-center justify-between">
               <img
                 src="/company-logo.png"
-                alt="Glopixcel"
+                alt="TrueArk"
                 className="h-9 w-auto object-contain"
               />
               {/* Mobile close button */}
