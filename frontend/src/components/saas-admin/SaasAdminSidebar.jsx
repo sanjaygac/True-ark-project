@@ -34,8 +34,8 @@ export default function SaasAdminSidebar({ isOpen, onClose }) {
         `}
       >
         <div className="flex flex-col gap-6">
-          {/* Brand + SAAS ADMIN Pill */}
-          <div className="flex flex-col gap-3 px-2 pt-1">
+          {/* Brand Logo */}
+          <div className="px-2 pt-1">
             <div className="flex items-center justify-between">
               <Link
                 to="/saas-admin"
@@ -58,11 +58,6 @@ export default function SaasAdminSidebar({ isOpen, onClose }) {
               >
                 <span className="material-symbols-outlined text-[18px]">close</span>
               </button>
-            </div>
-            <div>
-              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full bg-primary-container text-on-primary-container font-label text-label-sm tracking-wider">
-                SAAS ADMIN
-              </span>
             </div>
           </div>
 
