@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 
 const navItems = [
   { label: 'Overview', icon: 'dashboard', to: '/saas-admin' },
@@ -37,11 +37,18 @@ export default function SaasAdminSidebar({ isOpen, onClose }) {
           {/* Brand + SAAS ADMIN Pill */}
           <div className="flex flex-col gap-3 px-2 pt-1">
             <div className="flex items-center justify-between">
-              <img
-                src="/company-logo.png"
-                alt="TrueArk"
-                className="h-9 w-auto object-contain"
-              />
+              <Link
+                to="/saas-admin"
+                onClick={onClose}
+                className="inline-flex items-center focus:outline-none focus:ring-2 focus:ring-primary/20 rounded cursor-pointer"
+                aria-label="TrueArk Admin Overview"
+              >
+                <img
+                  src="/company-logo.png"
+                  alt="TrueArk"
+                  className="h-9 w-auto object-contain hover:opacity-90 transition-opacity"
+                />
+              </Link>
               {/* Mobile close button */}
               <button
                 type="button"

@@ -7,11 +7,17 @@ export default function CompanyAdminUnderDevPage() {
       {/* Top Bar with Brand */}
       <header className="flex items-center justify-between max-w-5xl mx-auto w-full pb-6 border-b border-outline-variant">
         <div className="flex items-center gap-3">
-          <img
-            src="/company-logo.png"
-            alt="TrueArk"
-            className="h-9 w-auto object-contain"
-          />
+          <Link
+            to="/saas-admin"
+            className="inline-flex items-center focus:outline-none focus:ring-2 focus:ring-primary/20 rounded cursor-pointer"
+            aria-label="TrueArk Admin Overview"
+          >
+            <img
+              src="/company-logo.png"
+              alt="TrueArk"
+              className="h-9 w-auto object-contain hover:opacity-90 transition-opacity"
+            />
+          </Link>
           <span className="inline-flex items-center px-2.5 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label text-label-sm tracking-wider">
             COMPANY ADMIN
           </span>
