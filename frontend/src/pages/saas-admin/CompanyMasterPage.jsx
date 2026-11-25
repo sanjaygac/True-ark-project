@@ -1,6 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import SaasAdminSidebar from '../../components/saas-admin/SaasAdminSidebar';
+import SearchableSelect from '../../components/common/SearchableSelect';
+
+const statusFilterOptions = [
+  { value: 'All Status', label: 'All Status' },
+  { value: 'Active', label: 'Active', subtitle: 'Licensed & provisioning enabled' },
+  { value: 'Trial', label: 'Trial', subtitle: '14-day evaluation period' },
+  { value: 'Expired', label: 'Expired', subtitle: 'Subscription lapsed' },
+  { value: 'Inactive', label: 'Inactive', subtitle: 'Suspended accounts' },
+];
 
 const initialCompanies = [
   {
@@ -171,19 +180,17 @@ export default function CompanyMasterPage() {
 
             {/* Other two controls (Filter + Add Company) in a Single Row */}
             <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto">
-              {/* Status Filter Dropdown */}
-              <select
-                aria-label="Filter by Status"
-                value={statusFilter}
-                onChange={(e) => setStatusFilter(e.target.value)}
-                className="flex-1 sm:flex-none rounded border border-outline-variant bg-surface-container-lowest px-3 py-2 font-label text-label-md text-on-surface focus:border-primary focus:ring-2 focus:ring-primary/20"
-              >
-                <option value="All Status">All Status</option>
-                <option value="Active">Active</option>
-                <option value="Trial">Trial</option>
-                <option value="Expired">Expired</option>
-                <option value="Inactive">Inactive</option>
-              </select>
+              {/* Searchable Status Filter Dropdown */}
+              <div className="w-40 sm:w-44 shrink-0">
+                <SearchableSelect
+                  value={statusFilter}
+                  onChange={(val) => setStatusFilter(val)}
+                  options={statusFilterOptions}
+                  placeholder="Filter by Status"
+                  searchPlaceholder="Search status..."
+                  ariaLabel="Filter by Status"
+                />
+              </div>
 
               {/* Primary Add Button */}
               <Link

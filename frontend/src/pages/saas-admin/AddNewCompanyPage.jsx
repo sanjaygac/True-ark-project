@@ -1,6 +1,19 @@
 import React, { useState, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import SaasAdminSidebar from '../../components/saas-admin/SaasAdminSidebar';
+import SearchableSelect from '../../components/common/SearchableSelect';
+
+const companyTypeOptions = [
+  { value: 'Valuation Firm', label: 'Valuation Firm', subtitle: 'Licensed property & asset valuers' },
+  { value: 'NBFC / Bank', label: 'NBFC / Bank', subtitle: 'Banking & housing finance institutions' },
+  { value: 'Advisory / Legal', label: 'Advisory / Legal', subtitle: 'Real estate advisory & legal audit' },
+];
+
+const planTierOptions = [
+  { value: 'Enterprise', label: 'Enterprise', subtitle: 'Unlimited Seats • Bank-grade SLA' },
+  { value: 'Pro', label: 'Pro', subtitle: '15 Seats • Multi-branch' },
+  { value: 'Starter', label: 'Starter', subtitle: '3 Seats • Single Branch' },
+];
 
 export default function AddNewCompanyPage() {
   const navigate = useNavigate();
@@ -154,18 +167,17 @@ export default function AddNewCompanyPage() {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-start">
-                <label className="flex flex-col gap-1.5">
-                  <span className="font-label text-label-sm text-on-surface">Company Type</span>
-                  <select
+                <div className="flex flex-col gap-1.5">
+                  <label className="font-label text-label-sm text-on-surface">Company Type</label>
+                  <SearchableSelect
                     value={companyType}
-                    onChange={(e) => setCompanyType(e.target.value)}
-                    className="rounded border border-outline-variant bg-surface-container-lowest px-3 py-2 font-body text-body-md text-on-surface focus:border-primary focus:ring-2 focus:ring-primary/20"
-                  >
-                    <option value="Valuation Firm">Valuation Firm</option>
-                    <option value="NBFC / Bank">NBFC / Bank</option>
-                    <option value="Advisory / Legal">Advisory / Legal</option>
-                  </select>
-                </label>
+                    onChange={(val) => setCompanyType(val)}
+                    options={companyTypeOptions}
+                    placeholder="Select company type"
+                    searchPlaceholder="Search company type..."
+                    ariaLabel="Company Type"
+                  />
+                </div>
 
                 <div className="flex flex-col gap-1.5 md:col-span-2">
                   <span className="font-label text-label-sm text-on-surface">Company Logo</span>
@@ -349,18 +361,17 @@ export default function AddNewCompanyPage() {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <label className="flex flex-col gap-1.5">
-                  <span className="font-label text-label-sm text-on-surface">Plan Tier</span>
-                  <select
+                <div className="flex flex-col gap-1.5">
+                  <label className="font-label text-label-sm text-on-surface">Plan Tier</label>
+                  <SearchableSelect
                     value={planTier}
-                    onChange={(e) => setPlanTier(e.target.value)}
-                    className="rounded border border-outline-variant bg-surface-container-lowest px-3 py-2 font-body text-body-md text-on-surface focus:border-primary focus:ring-2 focus:ring-primary/20"
-                  >
-                    <option value="Enterprise">Enterprise</option>
-                    <option value="Pro">Pro</option>
-                    <option value="Starter">Starter</option>
-                  </select>
-                </label>
+                    onChange={(val) => setPlanTier(val)}
+                    options={planTierOptions}
+                    placeholder="Select plan tier"
+                    searchPlaceholder="Search plan tier..."
+                    ariaLabel="Plan Tier"
+                  />
+                </div>
 
                 <label className="flex flex-col gap-1.5">
                   <span className="font-label text-label-sm text-on-surface">Max User Seats</span>

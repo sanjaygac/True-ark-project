@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import SaasAdminSidebar from '../../components/saas-admin/SaasAdminSidebar';
+import SearchableSelect from '../../components/common/SearchableSelect';
+
+const billingCycleOptions = [
+  { value: 'Monthly', label: 'Monthly', subtitle: 'Billed recurring monthly' },
+  { value: 'Yearly', label: 'Yearly', subtitle: 'Billed annually' },
+];
 
 const plansDetailMap = {
   'PLN-STR': {
@@ -236,17 +242,17 @@ export default function AddEditPlanPage() {
               </label>
 
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <label className="flex flex-col gap-1.5">
-                  <span className="font-label text-label-sm text-on-surface">Billing Cycle</span>
-                  <select
+                <div className="flex flex-col gap-1.5">
+                  <label className="font-label text-label-sm text-on-surface">Billing Cycle</label>
+                  <SearchableSelect
                     value={billingCycle}
-                    onChange={(e) => setBillingCycle(e.target.value)}
-                    className="rounded border border-outline-variant bg-surface-container-lowest px-3 py-2 font-body text-body-md text-on-surface focus:border-primary focus:ring-2 focus:ring-primary/20"
-                  >
-                    <option value="Monthly">Monthly</option>
-                    <option value="Yearly">Yearly</option>
-                  </select>
-                </label>
+                    onChange={(val) => setBillingCycle(val)}
+                    options={billingCycleOptions}
+                    placeholder="Select billing cycle"
+                    searchPlaceholder="Search cycle..."
+                    ariaLabel="Billing Cycle"
+                  />
+                </div>
 
                 <label className="flex flex-col gap-1.5">
                   <span className="font-label text-label-sm text-on-surface">Price (INR)</span>
