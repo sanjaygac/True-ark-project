@@ -140,8 +140,8 @@ export default function CompanyMasterPage() {
       {/* Main Content Column */}
       <div className="flex-1 min-w-0 flex flex-col h-screen overflow-y-auto">
         {/* Top Header */}
-        <header className="bg-surface-container-lowest border-b border-outline-variant px-3 sm:px-6 lg:px-8 py-4 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3 sm:gap-4">
-          <div className="flex flex-col gap-1">
+        <header className="bg-surface-container-lowest border-b border-outline-variant px-3 sm:px-4 lg:px-5 py-3 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-2.5 sm:gap-3">
+          <div className="flex flex-col gap-0.5">
             <div className="flex items-center gap-2">
               <button
                 type="button"
@@ -160,9 +160,9 @@ export default function CompanyMasterPage() {
             </p>
           </div>
 
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3 w-full lg:w-auto">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-2.5 w-full lg:w-auto">
             {/* Search Input in a Separate Full-Width Row on Mobile */}
-            <div className="relative w-full sm:w-72">
+            <div className="relative w-full sm:w-64 lg:w-72">
               <span
                 aria-hidden="true"
                 className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-title-md select-none"
@@ -179,7 +179,7 @@ export default function CompanyMasterPage() {
             </div>
 
             {/* Other two controls (Filter + Add Company) in a Single Row */}
-            <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto">
+            <div className="flex items-center gap-2 sm:gap-2.5 w-full sm:w-auto">
               {/* Searchable Status Filter Dropdown */}
               <div className="w-40 sm:w-44 shrink-0">
                 <SearchableSelect
@@ -207,35 +207,35 @@ export default function CompanyMasterPage() {
         </header>
 
         {/* Main Workspace */}
-        <main className="p-6 lg:p-8 flex-1" ref={tableRef}>
+        <main className="p-3 sm:p-4 flex-1 flex flex-col gap-3" ref={tableRef}>
           {/* Main Data Table Card */}
           <section className="bg-surface-container-lowest border border-outline-variant rounded-md shadow-sm overflow-visible">
             <div className="rounded-md overflow-x-auto lg:overflow-visible">
               <table className="w-full text-left border-collapse">
                 <thead className="bg-surface-container-low border-b border-outline-variant">
                   <tr>
-                    <th scope="col" className="px-4 py-3.5 font-label text-label-sm text-on-surface-variant whitespace-nowrap">
+                    <th scope="col" className="px-3 py-2.5 font-label text-label-sm text-on-surface-variant whitespace-nowrap">
                       Code
                     </th>
-                    <th scope="col" className="px-4 py-3.5 font-label text-label-sm text-on-surface-variant whitespace-nowrap">
+                    <th scope="col" className="px-3 py-2.5 font-label text-label-sm text-on-surface-variant whitespace-nowrap">
                       Company Name
                     </th>
-                    <th scope="col" className="px-4 py-3.5 font-label text-label-sm text-on-surface-variant whitespace-nowrap">
+                    <th scope="col" className="px-3 py-2.5 font-label text-label-sm text-on-surface-variant whitespace-nowrap">
                       Location
                     </th>
-                    <th scope="col" className="px-4 py-3.5 font-label text-label-sm text-on-surface-variant whitespace-nowrap">
+                    <th scope="col" className="px-3 py-2.5 font-label text-label-sm text-on-surface-variant whitespace-nowrap">
                       Plan
                     </th>
-                    <th scope="col" className="px-4 py-3.5 font-label text-label-sm text-on-surface-variant whitespace-nowrap">
+                    <th scope="col" className="px-3 py-2.5 font-label text-label-sm text-on-surface-variant whitespace-nowrap">
                       Start Date
                     </th>
-                    <th scope="col" className="px-4 py-3.5 font-label text-label-sm text-on-surface-variant whitespace-nowrap">
+                    <th scope="col" className="px-3 py-2.5 font-label text-label-sm text-on-surface-variant whitespace-nowrap">
                       Expiry Date
                     </th>
-                    <th scope="col" className="px-4 py-3.5 font-label text-label-sm text-on-surface-variant whitespace-nowrap">
+                    <th scope="col" className="px-3 py-2.5 font-label text-label-sm text-on-surface-variant whitespace-nowrap">
                       Status
                     </th>
-                    <th scope="col" className="px-4 py-3.5 font-label text-label-sm text-on-surface-variant text-right whitespace-nowrap">
+                    <th scope="col" className="px-3 py-2.5 font-label text-label-sm text-on-surface-variant text-right whitespace-nowrap">
                       Actions
                     </th>
                   </tr>
@@ -243,7 +243,7 @@ export default function CompanyMasterPage() {
                 <tbody className="divide-y divide-outline-variant">
                   {filteredCompanies.length === 0 ? (
                     <tr>
-                      <td colSpan="8" className="px-4 py-8 text-center text-outline font-body text-body-md">
+                      <td colSpan="8" className="px-3 py-6 text-center text-outline font-body text-body-md">
                         No companies match the selected criteria.
                       </td>
                     </tr>
@@ -255,30 +255,30 @@ export default function CompanyMasterPage() {
                           key={company.id}
                           className="hover:bg-surface-container-low/50 transition-colors duration-state-change"
                         >
-                          <td className="px-4 py-4 font-mono text-mono-md text-primary whitespace-nowrap">
+                          <td className="px-3 py-2.5 font-mono text-mono-md text-primary whitespace-nowrap">
                             {company.code}
                           </td>
-                          <td className="px-4 py-4">
+                          <td className="px-3 py-2.5">
                             <p className="font-title text-title-sm text-primary whitespace-nowrap">
                               {company.name}
                             </p>
                           </td>
-                          <td className="px-4 py-4 font-body text-body-sm text-on-surface whitespace-nowrap">
+                          <td className="px-3 py-2.5 font-body text-body-sm text-on-surface whitespace-nowrap">
                             {company.location}
                           </td>
-                          <td className="px-4 py-4 font-body text-body-sm text-on-surface whitespace-nowrap">
+                          <td className="px-3 py-2.5 font-body text-body-sm text-on-surface whitespace-nowrap">
                             {company.plan}
                           </td>
-                          <td className="px-4 py-4 font-body text-body-sm text-on-surface-variant tabular-nums whitespace-nowrap">
+                          <td className="px-3 py-2.5 font-body text-body-sm text-on-surface-variant tabular-nums whitespace-nowrap">
                             {company.startDate}
                           </td>
-                          <td className="px-4 py-4 font-body text-body-sm text-on-surface-variant tabular-nums whitespace-nowrap">
+                          <td className="px-3 py-2.5 font-body text-body-sm text-on-surface-variant tabular-nums whitespace-nowrap">
                             {company.expiryDate}
                           </td>
-                          <td className="px-4 py-4 whitespace-nowrap">
+                          <td className="px-3 py-2.5 whitespace-nowrap">
                             {getStatusBadge(company.status)}
                           </td>
-                          <td className="px-4 py-4 text-right whitespace-nowrap">
+                          <td className="px-3 py-2.5 text-right whitespace-nowrap">
                             <div className="inline-flex items-center gap-3">
                               <Link
                                 to={`/saas-admin/company-master/edit/${company.id}`}
