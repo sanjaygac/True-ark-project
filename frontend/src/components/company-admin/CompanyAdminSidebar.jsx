@@ -16,7 +16,6 @@ const masterSubItems = [
 
 const secondaryNavItems = [
   { label: 'Permission Matrix', icon: 'admin_panel_settings', to: '/company-admin/permission-matrix' },
-  { label: 'Generated Reports', icon: 'description', to: '/company-admin/reports' },
   { label: 'Team & Settings', icon: 'settings', to: '/company-admin/settings' },
 ];
 
