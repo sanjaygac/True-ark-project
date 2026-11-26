@@ -9,6 +9,7 @@ import PlanMasterPage from './pages/saas-admin/PlanMasterPage';
 import AddEditPlanPage from './pages/saas-admin/AddEditPlanPage';
 import PlanViewPage from './pages/saas-admin/PlanViewPage';
 import CompanyAdminDashboardPage from './pages/company-admin/CompanyAdminDashboardPage';
+import CompanyReportViewPage from './pages/company-admin/CompanyReportViewPage';
 import CompanyAdminUnderDevPage from './pages/company-admin/CompanyAdminUnderDevPage';
 
 export default function App() {
@@ -41,6 +42,8 @@ export default function App() {
         {/* Company Admin (Tenant) routes - strictly isolated from SaaS Product Admin */}
         <Route path="/company-admin" element={<CompanyAdminDashboardPage />} />
         <Route path="/company-admin/dashboard" element={<Navigate to="/company-admin" replace />} />
+        <Route path="/company-admin/reports" element={<CompanyReportViewPage />} />
+        <Route path="/company-admin/reports/:id" element={<CompanyReportViewPage />} />
         <Route path="/company-admin/*" element={<CompanyAdminUnderDevPage />} />
 
         {/* Fallback route */}
