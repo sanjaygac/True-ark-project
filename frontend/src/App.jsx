@@ -10,6 +10,7 @@ import AddEditPlanPage from './pages/saas-admin/AddEditPlanPage';
 import PlanViewPage from './pages/saas-admin/PlanViewPage';
 import CompanyAdminDashboardPage from './pages/company-admin/CompanyAdminDashboardPage';
 import CompanyValuationsPage from './pages/company-admin/CompanyValuationsPage';
+import CompanyApprovalsPage from './pages/company-admin/CompanyApprovalsPage';
 import CompanyPermissionMatrixPage from './pages/company-admin/CompanyPermissionMatrixPage';
 import CompanyReportViewPage from './pages/company-admin/CompanyReportViewPage';
 import CompanyAdminUnderDevPage from './pages/company-admin/CompanyAdminUnderDevPage';
@@ -46,6 +47,7 @@ export default function App() {
         <Route path="/company-admin/dashboard" element={<Navigate to="/company-admin" replace />} />
         <Route path="/company-admin/valuation" element={<CompanyValuationsPage />} />
         <Route path="/company-admin/new-valuation" element={<Navigate to="/company-admin/valuation" replace />} />
+        <Route path="/company-admin/approval" element={<CompanyApprovalsPage />} />
         <Route path="/company-admin/permission-matrix" element={<CompanyPermissionMatrixPage />} />
         <Route path="/company-admin/reports" element={<CompanyReportViewPage />} />
         <Route path="/company-admin/reports/:id" element={<CompanyReportViewPage />} />
