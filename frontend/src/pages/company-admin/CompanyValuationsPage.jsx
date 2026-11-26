@@ -125,10 +125,10 @@ export default function CompanyValuationsPage() {
       <CompanyAdminSidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
       {/* Main Workspace */}
-      <div className="flex-1 min-w-0 flex flex-col h-screen overflow-y-auto">
+      <div className="flex-1 min-w-0 flex flex-col h-screen overflow-y-auto overflow-x-hidden">
         {/* Top Action Bar */}
-        <header className="bg-surface-container-lowest border-b border-outline-variant px-3 sm:px-6 lg:px-8 py-4 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3 sm:gap-4 shrink-0">
-          <div className="flex flex-col gap-1">
+        <header className="bg-surface-container-lowest border-b border-outline-variant px-3 sm:px-5 lg:px-6 py-3.5 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3 shrink-0">
+          <div className="flex flex-col gap-0.5 min-w-0">
             <div className="flex items-center gap-2">
               <button
                 type="button"
@@ -147,9 +147,9 @@ export default function CompanyValuationsPage() {
             </p>
           </div>
 
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3 w-full lg:w-auto">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-2.5 w-full lg:w-auto shrink-0">
             {/* Quick-search input */}
-            <div className="relative w-full sm:w-64">
+            <div className="relative w-full sm:w-56 xl:w-64">
               <span
                 aria-hidden="true"
                 className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-title-md select-none"
@@ -165,9 +165,9 @@ export default function CompanyValuationsPage() {
               />
             </div>
 
-            <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto">
+            <div className="flex items-center gap-2 sm:gap-2.5 w-full sm:w-auto">
               {/* Searchable Status Filter Dropdown */}
-              <div className="w-36 sm:w-40 shrink-0">
+              <div className="w-36 shrink-0">
                 <SearchableSelect
                   value={statusFilter}
                   onChange={(val) => setStatusFilter(val)}
@@ -181,7 +181,7 @@ export default function CompanyValuationsPage() {
               {/* Prominent Emerald Green + Start New Valuation Button */}
               <Link
                 to="/company-admin/valuation/new"
-                className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-3.5 sm:px-4 py-2 rounded bg-tertiary text-on-tertiary font-label text-label-md hover:opacity-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 transition-colors duration-state-change whitespace-nowrap shrink-0"
+                className="flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded bg-tertiary text-on-tertiary font-label text-label-md hover:opacity-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 transition-colors duration-state-change whitespace-nowrap shrink-0"
               >
                 <span className="material-symbols-outlined text-title-sm" aria-hidden="true">
                   add
@@ -192,42 +192,42 @@ export default function CompanyValuationsPage() {
           </div>
         </header>
 
-        <main className="p-3 sm:p-5 lg:p-6 flex-1 flex flex-col gap-6">
+        <main className="p-3 sm:p-4 lg:p-5 flex-1 flex flex-col gap-5 min-w-0">
           {/* Valuations Table Card */}
           <section className="bg-surface-container-lowest border border-outline-variant rounded-md shadow-sm overflow-hidden">
-            <div className="px-4 sm:px-6 py-4 border-b border-outline-variant flex flex-wrap items-center justify-between gap-4">
+            <div className="px-4 sm:px-5 py-3.5 border-b border-outline-variant flex flex-wrap items-center justify-between gap-3">
               <h2 className="font-headline text-headline-sm text-primary">All Valuation Assignments</h2>
               <span className="font-body text-body-sm text-on-surface-variant tabular-nums">
                 Showing {filteredValuations.length} of 91 valuations
               </span>
             </div>
 
-            <div className="rounded-md overflow-x-auto">
+            <div className="w-full overflow-x-auto lg:overflow-x-hidden">
               <table className="w-full text-left border-collapse">
                 <thead className="bg-surface-container-low border-b border-outline-variant">
                   <tr>
-                    <th scope="col" className="px-4 py-3.5 font-label text-label-sm text-on-surface-variant whitespace-nowrap">
+                    <th scope="col" className="px-2.5 xl:px-3.5 py-3 font-label text-label-sm text-on-surface-variant whitespace-nowrap">
                       Valuation ID
                     </th>
-                    <th scope="col" className="px-4 py-3.5 font-label text-label-sm text-on-surface-variant whitespace-nowrap">
+                    <th scope="col" className="px-2.5 xl:px-3.5 py-3 font-label text-label-sm text-on-surface-variant whitespace-nowrap">
                       Property / Survey No.
                     </th>
-                    <th scope="col" className="px-4 py-3.5 font-label text-label-sm text-on-surface-variant whitespace-nowrap">
+                    <th scope="col" className="px-2.5 xl:px-3.5 py-3 font-label text-label-sm text-on-surface-variant whitespace-nowrap">
                       Client
                     </th>
-                    <th scope="col" className="px-4 py-3.5 font-label text-label-sm text-on-surface-variant whitespace-nowrap">
+                    <th scope="col" className="px-2.5 xl:px-3.5 py-3 font-label text-label-sm text-on-surface-variant whitespace-nowrap">
                       Land Type
                     </th>
-                    <th scope="col" className="px-4 py-3.5 font-label text-label-sm text-on-surface-variant whitespace-nowrap">
+                    <th scope="col" className="px-2.5 xl:px-3.5 py-3 font-label text-label-sm text-on-surface-variant whitespace-nowrap">
                       Extent
                     </th>
-                    <th scope="col" className="px-4 py-3.5 font-label text-label-sm text-on-surface-variant whitespace-nowrap">
+                    <th scope="col" className="px-2.5 xl:px-3.5 py-3 font-label text-label-sm text-on-surface-variant whitespace-nowrap">
                       Market Value
                     </th>
-                    <th scope="col" className="px-4 py-3.5 font-label text-label-sm text-on-surface-variant whitespace-nowrap">
+                    <th scope="col" className="px-2.5 xl:px-3.5 py-3 font-label text-label-sm text-on-surface-variant whitespace-nowrap">
                       Status
                     </th>
-                    <th scope="col" className="px-4 py-3.5 font-label text-label-sm text-on-surface-variant text-right whitespace-nowrap">
+                    <th scope="col" className="px-2.5 xl:px-3.5 py-3 font-label text-label-sm text-on-surface-variant text-right whitespace-nowrap">
                       Actions
                     </th>
                   </tr>
@@ -236,29 +236,29 @@ export default function CompanyValuationsPage() {
                   {filteredValuations.length > 0 ? (
                     filteredValuations.map((item) => (
                       <tr key={item.id} className="hover:bg-surface-container-low/50 transition-colors duration-state-change">
-                        <td className="px-4 py-4 font-mono text-mono-md text-primary whitespace-nowrap">
+                        <td className="px-2.5 xl:px-3.5 py-3.5 font-mono text-[11px] xl:text-mono-md text-primary whitespace-nowrap">
                           {item.code}
                         </td>
-                        <td className="px-4 py-4 font-body text-body-sm text-on-surface whitespace-nowrap">
+                        <td className="px-2.5 xl:px-3.5 py-3.5 font-body text-body-sm text-on-surface">
                           {item.property}
                         </td>
-                        <td className="px-4 py-4 font-body text-body-sm text-on-surface-variant whitespace-nowrap">
+                        <td className="px-2.5 xl:px-3.5 py-3.5 font-body text-body-sm text-on-surface-variant">
                           {item.client}
                         </td>
-                        <td className="px-4 py-4 font-body text-body-sm text-on-surface-variant whitespace-nowrap">
+                        <td className="px-2.5 xl:px-3.5 py-3.5 font-body text-body-sm text-on-surface-variant whitespace-nowrap">
                           {item.landType}
                         </td>
-                        <td className="px-4 py-4 font-body text-body-sm text-on-surface tabular-nums whitespace-nowrap">
+                        <td className="px-2.5 xl:px-3.5 py-3.5 font-body text-body-sm text-on-surface tabular-nums whitespace-nowrap">
                           {item.extent}
                         </td>
-                        <td className="px-4 py-4 font-label text-label-md text-primary tabular-nums whitespace-nowrap">
+                        <td className="px-2.5 xl:px-3.5 py-3.5 font-label text-[12px] text-primary tabular-nums whitespace-nowrap">
                           {item.marketValue}
                         </td>
-                        <td className="px-4 py-4 whitespace-nowrap">
+                        <td className="px-2.5 xl:px-3.5 py-3.5 whitespace-nowrap">
                           {getStatusBadge(item.status)}
                         </td>
-                        <td className="px-4 py-4 text-right whitespace-nowrap">
-                          <div className="inline-flex items-center gap-3">
+                        <td className="px-2.5 xl:px-3.5 py-3.5 text-right whitespace-nowrap">
+                          <div className="inline-flex items-center gap-2.5">
                             <Link
                               to={`/company-admin/valuation/edit/${item.id}`}
                               className="font-label text-label-sm text-primary hover:underline"
