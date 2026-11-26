@@ -94,16 +94,15 @@ export default function SaasAdminSidebar({ isOpen, onClose }) {
         </div>
 
         {/* Sidebar Footer */}
-        <div className="pt-4 border-t border-outline-variant px-2 flex items-center justify-between gap-2">
-          <p className="font-body text-body-sm text-outline truncate">Platform v4.2 • Cloud</p>
+        <div className="pt-4 border-t border-outline-variant px-2 flex items-center justify-center">
           <Link
             to="/login"
             onClick={onClose}
             title="Logout"
             aria-label="Logout"
-            className="inline-flex items-center gap-1.5 px-2 py-1 rounded text-on-surface-variant hover:bg-surface-container-low hover:text-primary font-label text-label-sm transition-colors duration-state-change shrink-0"
+            className="w-full inline-flex items-center justify-center gap-2 px-3 py-2 rounded text-on-surface-variant hover:bg-surface-container-low hover:text-primary font-label text-label-md transition-colors duration-state-change"
           >
-            <span className="material-symbols-outlined text-[17px]" aria-hidden="true">
+            <span className="material-symbols-outlined text-[18px]" aria-hidden="true">
               logout
             </span>
             <span>Logout</span>
