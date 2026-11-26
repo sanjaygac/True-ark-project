@@ -134,25 +134,27 @@ export default function CompanyAdminSidebar({ isOpen, onClose }) {
 
               {mastersOpen && (
                 <div className="mt-1 ml-3 pl-3 border-l border-outline-variant flex flex-col gap-1">
-                  {masterSubItems.map((sub) => (
-                    <NavLink
-                      key={sub.label}
-                      to={sub.to}
-                      onClick={onClose}
-                      className={({ isActive }) =>
-                        `flex items-center gap-2.5 px-2.5 py-2 rounded font-label text-label-md transition-colors duration-state-change ${
-                          isActive
+                  {masterSubItems.map((sub) => {
+                    const isSubActive =
+                      location.pathname === sub.to || location.pathname.startsWith(`${sub.to}/`);
+                    return (
+                      <NavLink
+                        key={sub.label}
+                        to={sub.to}
+                        onClick={onClose}
+                        className={`flex items-center gap-2.5 px-2.5 py-2 rounded font-label text-label-md transition-colors duration-state-change ${
+                          isSubActive
                             ? 'bg-primary text-on-primary'
                             : 'text-on-surface-variant hover:bg-surface-container-low hover:text-primary'
-                        }`
-                      }
-                    >
-                      <span className="material-symbols-outlined text-[17px]" aria-hidden="true">
-                        {sub.icon}
-                      </span>
-                      <span>{sub.label}</span>
-                    </NavLink>
-                  ))}
+                        }`}
+                      >
+                        <span className="material-symbols-outlined text-[17px]" aria-hidden="true">
+                          {sub.icon}
+                        </span>
+                        <span>{sub.label}</span>
+                      </NavLink>
+                    );
+                  })}
                 </div>
               )}
             </div>

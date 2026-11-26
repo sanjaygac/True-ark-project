@@ -13,6 +13,7 @@ import CompanyValuationsPage from './pages/company-admin/CompanyValuationsPage';
 import CompanyApprovalsPage from './pages/company-admin/CompanyApprovalsPage';
 import CompanyPermissionMatrixPage from './pages/company-admin/CompanyPermissionMatrixPage';
 import CompanyUserMasterPage from './pages/company-admin/CompanyUserMasterPage';
+import AddNewUserPage from './pages/company-admin/AddNewUserPage';
 import CompanyReportViewPage from './pages/company-admin/CompanyReportViewPage';
 import CompanyAdminUnderDevPage from './pages/company-admin/CompanyAdminUnderDevPage';
 
@@ -50,7 +51,9 @@ export default function App() {
         <Route path="/company-admin/new-valuation" element={<Navigate to="/company-admin/valuation" replace />} />
         <Route path="/company-admin/approval" element={<CompanyApprovalsPage />} />
         <Route path="/company-admin/masters/user" element={<CompanyUserMasterPage />} />
+        <Route path="/company-admin/masters/user/add" element={<AddNewUserPage />} />
         <Route path="/company-admin/user-master" element={<Navigate to="/company-admin/masters/user" replace />} />
+        <Route path="/company-admin/users/add" element={<Navigate to="/company-admin/masters/user/add" replace />} />
         <Route path="/company-admin/permission-matrix" element={<CompanyPermissionMatrixPage />} />
         <Route path="/company-admin/reports" element={<CompanyReportViewPage />} />
         <Route path="/company-admin/reports/:id" element={<CompanyReportViewPage />} />
