@@ -6,7 +6,6 @@ const navItems = [
   { label: 'Company Master', icon: 'corporate_fare', to: '/saas-admin/company-master' },
   { label: 'Plan Master', icon: 'workspace_premium', to: '/saas-admin/plan-master' },
   { label: 'Guideline Rate Master', icon: 'map', to: '/saas-admin/rates' },
-  { label: 'Valuer Licenses', icon: 'badge', to: '/saas-admin/licenses' },
   { label: 'Billing & Invoices', icon: 'receipt_long', to: '/saas-admin/billing' },
   { label: 'Audit Logs', icon: 'history', to: '/saas-admin/audit' },
 ];
