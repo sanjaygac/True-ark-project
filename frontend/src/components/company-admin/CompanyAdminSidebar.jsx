@@ -59,8 +59,8 @@ export default function CompanyAdminSidebar({ isOpen, onClose }) {
         `}
       >
         <div className="flex flex-col gap-6">
-          {/* Brand + Organization Name Badge */}
-          <div className="flex flex-col gap-3 px-2 pt-1">
+          {/* Brand Logo */}
+          <div className="px-2 pt-1">
             <div className="flex items-center justify-between">
               <Link
                 to="/company-admin"
@@ -83,12 +83,6 @@ export default function CompanyAdminSidebar({ isOpen, onClose }) {
               >
                 <span className="material-symbols-outlined text-[18px]">close</span>
               </button>
-            </div>
-            <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-surface-container-low border border-outline-variant w-fit">
-              <span className="material-symbols-outlined text-secondary text-body-sm" aria-hidden="true">
-                domain
-              </span>
-              <span className="font-label text-label-sm text-primary">Apex Valuation Assoc.</span>
             </div>
           </div>
 
