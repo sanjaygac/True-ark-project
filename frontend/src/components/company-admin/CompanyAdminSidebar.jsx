@@ -12,6 +12,7 @@ const masterSubItems = [
   { label: 'Property Master', icon: 'home_work', to: '/company-admin/masters/property' },
   { label: 'Branch Master', icon: 'account_tree', to: '/company-admin/masters/branch' },
   { label: 'Client Master', icon: 'groups', to: '/company-admin/masters/client' },
+  { label: 'User Master', icon: 'person', to: '/company-admin/masters/user' },
 ];
 
 const secondaryNavItems = [
