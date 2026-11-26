@@ -110,6 +110,27 @@ const reportsDataMap = {
     realizableValue: '₹1,73,43,000',
     distressValue: '₹1,54,16,000',
   },
+  'TA-2026-084': {
+    id: 'TA-2026-084',
+    code: '#TA-2026-084',
+    statusBadge: 'In Review',
+    date: '12 Nov 2026',
+    purpose: 'Housing Finance Collateral',
+    surveyNo: 'Khata 712/9 (Sy.No 94/2)',
+    location: 'Whitefield Main Rd, Mahadevapura, Bengaluru',
+    classification: 'BBMP A-Khata Residential Plot',
+    extent: '5,400 Sq.ft (60 ft × 90 ft)',
+    frontage: '40 ft Asphalted Corporation Road (East)',
+    gisLabel: 'Khata 712/9',
+    comparables: [
+      { parcel: 'Khata 710/4 — Whitefield', distance: '210 m', extent: '4,800 Sq.ft', regDate: 'Oct 2026', rate: '₹5,880' },
+      { parcel: 'Khata 715/2 — Brookefield', distance: '390 m', extent: '5,000 Sq.ft', regDate: 'Sep 2026', rate: '₹5,950' },
+      { parcel: 'Khata 708/1 — ITPL Backgate', distance: '540 m', extent: '6,000 Sq.ft', regDate: 'Aug 2026', rate: '₹5,840' },
+    ],
+    marketValue: '₹3,18,60,000',
+    realizableValue: '₹2,86,74,000',
+    distressValue: '₹2,54,88,000',
+  },
 };
 
 export default function CompanyReportViewPage() {
