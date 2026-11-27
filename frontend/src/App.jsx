@@ -15,6 +15,7 @@ import ValuationFormPartBPage from './pages/company-admin/ValuationFormPartBPage
 import ValuationFormPartCPage from './pages/company-admin/ValuationFormPartCPage';
 import ValuationFormPartDEPage from './pages/company-admin/ValuationFormPartDEPage';
 import ValuationFormPartFPage from './pages/company-admin/ValuationFormPartFPage';
+import ValuationFormDeclarationPage from './pages/company-admin/ValuationFormDeclarationPage';
 import CompanyApprovalsPage from './pages/company-admin/CompanyApprovalsPage';
 import CompanyPermissionMatrixPage from './pages/company-admin/CompanyPermissionMatrixPage';
 import CompanyUserMasterPage from './pages/company-admin/CompanyUserMasterPage';
@@ -64,6 +65,10 @@ export default function App() {
         <Route path="/company-admin/valuation/part-d" element={<Navigate to="/company-admin/valuation/new/part-d-e" replace />} />
         <Route path="/company-admin/valuation/new/part-f" element={<ValuationFormPartFPage />} />
         <Route path="/company-admin/valuation/part-f" element={<Navigate to="/company-admin/valuation/new/part-f" replace />} />
+        <Route path="/company-admin/valuation/new/form-a" element={<ValuationFormDeclarationPage />} />
+        <Route path="/company-admin/valuation/form-a" element={<Navigate to="/company-admin/valuation/new/form-a" replace />} />
+        <Route path="/company-admin/valuation/new/declaration" element={<Navigate to="/company-admin/valuation/new/form-a" replace />} />
+        <Route path="/company-admin/valuation/declaration" element={<Navigate to="/company-admin/valuation/new/form-a" replace />} />
         <Route path="/company-admin/new-valuation" element={<ValuationFormPartAPage />} />
         <Route path="/company-admin/approval" element={<CompanyApprovalsPage />} />
         <Route path="/company-admin/masters/user" element={<CompanyUserMasterPage />} />
