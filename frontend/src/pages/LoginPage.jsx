@@ -103,10 +103,6 @@ export default function LoginPage() {
         {/* Bottom Footer Note */}
         <div className="relative z-10 pt-4 border-t border-outline-variant/60 flex items-center justify-between text-on-surface-variant font-body text-body-sm">
           <span>© {new Date().getFullYear()} TrueArk Systems</span>
-          <span className="inline-flex items-center gap-1.5 text-secondary font-medium">
-            <span className="w-2 h-2 rounded-full bg-secondary animate-pulse" />
-            Enterprise Cloud v4.2
-          </span>
         </div>
       </section>
 
