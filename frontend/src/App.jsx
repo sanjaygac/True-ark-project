@@ -12,6 +12,7 @@ import CompanyAdminDashboardPage from './pages/company-admin/CompanyAdminDashboa
 import CompanyValuationsPage from './pages/company-admin/CompanyValuationsPage';
 import ValuationFormPartAPage from './pages/company-admin/ValuationFormPartAPage';
 import ValuationFormPartBPage from './pages/company-admin/ValuationFormPartBPage';
+import ValuationFormPartCPage from './pages/company-admin/ValuationFormPartCPage';
 import CompanyApprovalsPage from './pages/company-admin/CompanyApprovalsPage';
 import CompanyPermissionMatrixPage from './pages/company-admin/CompanyPermissionMatrixPage';
 import CompanyUserMasterPage from './pages/company-admin/CompanyUserMasterPage';
@@ -53,6 +54,8 @@ export default function App() {
         <Route path="/company-admin/valuation/new" element={<ValuationFormPartAPage />} />
         <Route path="/company-admin/valuation/new/part-b" element={<ValuationFormPartBPage />} />
         <Route path="/company-admin/valuation/part-b" element={<Navigate to="/company-admin/valuation/new/part-b" replace />} />
+        <Route path="/company-admin/valuation/new/part-c" element={<ValuationFormPartCPage />} />
+        <Route path="/company-admin/valuation/part-c" element={<Navigate to="/company-admin/valuation/new/part-c" replace />} />
         <Route path="/company-admin/new-valuation" element={<ValuationFormPartAPage />} />
         <Route path="/company-admin/approval" element={<CompanyApprovalsPage />} />
         <Route path="/company-admin/masters/user" element={<CompanyUserMasterPage />} />
