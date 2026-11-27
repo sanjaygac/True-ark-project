@@ -192,42 +192,52 @@ export default function CompanyValuationsPage() {
           </div>
         </header>
 
-        <main className="p-3 sm:p-4 lg:p-5 flex-1 flex flex-col gap-5 min-w-0">
+        <main className="p-3 sm:p-4 flex-1 flex flex-col gap-3 min-w-0">
           {/* Valuations Table Card */}
           <section className="bg-surface-container-lowest border border-outline-variant rounded-md shadow-sm overflow-hidden">
-            <div className="px-4 sm:px-5 py-3.5 border-b border-outline-variant flex flex-wrap items-center justify-between gap-3">
+            <div className="px-3.5 sm:px-4 py-3 border-b border-outline-variant flex flex-wrap items-center justify-between gap-3">
               <h2 className="font-headline text-headline-sm text-primary">All Valuation Assignments</h2>
               <span className="font-body text-body-sm text-on-surface-variant tabular-nums">
                 Showing {filteredValuations.length} of 91 valuations
               </span>
             </div>
 
-            <div className="w-full overflow-x-auto lg:overflow-x-hidden">
-              <table className="w-full text-left border-collapse">
+            <div className="w-full overflow-hidden">
+              <table className="w-full table-fixed text-left border-collapse">
+                <colgroup>
+                  <col className="w-[12%]" />
+                  <col className="w-[21%]" />
+                  <col className="w-[16%]" />
+                  <col className="w-[13%]" />
+                  <col className="w-[10%]" />
+                  <col className="w-[11%]" />
+                  <col className="w-[9%]" />
+                  <col className="w-[8%]" />
+                </colgroup>
                 <thead className="bg-surface-container-low border-b border-outline-variant">
                   <tr>
-                    <th scope="col" className="px-2.5 xl:px-3.5 py-3 font-label text-label-sm text-on-surface-variant whitespace-nowrap">
+                    <th scope="col" className="px-2 xl:px-3 py-2.5 font-label text-label-sm text-on-surface-variant whitespace-nowrap truncate">
                       Valuation ID
                     </th>
-                    <th scope="col" className="px-2.5 xl:px-3.5 py-3 font-label text-label-sm text-on-surface-variant whitespace-nowrap">
+                    <th scope="col" className="px-2 xl:px-3 py-2.5 font-label text-label-sm text-on-surface-variant whitespace-nowrap truncate">
                       Property / Survey No.
                     </th>
-                    <th scope="col" className="px-2.5 xl:px-3.5 py-3 font-label text-label-sm text-on-surface-variant whitespace-nowrap">
+                    <th scope="col" className="px-2 xl:px-3 py-2.5 font-label text-label-sm text-on-surface-variant whitespace-nowrap truncate">
                       Client
                     </th>
-                    <th scope="col" className="px-2.5 xl:px-3.5 py-3 font-label text-label-sm text-on-surface-variant whitespace-nowrap">
+                    <th scope="col" className="px-2 xl:px-3 py-2.5 font-label text-label-sm text-on-surface-variant whitespace-nowrap truncate">
                       Land Type
                     </th>
-                    <th scope="col" className="px-2.5 xl:px-3.5 py-3 font-label text-label-sm text-on-surface-variant whitespace-nowrap">
+                    <th scope="col" className="px-2 xl:px-3 py-2.5 font-label text-label-sm text-on-surface-variant whitespace-nowrap truncate">
                       Extent
                     </th>
-                    <th scope="col" className="px-2.5 xl:px-3.5 py-3 font-label text-label-sm text-on-surface-variant whitespace-nowrap">
+                    <th scope="col" className="px-2 xl:px-3 py-2.5 font-label text-label-sm text-on-surface-variant whitespace-nowrap truncate">
                       Market Value
                     </th>
-                    <th scope="col" className="px-2.5 xl:px-3.5 py-3 font-label text-label-sm text-on-surface-variant whitespace-nowrap">
+                    <th scope="col" className="px-2 xl:px-3 py-2.5 font-label text-label-sm text-on-surface-variant whitespace-nowrap truncate">
                       Status
                     </th>
-                    <th scope="col" className="px-2.5 xl:px-3.5 py-3 font-label text-label-sm text-on-surface-variant text-right whitespace-nowrap">
+                    <th scope="col" className="px-2 xl:px-3 py-2.5 font-label text-label-sm text-on-surface-variant text-right whitespace-nowrap">
                       Actions
                     </th>
                   </tr>
@@ -236,29 +246,29 @@ export default function CompanyValuationsPage() {
                   {filteredValuations.length > 0 ? (
                     filteredValuations.map((item) => (
                       <tr key={item.id} className="hover:bg-surface-container-low/50 transition-colors duration-state-change">
-                        <td className="px-2.5 xl:px-3.5 py-3.5 font-mono text-[11px] xl:text-mono-md text-primary whitespace-nowrap">
+                        <td className="px-2 xl:px-3 py-2.5 sm:py-3 font-mono text-[11px] xl:text-[12px] text-primary whitespace-nowrap truncate" title={item.code}>
                           {item.code}
                         </td>
-                        <td className="px-2.5 xl:px-3.5 py-3.5 font-body text-body-sm text-on-surface">
+                        <td className="px-2 xl:px-3 py-2.5 sm:py-3 font-body text-body-sm text-on-surface truncate" title={item.property}>
                           {item.property}
                         </td>
-                        <td className="px-2.5 xl:px-3.5 py-3.5 font-body text-body-sm text-on-surface-variant">
+                        <td className="px-2 xl:px-3 py-2.5 sm:py-3 font-body text-body-sm text-on-surface-variant truncate" title={item.client}>
                           {item.client}
                         </td>
-                        <td className="px-2.5 xl:px-3.5 py-3.5 font-body text-body-sm text-on-surface-variant whitespace-nowrap">
+                        <td className="px-2 xl:px-3 py-2.5 sm:py-3 font-body text-body-sm text-on-surface-variant truncate" title={item.landType}>
                           {item.landType}
                         </td>
-                        <td className="px-2.5 xl:px-3.5 py-3.5 font-body text-body-sm text-on-surface tabular-nums whitespace-nowrap">
+                        <td className="px-2 xl:px-3 py-2.5 sm:py-3 font-body text-body-sm text-on-surface tabular-nums whitespace-nowrap truncate" title={item.extent}>
                           {item.extent}
                         </td>
-                        <td className="px-2.5 xl:px-3.5 py-3.5 font-label text-[12px] text-primary tabular-nums whitespace-nowrap">
+                        <td className="px-2 xl:px-3 py-2.5 sm:py-3 font-label text-[12px] text-primary tabular-nums whitespace-nowrap truncate" title={item.marketValue}>
                           {item.marketValue}
                         </td>
-                        <td className="px-2.5 xl:px-3.5 py-3.5 whitespace-nowrap">
+                        <td className="px-2 xl:px-3 py-2.5 sm:py-3 whitespace-nowrap">
                           {getStatusBadge(item.status)}
                         </td>
-                        <td className="px-2.5 xl:px-3.5 py-3.5 text-right whitespace-nowrap">
-                          <div className="inline-flex items-center gap-2.5">
+                        <td className="px-2 xl:px-3 py-2.5 sm:py-3 text-right whitespace-nowrap">
+                          <div className="inline-flex items-center justify-end gap-2 xl:gap-2.5">
                             <Link
                               to={`/company-admin/valuation/edit/${item.id}`}
                               className="font-label text-label-sm text-primary hover:underline"

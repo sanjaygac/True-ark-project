@@ -190,9 +190,9 @@ export default function CompanyApprovalsPage() {
           </div>
         </header>
 
-        <main className="p-3 sm:p-4 lg:p-5 flex-1 flex flex-col gap-4 sm:gap-5 min-w-0">
+        <main className="p-3 sm:p-4 flex-1 flex flex-col gap-3 min-w-0">
           {/* KPI Summary Row (3 Cards) */}
-          <section aria-label="Approval Summary Metrics" className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 items-stretch">
+          <section aria-label="Approval Summary Metrics" className="grid grid-cols-1 sm:grid-cols-3 gap-3 items-stretch">
             <article className="h-full bg-surface-container-lowest border border-outline-variant rounded-md p-3.5 sm:p-4 shadow-sm flex flex-col justify-between gap-2">
               <header className="flex items-center justify-between gap-2">
                 <h2 className="font-label text-label-sm text-on-surface-variant whitespace-nowrap">
@@ -238,36 +238,45 @@ export default function CompanyApprovalsPage() {
 
           {/* Sign-Off Queue Table Card */}
           <section className="bg-surface-container-lowest border border-outline-variant rounded-md shadow-sm overflow-hidden">
-            <div className="px-4 sm:px-5 py-3.5 border-b border-outline-variant flex flex-wrap items-center justify-between gap-3">
+            <div className="px-3.5 sm:px-4 py-3 border-b border-outline-variant flex flex-wrap items-center justify-between gap-3">
               <h2 className="font-headline text-headline-sm text-primary">Sign-Off Queue</h2>
               <span className="font-body text-body-sm text-on-surface-variant tabular-nums">
                 Showing {filteredSubmissions.length} {filteredSubmissions.length === 1 ? 'submission' : 'submissions'}
               </span>
             </div>
 
-            <div className="w-full overflow-x-auto lg:overflow-x-hidden">
-              <table className="w-full text-left border-collapse">
+            <div className="w-full overflow-hidden">
+              <table className="w-full table-fixed text-left border-collapse">
+                <colgroup>
+                  <col className="w-[13%]" />
+                  <col className="w-[24%]" />
+                  <col className="w-[18%]" />
+                  <col className="w-[15%]" />
+                  <col className="w-[12%]" />
+                  <col className="w-[10%]" />
+                  <col className="w-[8%]" />
+                </colgroup>
                 <thead className="bg-surface-container-low border-b border-outline-variant">
                   <tr>
-                    <th scope="col" className="px-2.5 xl:px-3 py-3 font-label text-label-sm text-on-surface-variant whitespace-nowrap">
+                    <th scope="col" className="px-2 xl:px-3 py-2.5 font-label text-label-sm text-on-surface-variant whitespace-nowrap truncate">
                       Valuation ID
                     </th>
-                    <th scope="col" className="px-2.5 xl:px-3 py-3 font-label text-label-sm text-on-surface-variant whitespace-nowrap">
+                    <th scope="col" className="px-2 xl:px-3 py-2.5 font-label text-label-sm text-on-surface-variant whitespace-nowrap truncate">
                       Property / Survey No.
                     </th>
-                    <th scope="col" className="px-2.5 xl:px-3 py-3 font-label text-label-sm text-on-surface-variant whitespace-nowrap">
+                    <th scope="col" className="px-2 xl:px-3 py-2.5 font-label text-label-sm text-on-surface-variant whitespace-nowrap truncate">
                       Client
                     </th>
-                    <th scope="col" className="px-2.5 xl:px-3 py-3 font-label text-label-sm text-on-surface-variant whitespace-nowrap">
+                    <th scope="col" className="px-2 xl:px-3 py-2.5 font-label text-label-sm text-on-surface-variant whitespace-nowrap truncate">
                       Submitted By
                     </th>
-                    <th scope="col" className="px-2.5 xl:px-3 py-3 font-label text-label-sm text-on-surface-variant whitespace-nowrap">
+                    <th scope="col" className="px-2 xl:px-3 py-2.5 font-label text-label-sm text-on-surface-variant whitespace-nowrap truncate">
                       Assessed Value
                     </th>
-                    <th scope="col" className="px-2.5 xl:px-3 py-3 font-label text-label-sm text-on-surface-variant whitespace-nowrap">
+                    <th scope="col" className="px-2 xl:px-3 py-2.5 font-label text-label-sm text-on-surface-variant whitespace-nowrap truncate">
                       Status
                     </th>
-                    <th scope="col" className="px-2.5 xl:px-3 py-3 font-label text-label-sm text-on-surface-variant text-right whitespace-nowrap">
+                    <th scope="col" className="px-2 xl:px-3 py-2.5 font-label text-label-sm text-on-surface-variant text-right whitespace-nowrap">
                       Actions
                     </th>
                   </tr>
@@ -276,26 +285,26 @@ export default function CompanyApprovalsPage() {
                   {filteredSubmissions.length > 0 ? (
                     filteredSubmissions.map((item) => (
                       <tr key={item.id} className="approval-row hover:bg-surface-container-low/50 transition-colors duration-state-change">
-                        <td className="px-2.5 xl:px-3 py-3.5 font-mono text-[11px] xl:text-mono-md text-primary whitespace-nowrap">
+                        <td className="px-2 xl:px-3 py-2.5 sm:py-3 font-mono text-[11px] xl:text-[12px] text-primary whitespace-nowrap truncate" title={item.code}>
                           {item.code}
                         </td>
-                        <td className="px-2.5 xl:px-3 py-3.5 font-body text-body-sm text-on-surface">
+                        <td className="px-2 xl:px-3 py-2.5 sm:py-3 font-body text-body-sm text-on-surface truncate" title={item.property}>
                           {item.property}
                         </td>
-                        <td className="px-2.5 xl:px-3 py-3.5 font-body text-body-sm text-on-surface-variant">
+                        <td className="px-2 xl:px-3 py-2.5 sm:py-3 font-body text-body-sm text-on-surface-variant truncate" title={item.client}>
                           {item.client}
                         </td>
-                        <td className="px-2.5 xl:px-3 py-3.5 font-body text-body-sm text-on-surface-variant whitespace-nowrap">
+                        <td className="px-2 xl:px-3 py-2.5 sm:py-3 font-body text-body-sm text-on-surface-variant whitespace-nowrap truncate" title={item.submittedBy}>
                           {item.submittedBy}
                         </td>
-                        <td className="px-2.5 xl:px-3 py-3.5 font-label text-[12px] text-primary tabular-nums whitespace-nowrap">
+                        <td className="px-2 xl:px-3 py-2.5 sm:py-3 font-label text-[12px] text-primary tabular-nums whitespace-nowrap truncate" title={item.assessedValue}>
                           {item.assessedValue}
                         </td>
-                        <td className="px-2.5 xl:px-3 py-3.5 whitespace-nowrap">
+                        <td className="px-2 xl:px-3 py-2.5 sm:py-3 whitespace-nowrap">
                           {getStatusPill(item.status)}
                         </td>
-                        <td className="px-2.5 xl:px-3 py-3.5 text-right whitespace-nowrap">
-                          <div className="inline-flex items-center gap-2.5">
+                        <td className="px-2 xl:px-3 py-2.5 sm:py-3 text-right whitespace-nowrap">
+                          <div className="inline-flex items-center justify-end gap-2 xl:gap-2.5">
                             {item.status === 'Pending Review' && (
                               <>
                                 <button
