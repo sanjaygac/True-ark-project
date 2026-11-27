@@ -10,6 +10,7 @@ import AddEditPlanPage from './pages/saas-admin/AddEditPlanPage';
 import PlanViewPage from './pages/saas-admin/PlanViewPage';
 import CompanyAdminDashboardPage from './pages/company-admin/CompanyAdminDashboardPage';
 import CompanyValuationsPage from './pages/company-admin/CompanyValuationsPage';
+import ValuationFormPartAPage from './pages/company-admin/ValuationFormPartAPage';
 import CompanyApprovalsPage from './pages/company-admin/CompanyApprovalsPage';
 import CompanyPermissionMatrixPage from './pages/company-admin/CompanyPermissionMatrixPage';
 import CompanyUserMasterPage from './pages/company-admin/CompanyUserMasterPage';
@@ -48,7 +49,8 @@ export default function App() {
         <Route path="/company-admin" element={<CompanyAdminDashboardPage />} />
         <Route path="/company-admin/dashboard" element={<Navigate to="/company-admin" replace />} />
         <Route path="/company-admin/valuation" element={<CompanyValuationsPage />} />
-        <Route path="/company-admin/new-valuation" element={<Navigate to="/company-admin/valuation" replace />} />
+        <Route path="/company-admin/valuation/new" element={<ValuationFormPartAPage />} />
+        <Route path="/company-admin/new-valuation" element={<ValuationFormPartAPage />} />
         <Route path="/company-admin/approval" element={<CompanyApprovalsPage />} />
         <Route path="/company-admin/masters/user" element={<CompanyUserMasterPage />} />
         <Route path="/company-admin/masters/user/add" element={<AddNewUserPage />} />

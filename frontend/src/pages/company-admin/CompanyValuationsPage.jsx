@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import CompanyAdminSidebar from '../../components/company-admin/CompanyAdminSidebar';
 import SearchableSelect from '../../components/common/SearchableSelect';
+import BankSelectModal from '../../components/company-admin/BankSelectModal';
 
 const statusFilterOptions = [
   { value: 'All Status', label: 'All Status' },
@@ -77,6 +78,7 @@ export default function CompanyValuationsPage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('All Status');
+  const [bankModalOpen, setBankModalOpen] = useState(false);
 
   useEffect(() => {
     document.title = 'Valuations — TrueArk';
@@ -179,18 +181,25 @@ export default function CompanyValuationsPage() {
               </div>
 
               {/* Prominent Emerald Green + Start New Valuation Button */}
-              <Link
-                to="/company-admin/valuation/new"
-                className="flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded bg-tertiary text-on-tertiary font-label text-label-md hover:opacity-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 transition-colors duration-state-change whitespace-nowrap shrink-0"
+              <button
+                type="button"
+                onClick={() => setBankModalOpen(true)}
+                className="flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded bg-tertiary text-on-tertiary font-label text-label-md hover:opacity-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 transition-colors duration-state-change whitespace-nowrap shrink-0 cursor-pointer shadow-xs"
               >
                 <span className="material-symbols-outlined text-title-sm" aria-hidden="true">
                   add
                 </span>
                 <span>Start New Valuation</span>
-              </Link>
+              </button>
             </div>
           </div>
         </header>
+
+        {/* Bank Selection Dialog */}
+        <BankSelectModal
+          isOpen={bankModalOpen}
+          onClose={() => setBankModalOpen(false)}
+        />
 
         <main className="p-3 sm:p-4 flex-1 flex flex-col gap-3 min-w-0">
           {/* Valuations Table Card */}

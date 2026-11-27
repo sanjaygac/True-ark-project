@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import CompanyAdminSidebar from '../../components/company-admin/CompanyAdminSidebar';
+import BankSelectModal from '../../components/company-admin/BankSelectModal';
 
 const recentValuations = [
   {
@@ -53,6 +54,7 @@ const recentValuations = [
 export default function CompanyAdminDashboardPage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [bankModalOpen, setBankModalOpen] = useState(false);
 
   useEffect(() => {
     document.title = 'Valuation Dashboard — TrueArk';
@@ -140,17 +142,24 @@ export default function CompanyAdminDashboardPage() {
             </div>
 
             {/* Prominent Emerald Green + Start New Valuation Button */}
-            <Link
-              to="/company-admin/new-valuation"
-              className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded bg-tertiary text-on-tertiary font-label text-label-md hover:opacity-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 transition-colors duration-state-change whitespace-nowrap shrink-0"
+            <button
+              type="button"
+              onClick={() => setBankModalOpen(true)}
+              className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded bg-tertiary text-on-tertiary font-label text-label-md hover:opacity-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 transition-colors duration-state-change whitespace-nowrap shrink-0 cursor-pointer shadow-xs"
             >
               <span className="material-symbols-outlined text-title-sm" aria-hidden="true">
                 add
               </span>
               <span>Start New Valuation</span>
-            </Link>
+            </button>
           </div>
         </header>
+
+        {/* Bank Selection Dialog */}
+        <BankSelectModal
+          isOpen={bankModalOpen}
+          onClose={() => setBankModalOpen(false)}
+        />
 
         <main className="p-3 sm:p-5 lg:p-6 flex-1 flex flex-col gap-4 sm:gap-5">
           {/* KPI Summary Row (4 Cards) */}
