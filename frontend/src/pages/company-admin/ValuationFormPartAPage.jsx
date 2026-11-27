@@ -293,13 +293,18 @@ export default function ValuationFormPartAPage() {
               </li>
 
               {/* Step 5 */}
-              <li className="flex items-center gap-2 px-2.5 py-1.5 rounded bg-surface-container-lowest border border-outline-variant opacity-80">
-                <span className="w-5 h-5 rounded-full bg-surface-container-low text-on-surface-variant flex items-center justify-center shrink-0 font-label text-[11px] tabular-nums">
-                  5
-                </span>
-                <span className="font-label text-[11px] sm:text-label-sm text-on-surface-variant leading-tight truncate">
-                  5. Part F: Summary
-                </span>
+              <li className="flex items-center gap-2 px-2.5 py-1.5 rounded bg-surface-container-lowest border border-outline-variant hover:border-primary/50 transition-colors">
+                <Link
+                  to={`/company-admin/valuation/new/part-f?bank=${encodeURIComponent(bankName)}`}
+                  className="flex items-center gap-2 w-full"
+                >
+                  <span className="w-5 h-5 rounded-full bg-surface-container-low text-on-surface-variant flex items-center justify-center shrink-0 font-label text-[11px] tabular-nums">
+                    5
+                  </span>
+                  <span className="font-label text-[11px] sm:text-label-sm text-on-surface-variant leading-tight truncate">
+                    5. Part F: Summary
+                  </span>
+                </Link>
               </li>
 
               {/* Step 6 */}
