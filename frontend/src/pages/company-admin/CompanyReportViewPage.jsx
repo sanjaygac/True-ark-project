@@ -180,6 +180,7 @@ export default function CompanyReportViewPage() {
   const report = reportsDataMap[id] || reportsDataMap['TA-2026-089'];
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [currentStatus, setCurrentStatus] = useState(report.statusBadge);
   const [isDownloading, setIsDownloading] = useState(false);
   const [shareCopied, setShareCopied] = useState(false);
   const [isEditingInputs, setIsEditingInputs] = useState(false);
@@ -191,7 +192,8 @@ export default function CompanyReportViewPage() {
   useEffect(() => {
     document.title = `Certified Land Valuation Report — ${report.code}`;
     setPurposeInput(report.purpose);
-  }, [report.code, report.purpose]);
+    setCurrentStatus(report.statusBadge);
+  }, [report.code, report.purpose, report.statusBadge]);
 
   const handleShareLink = async () => {
     try {
@@ -331,11 +333,24 @@ export default function CompanyReportViewPage() {
               <h1 className="font-headline text-[15px] sm:text-[16px] lg:text-[17px] font-semibold text-primary truncate">
                 Certified Land Valuation Report — {report.code}
               </h1>
-              {getStatusBadge(report.statusBadge)}
+              {getStatusBadge(currentStatus)}
             </div>
           </div>
 
           <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+            {currentStatus === 'In Review' && (
+              <button
+                type="button"
+                onClick={() => setCurrentStatus('Verified')}
+                className="inline-flex items-center justify-center gap-1.5 px-3.5 sm:px-4 py-2 rounded bg-tertiary text-on-tertiary font-label text-label-md hover:opacity-95 transition-colors duration-state-change whitespace-nowrap shadow-sm"
+              >
+                <span className="material-symbols-outlined text-title-sm" aria-hidden="true">
+                  verified
+                </span>
+                <span>Approve Valuation</span>
+              </button>
+            )}
+
             <button
               type="button"
               onClick={() => setIsEditingInputs((prev) => !prev)}
