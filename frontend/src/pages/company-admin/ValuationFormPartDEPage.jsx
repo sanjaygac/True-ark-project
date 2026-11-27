@@ -352,19 +352,19 @@ export default function ValuationFormPartDEPage() {
             <table className="w-full text-left border-collapse min-w-[650px]">
               <thead className="bg-surface-container-low border-b border-outline-variant">
                 <tr>
-                  <th scope="col" className="px-3.5 py-2.5 font-label text-label-md text-on-surface-variant">
+                  <th scope="col" className="px-3.5 py-2 font-label text-label-sm text-on-surface-variant">
                     Amenity / Extra Item
                   </th>
-                  <th scope="col" className="px-3.5 py-2.5 font-label text-label-md text-on-surface-variant">
+                  <th scope="col" className="px-3.5 py-2 font-label text-label-sm text-on-surface-variant">
                     Specification / Quantity
                   </th>
-                  <th scope="col" className="px-3.5 py-2.5 font-label text-label-md text-on-surface-variant text-right">
+                  <th scope="col" className="px-3.5 py-2 font-label text-label-sm text-on-surface-variant text-right">
                     GLR Value (₹)
                   </th>
-                  <th scope="col" className="px-3.5 py-2.5 font-label text-label-md text-on-surface-variant text-right">
+                  <th scope="col" className="px-3.5 py-2 font-label text-label-sm text-on-surface-variant text-right">
                     PMR Value (₹)
                   </th>
-                  <th scope="col" className="px-2 py-2.5 w-10 text-center font-label text-label-md text-on-surface-variant">
+                  <th scope="col" className="px-2 py-2 w-10 text-center font-label text-label-sm text-on-surface-variant">
                     <span className="sr-only">Actions</span>
                   </th>
                 </tr>
@@ -372,45 +372,45 @@ export default function ValuationFormPartDEPage() {
               <tbody className="divide-y divide-outline-variant">
                 {amenities.map((item) => (
                   <tr key={item.id} className="hover:bg-surface-container-low/40 transition-colors">
-                    <td className="px-3.5 py-2.5 font-label text-label-md text-primary font-medium">
+                    <td className="px-3.5 py-1.5 sm:py-2 font-label text-[12px] sm:text-[13px] text-primary font-medium">
                       <input
                         type="text"
                         value={item.name}
                         onChange={(e) => handleAmenityChange(item.id, 'name', e.target.value)}
-                        className="w-full bg-transparent border-0 border-b border-transparent hover:border-outline-variant focus:border-primary px-1 py-0.5 text-primary font-medium focus:outline-none transition-colors"
+                        className="w-full bg-transparent border-0 border-b border-transparent hover:border-outline-variant focus:border-primary px-1 py-0.5 text-primary font-label text-[12px] sm:text-[13px] font-medium focus:outline-none transition-colors"
                       />
                     </td>
-                    <td className="px-3.5 py-2.5 font-body text-body-md text-on-surface-variant">
+                    <td className="px-3.5 py-1.5 sm:py-2 font-body text-body-sm text-on-surface-variant">
                       <input
                         type="text"
                         value={item.spec}
                         onChange={(e) => handleAmenityChange(item.id, 'spec', e.target.value)}
-                        className="w-full bg-transparent border-0 border-b border-transparent hover:border-outline-variant focus:border-primary px-1 py-0.5 text-on-surface-variant focus:outline-none transition-colors"
+                        className="w-full bg-transparent border-0 border-b border-transparent hover:border-outline-variant focus:border-primary px-1 py-0.5 text-on-surface-variant font-body text-body-sm focus:outline-none transition-colors"
                       />
                     </td>
-                    <td className="px-3.5 py-2.5 font-mono text-mono-md text-primary text-right tabular-nums">
+                    <td className="px-3.5 py-1.5 sm:py-2 font-mono text-[12px] text-primary text-right tabular-nums">
                       <div className="inline-flex items-center justify-end">
-                        <span className="text-on-surface-variant mr-0.5">₹</span>
+                        <span className="text-on-surface-variant text-[11px] sm:text-[12px] mr-0.5">₹</span>
                         <input
                           type="number"
                           value={item.glrValue}
                           onChange={(e) => handleAmenityChange(item.id, 'glrValue', parseFloat(e.target.value) || 0)}
-                          className="w-24 bg-transparent border-0 border-b border-transparent hover:border-outline-variant focus:border-primary px-1 py-0.5 text-right font-mono text-mono-md text-primary focus:outline-none transition-colors"
+                          className="w-20 sm:w-24 bg-transparent border-0 border-b border-transparent hover:border-outline-variant focus:border-primary px-1 py-0.5 text-right font-mono text-[12px] text-primary focus:outline-none transition-colors"
                         />
                       </div>
                     </td>
-                    <td className="px-3.5 py-2.5 font-label text-label-lg text-on-secondary-container text-right tabular-nums font-semibold">
+                    <td className="px-3.5 py-1.5 sm:py-2 font-label text-[12px] sm:text-[13px] text-on-secondary-container text-right tabular-nums font-semibold">
                       <div className="inline-flex items-center justify-end">
-                        <span className="text-on-secondary-container mr-0.5">₹</span>
+                        <span className="text-on-secondary-container text-[11px] sm:text-[12px] mr-0.5 font-semibold">₹</span>
                         <input
                           type="number"
                           value={item.pmrValue}
                           onChange={(e) => handleAmenityChange(item.id, 'pmrValue', parseFloat(e.target.value) || 0)}
-                          className="w-24 bg-transparent border-0 border-b border-transparent hover:border-outline-variant focus:border-primary px-1 py-0.5 text-right font-label text-label-lg text-on-secondary-container font-semibold focus:outline-none transition-colors"
+                          className="w-20 sm:w-24 bg-transparent border-0 border-b border-transparent hover:border-outline-variant focus:border-primary px-1 py-0.5 text-right font-label text-[12px] sm:text-[13px] text-on-secondary-container font-semibold focus:outline-none transition-colors"
                         />
                       </div>
                     </td>
-                    <td className="px-2 py-2.5 text-center">
+                    <td className="px-2 py-1.5 sm:py-2 text-center">
                       {amenities.length > 1 && (
                         <button
                           type="button"
@@ -418,7 +418,7 @@ export default function ValuationFormPartDEPage() {
                           className="text-outline hover:text-error transition-colors p-1"
                           title="Remove item"
                         >
-                          <span className="material-symbols-outlined text-[16px]">close</span>
+                          <span className="material-symbols-outlined text-[15px]">close</span>
                         </button>
                       )}
                     </td>
@@ -427,13 +427,13 @@ export default function ValuationFormPartDEPage() {
 
                 {/* Total Row Part D */}
                 <tr className="bg-primary-container/40 border-t-2 border-primary/20">
-                  <td colSpan={2} className="px-3.5 py-3 font-headline text-title-md text-primary font-semibold">
+                  <td colSpan={2} className="px-3.5 py-2 font-label text-[12px] sm:text-[13px] text-primary font-semibold">
                     Total Part D (Amenities &amp; Extra Items)
                   </td>
-                  <td className="px-3.5 py-3 font-headline text-headline-sm text-primary text-right tabular-nums font-bold">
+                  <td className="px-3.5 py-2 font-label text-[13px] sm:text-[14px] text-primary text-right tabular-nums font-bold">
                     {formatINR(totalGlrPartD)}
                   </td>
-                  <td className="px-3.5 py-3 font-headline text-headline-sm text-on-secondary-container text-right tabular-nums font-bold">
+                  <td className="px-3.5 py-2 font-label text-[13px] sm:text-[14px] text-on-secondary-container text-right tabular-nums font-bold">
                     {formatINR(totalPmrPartD)}
                   </td>
                   <td></td>
@@ -480,19 +480,19 @@ export default function ValuationFormPartDEPage() {
             <table className="w-full text-left border-collapse min-w-[650px]">
               <thead className="bg-surface-container-low border-b border-outline-variant">
                 <tr>
-                  <th scope="col" className="px-3.5 py-2.5 font-label text-label-md text-on-surface-variant">
+                  <th scope="col" className="px-3.5 py-2 font-label text-label-sm text-on-surface-variant">
                     Service Category
                   </th>
-                  <th scope="col" className="px-3.5 py-2.5 font-label text-label-md text-on-surface-variant">
+                  <th scope="col" className="px-3.5 py-2 font-label text-label-sm text-on-surface-variant">
                     Installed Capacity / Make
                   </th>
-                  <th scope="col" className="px-3.5 py-2.5 font-label text-label-md text-on-surface-variant text-right">
+                  <th scope="col" className="px-3.5 py-2 font-label text-label-sm text-on-surface-variant text-right">
                     GLR Value (₹)
                   </th>
-                  <th scope="col" className="px-3.5 py-2.5 font-label text-label-md text-on-surface-variant text-right">
+                  <th scope="col" className="px-3.5 py-2 font-label text-label-sm text-on-surface-variant text-right">
                     PMR Value (₹)
                   </th>
-                  <th scope="col" className="px-2 py-2.5 w-10 text-center font-label text-label-md text-on-surface-variant">
+                  <th scope="col" className="px-2 py-2 w-10 text-center font-label text-label-sm text-on-surface-variant">
                     <span className="sr-only">Actions</span>
                   </th>
                 </tr>
@@ -500,45 +500,45 @@ export default function ValuationFormPartDEPage() {
               <tbody className="divide-y divide-outline-variant">
                 {services.map((service) => (
                   <tr key={service.id} className="hover:bg-surface-container-low/40 transition-colors">
-                    <td className="px-3.5 py-2.5 font-label text-label-md text-primary font-medium">
+                    <td className="px-3.5 py-1.5 sm:py-2 font-label text-[12px] sm:text-[13px] text-primary font-medium">
                       <input
                         type="text"
                         value={service.category}
                         onChange={(e) => handleServiceChange(service.id, 'category', e.target.value)}
-                        className="w-full bg-transparent border-0 border-b border-transparent hover:border-outline-variant focus:border-primary px-1 py-0.5 text-primary font-medium focus:outline-none transition-colors"
+                        className="w-full bg-transparent border-0 border-b border-transparent hover:border-outline-variant focus:border-primary px-1 py-0.5 text-primary font-label text-[12px] sm:text-[13px] font-medium focus:outline-none transition-colors"
                       />
                     </td>
-                    <td className="px-3.5 py-2.5 font-body text-body-md text-on-surface-variant">
+                    <td className="px-3.5 py-1.5 sm:py-2 font-body text-body-sm text-on-surface-variant">
                       <input
                         type="text"
                         value={service.make}
                         onChange={(e) => handleServiceChange(service.id, 'make', e.target.value)}
-                        className="w-full bg-transparent border-0 border-b border-transparent hover:border-outline-variant focus:border-primary px-1 py-0.5 text-on-surface-variant focus:outline-none transition-colors"
+                        className="w-full bg-transparent border-0 border-b border-transparent hover:border-outline-variant focus:border-primary px-1 py-0.5 text-on-surface-variant font-body text-body-sm focus:outline-none transition-colors"
                       />
                     </td>
-                    <td className="px-3.5 py-2.5 font-mono text-mono-md text-primary text-right tabular-nums">
+                    <td className="px-3.5 py-1.5 sm:py-2 font-mono text-[12px] text-primary text-right tabular-nums">
                       <div className="inline-flex items-center justify-end">
-                        <span className="text-on-surface-variant mr-0.5">₹</span>
+                        <span className="text-on-surface-variant text-[11px] sm:text-[12px] mr-0.5">₹</span>
                         <input
                           type="number"
                           value={service.glrValue}
                           onChange={(e) => handleServiceChange(service.id, 'glrValue', parseFloat(e.target.value) || 0)}
-                          className="w-24 bg-transparent border-0 border-b border-transparent hover:border-outline-variant focus:border-primary px-1 py-0.5 text-right font-mono text-mono-md text-primary focus:outline-none transition-colors"
+                          className="w-20 sm:w-24 bg-transparent border-0 border-b border-transparent hover:border-outline-variant focus:border-primary px-1 py-0.5 text-right font-mono text-[12px] text-primary focus:outline-none transition-colors"
                         />
                       </div>
                     </td>
-                    <td className="px-3.5 py-2.5 font-label text-label-lg text-on-secondary-container text-right tabular-nums font-semibold">
+                    <td className="px-3.5 py-1.5 sm:py-2 font-label text-[12px] sm:text-[13px] text-on-secondary-container text-right tabular-nums font-semibold">
                       <div className="inline-flex items-center justify-end">
-                        <span className="text-on-secondary-container mr-0.5">₹</span>
+                        <span className="text-on-secondary-container text-[11px] sm:text-[12px] mr-0.5 font-semibold">₹</span>
                         <input
                           type="number"
                           value={service.pmrValue}
                           onChange={(e) => handleServiceChange(service.id, 'pmrValue', parseFloat(e.target.value) || 0)}
-                          className="w-24 bg-transparent border-0 border-b border-transparent hover:border-outline-variant focus:border-primary px-1 py-0.5 text-right font-label text-label-lg text-on-secondary-container font-semibold focus:outline-none transition-colors"
+                          className="w-20 sm:w-24 bg-transparent border-0 border-b border-transparent hover:border-outline-variant focus:border-primary px-1 py-0.5 text-right font-label text-[12px] sm:text-[13px] text-on-secondary-container font-semibold focus:outline-none transition-colors"
                         />
                       </div>
                     </td>
-                    <td className="px-2 py-2.5 text-center">
+                    <td className="px-2 py-1.5 sm:py-2 text-center">
                       {services.length > 1 && (
                         <button
                           type="button"
@@ -546,7 +546,7 @@ export default function ValuationFormPartDEPage() {
                           className="text-outline hover:text-error transition-colors p-1"
                           title="Remove item"
                         >
-                          <span className="material-symbols-outlined text-[16px]">close</span>
+                          <span className="material-symbols-outlined text-[15px]">close</span>
                         </button>
                       )}
                     </td>
@@ -555,13 +555,13 @@ export default function ValuationFormPartDEPage() {
 
                 {/* Total Row Part E */}
                 <tr className="bg-primary-container/40 border-t-2 border-primary/20">
-                  <td colSpan={2} className="px-3.5 py-3 font-headline text-title-md text-primary font-semibold">
+                  <td colSpan={2} className="px-3.5 py-2 font-label text-[12px] sm:text-[13px] text-primary font-semibold">
                     Total Part E (Building Services)
                   </td>
-                  <td className="px-3.5 py-3 font-headline text-headline-sm text-primary text-right tabular-nums font-bold">
+                  <td className="px-3.5 py-2 font-label text-[13px] sm:text-[14px] text-primary text-right tabular-nums font-bold">
                     {formatINR(totalGlrPartE)}
                   </td>
-                  <td className="px-3.5 py-3 font-headline text-headline-sm text-on-secondary-container text-right tabular-nums font-bold">
+                  <td className="px-3.5 py-2 font-label text-[13px] sm:text-[14px] text-on-secondary-container text-right tabular-nums font-bold">
                     {formatINR(totalPmrPartE)}
                   </td>
                   <td></td>

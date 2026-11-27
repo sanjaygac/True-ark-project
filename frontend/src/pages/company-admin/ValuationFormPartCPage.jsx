@@ -443,25 +443,25 @@ export default function ValuationFormPartCPage() {
             <table className="w-full text-left border-collapse min-w-[700px]">
               <thead className="bg-surface-container-low border-b border-outline-variant">
                 <tr>
-                  <th scope="col" className="px-3.5 py-2.5 font-label text-label-md text-on-surface-variant">
+                  <th scope="col" className="px-3.5 py-2 font-label text-label-sm text-on-surface-variant">
                     Floor / Component
                   </th>
-                  <th scope="col" className="px-3.5 py-2.5 font-label text-label-md text-on-surface-variant text-right">
+                  <th scope="col" className="px-3.5 py-2 font-label text-label-sm text-on-surface-variant text-right">
                     Area (Sq.ft)
                   </th>
-                  <th scope="col" className="px-3.5 py-2.5 font-label text-label-md text-on-surface-variant text-right">
+                  <th scope="col" className="px-3.5 py-2 font-label text-label-sm text-on-surface-variant text-right">
                     GLR Rate (₹)
                   </th>
-                  <th scope="col" className="px-3.5 py-2.5 font-label text-label-md text-on-surface-variant text-right">
+                  <th scope="col" className="px-3.5 py-2 font-label text-label-sm text-on-surface-variant text-right">
                     PMR Rate (₹)
                   </th>
-                  <th scope="col" className="px-3.5 py-2.5 font-label text-label-md text-on-surface-variant text-right">
+                  <th scope="col" className="px-3.5 py-2 font-label text-label-sm text-on-surface-variant text-right">
                     Depreciated GLR (₹)
                   </th>
-                  <th scope="col" className="px-3.5 py-2.5 font-label text-label-md text-on-surface-variant text-right">
+                  <th scope="col" className="px-3.5 py-2 font-label text-label-sm text-on-surface-variant text-right">
                     Depreciated PMR (₹)
                   </th>
-                  <th scope="col" className="px-2 py-2.5 w-10 text-center font-label text-label-md text-on-surface-variant">
+                  <th scope="col" className="px-2 py-2 w-10 text-center font-label text-label-sm text-on-surface-variant">
                     <span className="sr-only">Actions</span>
                   </th>
                 </tr>
@@ -469,51 +469,51 @@ export default function ValuationFormPartCPage() {
               <tbody className="divide-y divide-outline-variant">
                 {floors.map((row) => (
                   <tr key={row.id} className="hover:bg-surface-container-low/40 transition-colors">
-                    <td className="px-3.5 py-2.5 font-label text-label-md text-primary">
+                    <td className="px-3.5 py-1.5 sm:py-2 font-label text-[12px] sm:text-[13px] text-primary">
                       <input
                         type="text"
                         value={row.floor}
                         onChange={(e) => handleFloorChange(row.id, 'floor', e.target.value)}
-                        className="w-full bg-transparent border-0 border-b border-transparent hover:border-outline-variant focus:border-primary px-1 py-0.5 text-primary font-medium focus:outline-none transition-colors"
+                        className="w-full bg-transparent border-0 border-b border-transparent hover:border-outline-variant focus:border-primary px-1 py-0.5 text-primary font-label text-[12px] sm:text-[13px] font-medium focus:outline-none transition-colors"
                       />
                     </td>
-                    <td className="px-3.5 py-2.5 font-mono text-mono-md text-primary text-right tabular-nums">
+                    <td className="px-3.5 py-1.5 sm:py-2 font-mono text-[12px] text-primary text-right tabular-nums">
                       <input
                         type="number"
                         value={row.area}
                         onChange={(e) => handleFloorChange(row.id, 'area', e.target.value)}
-                        className="w-24 bg-transparent border-0 border-b border-transparent hover:border-outline-variant focus:border-primary px-1 py-0.5 text-right font-mono text-mono-md text-primary focus:outline-none transition-colors"
+                        className="w-20 bg-transparent border-0 border-b border-transparent hover:border-outline-variant focus:border-primary px-1 py-0.5 text-right font-mono text-[12px] text-primary focus:outline-none transition-colors"
                       />
                     </td>
-                    <td className="px-3.5 py-2.5 font-mono text-mono-md text-on-surface-variant text-right tabular-nums">
+                    <td className="px-3.5 py-1.5 sm:py-2 font-mono text-[12px] text-on-surface-variant text-right tabular-nums">
                       <div className="inline-flex items-center justify-end">
-                        <span className="text-on-surface-variant mr-0.5">₹</span>
+                        <span className="text-on-surface-variant text-[11px] sm:text-[12px] mr-0.5">₹</span>
                         <input
                           type="number"
                           value={row.glrRate}
                           onChange={(e) => handleFloorChange(row.id, 'glrRate', e.target.value)}
-                          className="w-20 bg-transparent border-0 border-b border-transparent hover:border-outline-variant focus:border-primary px-1 py-0.5 text-right font-mono text-mono-md text-on-surface-variant focus:outline-none transition-colors"
+                          className="w-16 sm:w-20 bg-transparent border-0 border-b border-transparent hover:border-outline-variant focus:border-primary px-1 py-0.5 text-right font-mono text-[12px] text-on-surface-variant focus:outline-none transition-colors"
                         />
                       </div>
                     </td>
-                    <td className="px-3.5 py-2.5 font-mono text-mono-md text-on-surface-variant text-right tabular-nums">
+                    <td className="px-3.5 py-1.5 sm:py-2 font-mono text-[12px] text-on-surface-variant text-right tabular-nums">
                       <div className="inline-flex items-center justify-end">
-                        <span className="text-on-surface-variant mr-0.5">₹</span>
+                        <span className="text-on-surface-variant text-[11px] sm:text-[12px] mr-0.5">₹</span>
                         <input
                           type="number"
                           value={row.pmrRate}
                           onChange={(e) => handleFloorChange(row.id, 'pmrRate', e.target.value)}
-                          className="w-20 bg-transparent border-0 border-b border-transparent hover:border-outline-variant focus:border-primary px-1 py-0.5 text-right font-mono text-mono-md text-on-surface-variant focus:outline-none transition-colors"
+                          className="w-16 sm:w-20 bg-transparent border-0 border-b border-transparent hover:border-outline-variant focus:border-primary px-1 py-0.5 text-right font-mono text-[12px] text-on-surface-variant focus:outline-none transition-colors"
                         />
                       </div>
                     </td>
-                    <td className="px-3.5 py-2.5 font-label text-label-lg text-primary text-right tabular-nums">
+                    <td className="px-3.5 py-1.5 sm:py-2 font-label text-[12px] sm:text-[13px] text-primary text-right tabular-nums font-medium">
                       {formatINR(row.depreciatedGlr)}
                     </td>
-                    <td className="px-3.5 py-2.5 font-label text-label-lg text-on-secondary-container text-right tabular-nums font-semibold">
+                    <td className="px-3.5 py-1.5 sm:py-2 font-label text-[12px] sm:text-[13px] text-on-secondary-container text-right tabular-nums font-semibold">
                       {formatINR(row.depreciatedPmr)}
                     </td>
-                    <td className="px-2 py-2.5 text-center">
+                    <td className="px-2 py-1.5 sm:py-2 text-center">
                       {floors.length > 1 && (
                         <button
                           type="button"
@@ -521,7 +521,7 @@ export default function ValuationFormPartCPage() {
                           className="text-outline hover:text-error transition-colors p-1"
                           title="Remove row"
                         >
-                          <span className="material-symbols-outlined text-[16px]">close</span>
+                          <span className="material-symbols-outlined text-[15px]">close</span>
                         </button>
                       )}
                     </td>
@@ -530,18 +530,18 @@ export default function ValuationFormPartCPage() {
 
                 {/* Totals Row */}
                 <tr className="bg-primary-container/40 border-t-2 border-primary/20">
-                  <td className="px-3.5 py-3 font-headline text-title-md text-primary font-semibold">
+                  <td className="px-3.5 py-2 font-label text-[12px] sm:text-[13px] text-primary font-semibold">
                     Total Part C (Building)
                   </td>
-                  <td className="px-3.5 py-3 font-mono text-mono-md text-primary text-right tabular-nums font-bold">
+                  <td className="px-3.5 py-2 font-mono text-[12px] sm:text-[13px] text-primary text-right tabular-nums font-bold">
                     {totalBuiltUp.toLocaleString('en-IN')}
                   </td>
-                  <td className="px-3.5 py-3 font-body text-body-sm text-on-surface-variant text-right">—</td>
-                  <td className="px-3.5 py-3 font-body text-body-sm text-on-surface-variant text-right">—</td>
-                  <td className="px-3.5 py-3 font-headline text-headline-sm text-primary text-right tabular-nums font-bold">
+                  <td className="px-3.5 py-2 font-body text-body-sm text-on-surface-variant text-right">—</td>
+                  <td className="px-3.5 py-2 font-body text-body-sm text-on-surface-variant text-right">—</td>
+                  <td className="px-3.5 py-2 font-label text-[13px] sm:text-[14px] text-primary text-right tabular-nums font-bold">
                     {formatINR(totalDepreciatedGlr)}
                   </td>
-                  <td className="px-3.5 py-3 font-headline text-headline-sm text-on-secondary-container text-right tabular-nums font-bold">
+                  <td className="px-3.5 py-2 font-label text-[13px] sm:text-[14px] text-on-secondary-container text-right tabular-nums font-bold">
                     {formatINR(totalDepreciatedPmr)}
                   </td>
                   <td></td>
