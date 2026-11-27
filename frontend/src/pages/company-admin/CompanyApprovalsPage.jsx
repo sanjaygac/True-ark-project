@@ -248,13 +248,12 @@ export default function CompanyApprovalsPage() {
             <div className="w-full overflow-hidden">
               <table className="w-full table-fixed text-left border-collapse">
                 <colgroup>
-                  <col className="w-[13%]" />
-                  <col className="w-[24%]" />
+                  <col className="w-[14%]" />
+                  <col className="w-[26%]" />
                   <col className="w-[18%]" />
                   <col className="w-[15%]" />
-                  <col className="w-[12%]" />
-                  <col className="w-[10%]" />
-                  <col className="w-[8%]" />
+                  <col className="w-[13%]" />
+                  <col className="w-[14%]" />
                 </colgroup>
                 <thead className="bg-surface-container-low border-b border-outline-variant">
                   <tr>
@@ -273,9 +272,6 @@ export default function CompanyApprovalsPage() {
                     <th scope="col" className="px-2 xl:px-3 py-2.5 font-label text-label-sm text-on-surface-variant whitespace-nowrap truncate">
                       Assessed Value
                     </th>
-                    <th scope="col" className="px-2 xl:px-3 py-2.5 font-label text-label-sm text-on-surface-variant whitespace-nowrap truncate">
-                      Status
-                    </th>
                     <th scope="col" className="px-2 xl:px-3 py-2.5 font-label text-label-sm text-on-surface-variant text-right whitespace-nowrap">
                       Actions
                     </th>
@@ -285,8 +281,21 @@ export default function CompanyApprovalsPage() {
                   {filteredSubmissions.length > 0 ? (
                     filteredSubmissions.map((item) => (
                       <tr key={item.id} className="approval-row hover:bg-surface-container-low/50 transition-colors duration-state-change">
-                        <td className="px-2 xl:px-3 py-2.5 sm:py-3 font-mono text-[11px] xl:text-[12px] text-primary whitespace-nowrap truncate" title={item.code}>
-                          {item.code}
+                        <td className="px-2 xl:px-3 py-2.5 sm:py-3 font-mono text-[11px] xl:text-[12px] text-primary whitespace-nowrap truncate" title={`${item.code} (${item.status})`}>
+                          <div className="inline-flex items-center gap-1.5">
+                            <span
+                              className={`w-1.5 h-1.5 rounded-full shrink-0 ${
+                                item.status === 'Approved'
+                                  ? 'bg-secondary'
+                                  : item.status === 'Returned'
+                                  ? 'bg-error'
+                                  : 'bg-warning'
+                              }`}
+                              title={`Status: ${item.status}`}
+                              aria-hidden="true"
+                            />
+                            <span>{item.code}</span>
+                          </div>
                         </td>
                         <td className="px-2 xl:px-3 py-2.5 sm:py-3 font-body text-body-sm text-on-surface truncate" title={item.property}>
                           {item.property}
@@ -300,24 +309,21 @@ export default function CompanyApprovalsPage() {
                         <td className="px-2 xl:px-3 py-2.5 sm:py-3 font-label text-[12px] text-primary tabular-nums whitespace-nowrap truncate" title={item.assessedValue}>
                           {item.assessedValue}
                         </td>
-                        <td className="px-2 xl:px-3 py-2.5 sm:py-3 whitespace-nowrap">
-                          {getStatusPill(item.status)}
-                        </td>
                         <td className="px-2 xl:px-3 py-2.5 sm:py-3 text-right whitespace-nowrap">
-                          <div className="inline-flex items-center justify-end gap-2 xl:gap-2.5">
+                          <div className="inline-flex items-center justify-end gap-2.5 sm:gap-3">
                             {item.status === 'Pending Review' && (
                               <>
                                 <button
                                   type="button"
                                   onClick={() => handleDecision(item.id, 'Approved')}
-                                  className="approve-btn font-label text-label-sm text-tertiary hover:underline"
+                                  className="approve-btn font-label text-label-sm text-tertiary hover:underline font-semibold"
                                 >
                                   Approve
                                 </button>
                                 <button
                                   type="button"
                                   onClick={() => handleDecision(item.id, 'Returned')}
-                                  className="reject-btn font-label text-label-sm text-error hover:underline"
+                                  className="reject-btn font-label text-label-sm text-error hover:underline font-semibold"
                                 >
                                   Return
                                 </button>
@@ -345,7 +351,7 @@ export default function CompanyApprovalsPage() {
                     ))
                   ) : (
                     <tr>
-                      <td colSpan={7} className="px-5 py-8 text-center font-body text-body-md text-outline">
+                      <td colSpan={6} className="px-5 py-8 text-center font-body text-body-md text-outline">
                         No submissions match your search or status filter.
                       </td>
                     </tr>
