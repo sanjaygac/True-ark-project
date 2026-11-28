@@ -20,6 +20,7 @@ import CompanyApprovalsPage from './pages/company-admin/CompanyApprovalsPage';
 import CompanyPermissionMatrixPage from './pages/company-admin/CompanyPermissionMatrixPage';
 import CompanyUserMasterPage from './pages/company-admin/CompanyUserMasterPage';
 import AddNewUserPage from './pages/company-admin/AddNewUserPage';
+import CompanyPropertyMasterPage from './pages/company-admin/CompanyPropertyMasterPage';
 import CompanyReportViewPage from './pages/company-admin/CompanyReportViewPage';
 import CompanyAdminUnderDevPage from './pages/company-admin/CompanyAdminUnderDevPage';
 
@@ -71,6 +72,8 @@ export default function App() {
         <Route path="/company-admin/valuation/declaration" element={<Navigate to="/company-admin/valuation/new/form-a" replace />} />
         <Route path="/company-admin/new-valuation" element={<ValuationFormPartAPage />} />
         <Route path="/company-admin/approval" element={<CompanyApprovalsPage />} />
+        <Route path="/company-admin/masters/property" element={<CompanyPropertyMasterPage />} />
+        <Route path="/company-admin/property-master" element={<Navigate to="/company-admin/masters/property" replace />} />
         <Route path="/company-admin/masters/user" element={<CompanyUserMasterPage />} />
         <Route path="/company-admin/masters/user/add" element={<AddNewUserPage />} />
         <Route path="/company-admin/user-master" element={<Navigate to="/company-admin/masters/user" replace />} />
