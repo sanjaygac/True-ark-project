@@ -3,27 +3,142 @@ import { Link, useSearchParams, useNavigate } from 'react-router-dom';
 import CompanyAdminSidebar from '../../components/company-admin/CompanyAdminSidebar';
 import WordDocumentPreviewModal from '../../components/company-admin/WordDocumentPreviewModal';
 
-const bankOptions = [
-  'Canara Bank — Hi Tech Agri Finance Branch',
-  'State Bank of India — Commercial Credit Branch',
-  'HDFC Bank — Retail Asset & Mortgage Hub',
-  'ICICI Bank — Structured Mortgage Hub',
-  'Bank of Baroda — Zonal Valuation Cell',
-  'Punjab National Bank — Large Corporate Branch',
-  'Axis Bank — Structured Lending Branch',
-  'Union Bank of India — Mid Corporate Branch',
-  'Indian Bank — Corporate & Retail Credit',
+const bankDirectory = [
+  {
+    bank: 'Canara Bank',
+    branches: [
+      { branch: 'Hi Tech Agri Finance Branch', ifsc: 'CNRB0003841' },
+      { branch: 'Anna Nagar Branch, Chennai', ifsc: 'CNRB0000912' },
+      { branch: 'T. Nagar Commercial Branch, Chennai', ifsc: 'CNRB0001425' },
+    ],
+  },
+  {
+    bank: 'State Bank of India (SBI)',
+    branches: [
+      { branch: 'Commercial Credit Branch', ifsc: 'SBIN0004312' },
+      { branch: 'SME Guindy Branch, Chennai', ifsc: 'SBIN0007128' },
+      { branch: 'Mount Road Branch, Chennai', ifsc: 'SBIN0000800' },
+    ],
+  },
+  {
+    bank: 'HDFC Bank',
+    branches: [
+      { branch: 'Retail Asset & Mortgage Hub', ifsc: 'HDFC0001290' },
+      { branch: 'Nungambakkam Branch, Chennai', ifsc: 'HDFC0000186' },
+      { branch: 'Velachery Branch, Chennai', ifsc: 'HDFC0002419' },
+    ],
+  },
+  {
+    bank: 'ICICI Bank',
+    branches: [
+      { branch: 'Structured Mortgage Hub', ifsc: 'ICIC0000077' },
+      { branch: 'Adyar Branch, Chennai', ifsc: 'ICIC0000391' },
+    ],
+  },
+  {
+    bank: 'Bank of Baroda',
+    branches: [
+      { branch: 'Zonal Valuation Cell', ifsc: 'BARB0CHMAIN' },
+      { branch: 'Tambaram Branch, Chennai', ifsc: 'BARB0TAMBAR' },
+    ],
+  },
+  {
+    bank: 'Punjab National Bank (PNB)',
+    branches: [
+      { branch: 'Large Corporate Branch', ifsc: 'PUNB0441200' },
+      { branch: 'Mylapore Branch, Chennai', ifsc: 'PUNB0032800' },
+    ],
+  },
+  {
+    bank: 'Axis Bank',
+    branches: [
+      { branch: 'Structured Lending Branch', ifsc: 'UTIB0000421' },
+      { branch: 'OMR Sholinganallur Branch, Chennai', ifsc: 'UTIB0001924' },
+    ],
+  },
+  {
+    bank: 'Union Bank of India',
+    branches: [
+      { branch: 'Mid Corporate Branch', ifsc: 'UBIN0534218' },
+      { branch: 'Egmore Branch, Chennai', ifsc: 'UBIN0530816' },
+    ],
+  },
+  {
+    bank: 'Indian Bank',
+    branches: [
+      { branch: 'Corporate & Retail Credit', ifsc: 'IDIB000H041' },
+      { branch: 'Royapettah Branch, Chennai', ifsc: 'IDIB000R018' },
+    ],
+  },
 ];
+
+function getInitialBankSelection(bankParam) {
+  const fallback = bankDirectory[0];
+  if (!bankParam) {
+    return {
+      bank: fallback.bank,
+      branch: fallback.branches[0].branch,
+      ifsc: fallback.branches[0].ifsc,
+    };
+  }
+  const normalized = bankParam.toLowerCase();
+  const matched = bankDirectory.find(
+    (entry) =>
+      normalized.includes(entry.bank.toLowerCase()) ||
+      entry.branches.some((b) => normalized.includes(b.branch.toLowerCase()))
+  );
+  if (!matched) {
+    return {
+      bank: fallback.bank,
+      branch: fallback.branches[0].branch,
+      ifsc: fallback.branches[0].ifsc,
+    };
+  }
+  const matchedBranch =
+    matched.branches.find((b) => normalized.includes(b.branch.toLowerCase())) || matched.branches[0];
+  return {
+    bank: matched.bank,
+    branch: matchedBranch.branch,
+    ifsc: matchedBranch.ifsc,
+  };
+}
 
 export default function ValuationFormDeclarationPage() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
   const bankParam = searchParams.get('bank');
-  const [selectedBank, setSelectedBank] = useState(
-    bankParam || 'Canara Bank — Hi Tech Agri Finance Branch'
-  );
-  const bankName = selectedBank;
+  const initialSelection = getInitialBankSelection(bankParam);
+  const [selectedBank, setSelectedBank] = useState(initialSelection.bank);
+  const [selectedBranch, setSelectedBranch] = useState(initialSelection.branch);
+  const [selectedIfsc, setSelectedIfsc] = useState(initialSelection.ifsc);
+
+  const activeBankEntry =
+    bankDirectory.find((entry) => entry.bank === selectedBank) || bankDirectory[0];
+  const branchOptions = activeBankEntry.branches;
+  const bankName = `${selectedBank} — ${selectedBranch}`;
+
+  const handleBankChange = (e) => {
+    const newBank = e.target.value;
+    setSelectedBank(newBank);
+    const entry = bankDirectory.find((item) => item.bank === newBank) || bankDirectory[0];
+    setSelectedBranch(entry.branches[0].branch);
+    setSelectedIfsc(entry.branches[0].ifsc);
+  };
+
+  const handleBranchChange = (e) => {
+    const newBranch = e.target.value;
+    setSelectedBranch(newBranch);
+    const matched = branchOptions.find((item) => item.branch === newBranch);
+    if (matched) setSelectedIfsc(matched.ifsc);
+  };
+
+  const handleIfscChange = (e) => {
+    const newIfsc = e.target.value;
+    setSelectedIfsc(newIfsc);
+    const matched = branchOptions.find((item) => item.ifsc === newIfsc);
+    if (matched) setSelectedBranch(matched.branch);
+  };
 
   // Card 1: 3 Statutory Declarations
   const [decl1, setDecl1] = useState(true);
@@ -266,23 +381,52 @@ export default function ValuationFormDeclarationPage() {
             </span>
           </div>
 
-          <label className="flex flex-col gap-1.5 max-w-xl">
-            <span className="font-label text-label-sm text-on-surface font-semibold">Select Bank</span>
-            <select
-              value={selectedBank}
-              onChange={(e) => setSelectedBank(e.target.value)}
-              className="w-full rounded border border-outline-variant bg-surface-container-lowest px-3 py-2 font-body text-body-sm text-on-surface focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none transition-colors"
-            >
-              {!bankOptions.includes(selectedBank) && (
-                <option value={selectedBank}>{selectedBank}</option>
-              )}
-              {bankOptions.map((bank) => (
-                <option key={bank} value={bank}>
-                  {bank}
-                </option>
-              ))}
-            </select>
-          </label>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5 sm:gap-4">
+            <label className="flex flex-col gap-1.5">
+              <span className="font-label text-label-sm text-on-surface font-semibold">Select Bank</span>
+              <select
+                value={selectedBank}
+                onChange={handleBankChange}
+                className="w-full rounded border border-outline-variant bg-surface-container-lowest px-3 py-2 font-body text-body-sm text-on-surface focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none transition-colors"
+              >
+                {bankDirectory.map((entry) => (
+                  <option key={entry.bank} value={entry.bank}>
+                    {entry.bank}
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            <label className="flex flex-col gap-1.5">
+              <span className="font-label text-label-sm text-on-surface font-semibold">Bank Branch</span>
+              <select
+                value={selectedBranch}
+                onChange={handleBranchChange}
+                className="w-full rounded border border-outline-variant bg-surface-container-lowest px-3 py-2 font-body text-body-sm text-on-surface focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none transition-colors"
+              >
+                {branchOptions.map((item) => (
+                  <option key={item.branch} value={item.branch}>
+                    {item.branch}
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            <label className="flex flex-col gap-1.5">
+              <span className="font-label text-label-sm text-on-surface font-semibold">IFSC No.</span>
+              <select
+                value={selectedIfsc}
+                onChange={handleIfscChange}
+                className="w-full rounded border border-outline-variant bg-surface-container-lowest px-3 py-2 font-mono text-[12px] text-primary focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none transition-colors"
+              >
+                {branchOptions.map((item) => (
+                  <option key={item.ifsc} value={item.ifsc}>
+                    {item.ifsc}
+                  </option>
+                ))}
+              </select>
+            </label>
+          </div>
         </section>
 
         {/* Card 1: Statutory Form-A Declaration */}
