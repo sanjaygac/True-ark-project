@@ -3,12 +3,27 @@ import { Link, useSearchParams, useNavigate } from 'react-router-dom';
 import CompanyAdminSidebar from '../../components/company-admin/CompanyAdminSidebar';
 import WordDocumentPreviewModal from '../../components/company-admin/WordDocumentPreviewModal';
 
+const bankOptions = [
+  'Canara Bank — Hi Tech Agri Finance Branch',
+  'State Bank of India — Commercial Credit Branch',
+  'HDFC Bank — Retail Asset & Mortgage Hub',
+  'ICICI Bank — Structured Mortgage Hub',
+  'Bank of Baroda — Zonal Valuation Cell',
+  'Punjab National Bank — Large Corporate Branch',
+  'Axis Bank — Structured Lending Branch',
+  'Union Bank of India — Mid Corporate Branch',
+  'Indian Bank — Corporate & Retail Credit',
+];
+
 export default function ValuationFormDeclarationPage() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
   const bankParam = searchParams.get('bank');
-  const bankName = bankParam || 'Canara Bank — Hi Tech Agri Finance Branch';
+  const [selectedBank, setSelectedBank] = useState(
+    bankParam || 'Canara Bank — Hi Tech Agri Finance Branch'
+  );
+  const bankName = selectedBank;
 
   // Card 1: 3 Statutory Declarations
   const [decl1, setDecl1] = useState(true);
@@ -223,6 +238,53 @@ export default function ValuationFormDeclarationPage() {
 
       {/* Main Form Content */}
       <main className="flex-1 max-w-7xl w-full mx-auto p-3 sm:p-4 flex flex-col gap-3">
+        {/* Bank Selection Card */}
+        <section className="bg-surface-container-lowest border border-outline-variant rounded-md p-4 sm:p-5 shadow-xs flex flex-col gap-3.5 sm:gap-4">
+          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-outline-variant pb-3 sm:pb-3.5">
+            <div className="flex items-center gap-3">
+              <span className="w-8 h-8 sm:w-9 sm:h-9 rounded bg-primary-container text-on-primary-container flex items-center justify-center shrink-0">
+                <span className="material-symbols-outlined text-[18px] sm:text-[20px]">account_balance</span>
+              </span>
+              <div>
+                <h2 className="font-headline text-[15px] sm:text-[16px] lg:text-[17px] font-semibold text-primary">
+                  Bank &amp; Report Format
+                </h2>
+                <p className="font-body text-body-sm text-on-surface-variant">
+                  Select the bank template to apply for Document Preview and Certified Report export.
+                </p>
+              </div>
+            </div>
+
+            <span className="inline-flex items-center px-3 py-1 rounded-full bg-primary-container text-on-primary-container font-label text-[12px] font-semibold">
+              {/hdfc/i.test(bankName)
+                ? 'HDFC Bank Format'
+                : /state bank|sbi/i.test(bankName)
+                  ? 'SBI Format'
+                  : /canara/i.test(bankName)
+                    ? 'Canara Bank Format'
+                    : 'Standard Bank Format'}
+            </span>
+          </div>
+
+          <label className="flex flex-col gap-1.5 max-w-xl">
+            <span className="font-label text-label-sm text-on-surface font-semibold">Select Bank</span>
+            <select
+              value={selectedBank}
+              onChange={(e) => setSelectedBank(e.target.value)}
+              className="w-full rounded border border-outline-variant bg-surface-container-lowest px-3 py-2 font-body text-body-sm text-on-surface focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none transition-colors"
+            >
+              {!bankOptions.includes(selectedBank) && (
+                <option value={selectedBank}>{selectedBank}</option>
+              )}
+              {bankOptions.map((bank) => (
+                <option key={bank} value={bank}>
+                  {bank}
+                </option>
+              ))}
+            </select>
+          </label>
+        </section>
+
         {/* Card 1: Statutory Form-A Declaration */}
         <section className="bg-surface-container-lowest border border-outline-variant rounded-md p-4 sm:p-5 shadow-xs flex flex-col gap-3.5 sm:gap-4">
           <div className="flex flex-wrap items-center justify-between gap-3 border-b border-outline-variant pb-3 sm:pb-3.5">
