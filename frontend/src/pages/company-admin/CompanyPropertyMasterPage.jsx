@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import CompanyAdminSidebar from '../../components/company-admin/CompanyAdminSidebar';
 import SearchableSelect from '../../components/common/SearchableSelect';
+import { getStoredProperties, saveStoredProperties } from '../../utils/propertyStore';
+import { reverseGeocodeLocation, parseCoordinates, formatLat, formatLon } from '../../utils/geoUtils';
 
 const statusFilterOptions = [
   { value: 'All Status', label: 'All Status' },
@@ -18,167 +20,12 @@ const typeFilterOptions = [
   { value: 'Residential Building', label: 'Residential Building' },
 ];
 
-const initialProperties = [
-  {
-    id: 'PR-2026-089',
-    code: '#PR-2026-089',
-    property: 'Kelambakkam, S.No 142/3B',
-    owner: 'Raghavan Nair',
-    propertyType: 'Residential Plot',
-    extent: '4,800 Sq.ft',
-    extentRaw: 4800,
-    unit: 'Sq.ft',
-    marketValue: '₹1,48,50,000',
-    marketValueRaw: 14850000,
-    status: 'Verified',
-    district: 'Chengalpattu',
-    taluk: 'Thiruporur',
-    village: 'Kelambakkam',
-    coordinates: '12.7894° N, 80.2215° E',
-    landmark: 'Near Sri Sai Nagar Main Arch',
-    createdDate: '24 Nov 2026',
-  },
-  {
-    id: 'PR-2026-088',
-    code: '#PR-2026-088',
-    property: 'Sriperumbudur, S.No 88/1A',
-    owner: 'Sri Lakshmi Developers',
-    propertyType: 'Commercial',
-    extent: '12,400 Sq.ft',
-    extentRaw: 12400,
-    unit: 'Sq.ft',
-    marketValue: '₹4,15,00,000',
-    marketValueRaw: 41500000,
-    status: 'In Review',
-    district: 'Kancheepuram',
-    taluk: 'Sriperumbudur',
-    village: 'Irungattukottai',
-    coordinates: '12.9642° N, 79.9472° E',
-    landmark: 'Opp. Hyundai Vendor Park',
-    createdDate: '22 Nov 2026',
-  },
-  {
-    id: 'PR-2026-087',
-    code: '#PR-2026-087',
-    property: 'Pollachi, Patta No. 419',
-    owner: 'Karthik Sundaram',
-    propertyType: 'Agricultural',
-    extent: '3.45 Acres',
-    extentRaw: 3.45,
-    unit: 'Acres',
-    marketValue: '₹96,60,000',
-    marketValueRaw: 9660000,
-    status: 'Verified',
-    district: 'Coimbatore',
-    taluk: 'Pollachi',
-    village: 'Anamalai Road',
-    coordinates: '10.6609° N, 77.0048° E',
-    landmark: 'Adjacent to Canal Distributary 4',
-    createdDate: '20 Nov 2026',
-  },
-  {
-    id: 'PR-2026-086',
-    code: '#PR-2026-086',
-    property: 'Sarjapur Road, S.No 51/4',
-    owner: 'Meera Krishnan',
-    propertyType: 'Residential Plot',
-    extent: '3,600 Sq.ft',
-    extentRaw: 3600,
-    unit: 'Sq.ft',
-    marketValue: '₹2,34,00,000',
-    marketValueRaw: 23400000,
-    status: 'Draft',
-    district: 'Bengaluru Urban',
-    taluk: 'Anekal',
-    village: 'Sarjapur',
-    coordinates: '12.8624° N, 77.7836° E',
-    landmark: 'Behind Decathlon Sports',
-    createdDate: '18 Nov 2026',
-  },
-  {
-    id: 'PR-2026-085',
-    code: '#PR-2026-085',
-    property: 'Oragadam, S.No 204/2C',
-    owner: 'Vanguard Auto Components',
-    propertyType: 'Industrial',
-    extent: '8,200 Sq.ft',
-    extentRaw: 8200,
-    unit: 'Sq.ft',
-    marketValue: '₹1,92,70,000',
-    marketValueRaw: 19270000,
-    status: 'Verified',
-    district: 'Kancheepuram',
-    taluk: 'Sriperumbudur',
-    village: 'Oragadam SIPCOT',
-    coordinates: '12.8398° N, 79.9482° E',
-    landmark: 'Near Renault Nissan Gate 3',
-    createdDate: '15 Nov 2026',
-  },
-  {
-    id: 'PR-2026-084',
-    code: '#PR-2026-084',
-    property: 'Whitefield, Khata 712/9',
-    owner: 'Ananya Deshmukh',
-    propertyType: 'Residential Plot',
-    extent: '5,400 Sq.ft',
-    extentRaw: 5400,
-    unit: 'Sq.ft',
-    marketValue: '₹3,18,60,000',
-    marketValueRaw: 31860000,
-    status: 'In Review',
-    district: 'Bengaluru Urban',
-    taluk: 'KR Puram',
-    village: 'Whitefield Inner Circle',
-    coordinates: '12.9698° N, 77.7499° E',
-    landmark: 'Near ITPL Metro Station',
-    createdDate: '12 Nov 2026',
-  },
-  {
-    id: 'PR-2026-083',
-    code: '#PR-2026-083',
-    property: 'Thoraipakkam, S.No 112/5',
-    owner: 'Suresh Babu',
-    propertyType: 'Residential Building',
-    extent: '3,200 Sq.ft',
-    extentRaw: 3200,
-    unit: 'Sq.ft',
-    marketValue: '₹1,65,00,000',
-    marketValueRaw: 16500000,
-    status: 'Verified',
-    district: 'Chennai',
-    taluk: 'Sholinganallur',
-    village: 'Thoraipakkam',
-    coordinates: '12.9348° N, 80.2312° E',
-    landmark: 'OMR Road Service Lane',
-    createdDate: '10 Nov 2026',
-  },
-  {
-    id: 'PR-2026-082',
-    code: '#PR-2026-082',
-    property: 'Hosur SIPCOT, S.No 312/1',
-    owner: 'Kaveri Logistics Park',
-    propertyType: 'Industrial',
-    extent: '2.50 Acres',
-    extentRaw: 2.5,
-    unit: 'Acres',
-    marketValue: '₹5,80,00,000',
-    marketValueRaw: 58000000,
-    status: 'Draft',
-    district: 'Krishnagiri',
-    taluk: 'Hosur',
-    village: 'Mookandapalli',
-    coordinates: '12.7409° N, 77.8253° E',
-    landmark: 'Behind Ashok Leyland Unit 2',
-    createdDate: '08 Nov 2026',
-  },
-];
-
 export default function CompanyPropertyMasterPage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('All Status');
   const [typeFilter, setTypeFilter] = useState('All Types');
-  const [properties, setProperties] = useState(initialProperties);
+  const [properties, setProperties] = useState(() => getStoredProperties());
 
   // Modals state
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -186,6 +33,8 @@ export default function CompanyPropertyMasterPage() {
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
   const [selectedProperty, setSelectedProperty] = useState(null);
   const [toastMessage, setToastMessage] = useState('');
+  const [isGeoLoading, setIsGeoLoading] = useState(false);
+  const [geoNotice, setGeoNotice] = useState('');
 
   // Form State for Add / Edit
   const [formData, setFormData] = useState({
@@ -199,7 +48,10 @@ export default function CompanyPropertyMasterPage() {
     district: '',
     taluk: '',
     village: '',
-    coordinates: '',
+    latitude: '',
+    longitude: '',
+    postalAddress: '',
+    localBody: '',
     landmark: '',
   });
 
@@ -209,7 +61,7 @@ export default function CompanyPropertyMasterPage() {
 
   const showToast = (msg) => {
     setToastMessage(msg);
-    setTimeout(() => setToastMessage(''), 3000);
+    setTimeout(() => setToastMessage(''), 3500);
   };
 
   const filteredProperties = properties.filter((item) => {
@@ -220,7 +72,9 @@ export default function CompanyPropertyMasterPage() {
       item.property.toLowerCase().includes(query) ||
       item.owner.toLowerCase().includes(query) ||
       item.propertyType.toLowerCase().includes(query) ||
-      item.district.toLowerCase().includes(query);
+      item.district.toLowerCase().includes(query) ||
+      (item.latitude && item.latitude.toLowerCase().includes(query)) ||
+      (item.longitude && item.longitude.toLowerCase().includes(query));
 
     const matchesStatus =
       statusFilter === 'All Status' || item.status.toLowerCase() === statusFilter.toLowerCase();
@@ -268,9 +122,13 @@ export default function CompanyPropertyMasterPage() {
       district: '',
       taluk: '',
       village: '',
-      coordinates: '',
+      latitude: '',
+      longitude: '',
+      postalAddress: '',
+      localBody: '',
       landmark: '',
     });
+    setGeoNotice('');
     setIsAddModalOpen(true);
   };
 
@@ -287,9 +145,13 @@ export default function CompanyPropertyMasterPage() {
       district: prop.district || '',
       taluk: prop.taluk || '',
       village: prop.village || '',
-      coordinates: prop.coordinates || '',
+      latitude: prop.latitude || (prop.coordinates ? prop.coordinates.split(',')[0].trim() : ''),
+      longitude: prop.longitude || (prop.coordinates ? prop.coordinates.split(',')[1]?.trim() : ''),
+      postalAddress: prop.postalAddress || '',
+      localBody: prop.localBody || '',
       landmark: prop.landmark || '',
     });
+    setGeoNotice('');
     setIsEditModalOpen(true);
   };
 
@@ -298,10 +160,56 @@ export default function CompanyPropertyMasterPage() {
     setIsViewModalOpen(true);
   };
 
+  // Trigger reverse geocoding from Latitude & Longitude
+  const handleAutoFillFromCoordinates = async (latOverride, lonOverride) => {
+    const latToUse = latOverride !== undefined ? latOverride : formData.latitude;
+    const lonToUse = lonOverride !== undefined ? lonOverride : formData.longitude;
+
+    if (!String(latToUse).trim() || !String(lonToUse).trim()) {
+      setGeoNotice('Please enter both Latitude and Longitude first to autofill location.');
+      return;
+    }
+
+    try {
+      setIsGeoLoading(true);
+      setGeoNotice('Resolving address from coordinates...');
+      const resolved = await reverseGeocodeLocation(latToUse, lonToUse);
+
+      if (resolved) {
+        setFormData((prev) => ({
+          ...prev,
+          district: resolved.district || prev.district,
+          taluk: resolved.taluk || prev.taluk,
+          village: resolved.village || prev.village,
+          postalAddress: resolved.postalAddress || prev.postalAddress,
+          localBody: resolved.localBody || prev.localBody,
+          latitude: resolved.latitudeFormatted || prev.latitude,
+          longitude: resolved.longitudeFormatted || prev.longitude,
+          landmark: prev.landmark || `Near ${resolved.village} Main Road`,
+        }));
+        setGeoNotice(`Autofilled from coordinates via ${resolved.source || 'Geo Resolver'}!`);
+      } else {
+        setGeoNotice('Coordinates resolved. You can refine the address details below.');
+      }
+    } catch (err) {
+      setGeoNotice('Could not reach remote reverse-geocoding service. Default location applied.');
+    } finally {
+      setIsGeoLoading(false);
+    }
+  };
+
   const handleSaveNewProperty = (e) => {
     e.preventDefault();
-    if (!formData.property.trim() || !formData.owner.trim()) {
-      alert('Please fill in both Property / Survey No. and Owner Name.');
+    if (!formData.property.trim()) {
+      alert('Property / Survey No. is required.');
+      return;
+    }
+    if (!formData.owner.trim()) {
+      alert('Owner / Title Holder Name is required.');
+      return;
+    }
+    if (!String(formData.latitude).trim() || !String(formData.longitude).trim()) {
+      alert('Latitude and Longitude are mandatory for registering property coordinates.');
       return;
     }
 
@@ -313,6 +221,13 @@ export default function CompanyPropertyMasterPage() {
     const formattedValue = formData.marketValueRaw
       ? `₹${Number(formData.marketValueRaw).toLocaleString('en-IN')}`
       : '₹1,50,00,000';
+
+    const cleanLat = formData.latitude.includes('°')
+      ? formData.latitude
+      : formatLat(parseCoordinates(formData.latitude, null).lat);
+    const cleanLon = formData.longitude.includes('°')
+      ? formData.longitude
+      : formatLon(parseCoordinates(null, formData.longitude).lon);
 
     const newProp = {
       id: `PR-2026-0${nextNum}`,
@@ -329,19 +244,30 @@ export default function CompanyPropertyMasterPage() {
       district: formData.district || 'Chengalpattu',
       taluk: formData.taluk || 'Thiruporur',
       village: formData.village || 'Kelambakkam',
-      coordinates: formData.coordinates || '12.7894° N, 80.2215° E',
+      latitude: cleanLat || formData.latitude,
+      longitude: cleanLon || formData.longitude,
+      coordinates: `${cleanLat || formData.latitude}, ${cleanLon || formData.longitude}`,
+      postalAddress: formData.postalAddress || `${formData.property}, ${formData.village || 'Kelambakkam'}, ${formData.district || 'Chengalpattu'}`,
+      localBody: formData.localBody || `${formData.village || 'Town'} Panchayat`,
       landmark: formData.landmark || 'Main Road Junction',
       createdDate: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }),
     };
 
-    setProperties([newProp, ...properties]);
+    const updated = [newProp, ...properties];
+    setProperties(updated);
+    saveStoredProperties(updated);
     setIsAddModalOpen(false);
-    showToast(`Property ${newCode} successfully created!`);
+    showToast(`Property ${newCode} successfully created with coordinates!`);
   };
 
   const handleUpdateProperty = (e) => {
     e.preventDefault();
     if (!selectedProperty) return;
+
+    if (!String(formData.latitude).trim() || !String(formData.longitude).trim()) {
+      alert('Latitude and Longitude are mandatory.');
+      return;
+    }
 
     const formattedExtent = formData.extentRaw
       ? `${Number(formData.extentRaw).toLocaleString('en-IN')} ${formData.unit}`
@@ -350,31 +276,42 @@ export default function CompanyPropertyMasterPage() {
       ? `₹${Number(formData.marketValueRaw).toLocaleString('en-IN')}`
       : selectedProperty.marketValue;
 
-    setProperties(
-      properties.map((p) => {
-        if (p.id === selectedProperty.id) {
-          return {
-            ...p,
-            property: formData.property,
-            owner: formData.owner,
-            propertyType: formData.propertyType,
-            extent: formattedExtent,
-            extentRaw: Number(formData.extentRaw) || p.extentRaw,
-            unit: formData.unit,
-            marketValue: formattedValue,
-            marketValueRaw: Number(formData.marketValueRaw) || p.marketValueRaw,
-            status: formData.status,
-            district: formData.district,
-            taluk: formData.taluk,
-            village: formData.village,
-            coordinates: formData.coordinates,
-            landmark: formData.landmark,
-          };
-        }
-        return p;
-      })
-    );
+    const cleanLat = formData.latitude.includes('°')
+      ? formData.latitude
+      : formatLat(parseCoordinates(formData.latitude, null).lat);
+    const cleanLon = formData.longitude.includes('°')
+      ? formData.longitude
+      : formatLon(parseCoordinates(null, formData.longitude).lon);
 
+    const updated = properties.map((p) => {
+      if (p.id === selectedProperty.id) {
+        return {
+          ...p,
+          property: formData.property,
+          owner: formData.owner,
+          propertyType: formData.propertyType,
+          extent: formattedExtent,
+          extentRaw: Number(formData.extentRaw) || p.extentRaw,
+          unit: formData.unit,
+          marketValue: formattedValue,
+          marketValueRaw: Number(formData.marketValueRaw) || p.marketValueRaw,
+          status: formData.status,
+          district: formData.district,
+          taluk: formData.taluk,
+          village: formData.village,
+          latitude: cleanLat || formData.latitude,
+          longitude: cleanLon || formData.longitude,
+          coordinates: `${cleanLat || formData.latitude}, ${cleanLon || formData.longitude}`,
+          postalAddress: formData.postalAddress,
+          localBody: formData.localBody,
+          landmark: formData.landmark,
+        };
+      }
+      return p;
+    });
+
+    setProperties(updated);
+    saveStoredProperties(updated);
     setIsEditModalOpen(false);
     showToast(`Property ${selectedProperty.code} updated successfully!`);
   };
@@ -403,7 +340,7 @@ export default function CompanyPropertyMasterPage() {
               </h1>
             </div>
             <p className="font-body text-body-sm text-on-surface-variant pl-10 lg:pl-0">
-              Manage registered property assets, land parcels, survey numbers, and classifications.
+              Manage registered property assets, cadastral survey numbers, and GPS coordinates.
             </p>
           </div>
 
@@ -420,7 +357,7 @@ export default function CompanyPropertyMasterPage() {
                 type="search"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                placeholder="Search Property ID, Survey No., or Owner..."
+                placeholder="Search Property, Survey No., or Lat/Long..."
                 className="w-full rounded border border-outline-variant bg-surface pl-9 pr-3 py-2 font-body text-body-sm text-on-surface placeholder:text-outline focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none"
               />
             </div>
@@ -450,7 +387,7 @@ export default function CompanyPropertyMasterPage() {
                 />
               </div>
 
-              {/* Prominent Emerald Green + Add New Property Button (Exact match to Valuation Page) */}
+              {/* Prominent Emerald Green + Add New Property Button */}
               <button
                 type="button"
                 onClick={handleOpenAddModal}
@@ -484,15 +421,15 @@ export default function CompanyPropertyMasterPage() {
             </div>
 
             <div className="w-full overflow-x-auto">
-              <table className="w-full min-w-[840px] table-fixed text-left border-collapse">
+              <table className="w-full min-w-[880px] table-fixed text-left border-collapse">
                 <colgroup>
                   <col className="w-[12%]" />
-                  <col className="w-[21%]" />
-                  <col className="w-[16%]" />
-                  <col className="w-[13%]" />
+                  <col className="w-[20%]" />
+                  <col className="w-[15%]" />
+                  <col className="w-[12%]" />
                   <col className="w-[10%]" />
                   <col className="w-[11%]" />
-                  <col className="w-[9%]" />
+                  <col className="w-[12%]" />
                   <col className="w-[8%]" />
                 </colgroup>
                 <thead className="bg-surface-container-low border-b border-outline-variant">
@@ -516,7 +453,7 @@ export default function CompanyPropertyMasterPage() {
                       Market Value
                     </th>
                     <th scope="col" className="px-2 xl:px-3 py-2.5 font-label text-label-sm text-on-surface-variant whitespace-nowrap truncate">
-                      Status
+                      GPS Coordinates
                     </th>
                     <th scope="col" className="px-2 xl:px-3 py-2.5 font-label text-label-sm text-on-surface-variant text-right whitespace-nowrap">
                       Actions
@@ -531,7 +468,8 @@ export default function CompanyPropertyMasterPage() {
                           {item.code}
                         </td>
                         <td className="px-2 xl:px-3 py-2.5 sm:py-3 font-body text-body-sm text-on-surface truncate" title={item.property}>
-                          {item.property}
+                          <span className="font-medium text-primary block truncate">{item.property}</span>
+                          <span className="text-[11px] text-on-surface-variant truncate block">{item.village}, {item.district}</span>
                         </td>
                         <td className="px-2 xl:px-3 py-2.5 sm:py-3 font-body text-body-sm text-on-surface-variant truncate" title={item.owner}>
                           {item.owner}
@@ -545,8 +483,12 @@ export default function CompanyPropertyMasterPage() {
                         <td className="px-2 xl:px-3 py-2.5 sm:py-3 font-label text-[12px] text-primary tabular-nums whitespace-nowrap truncate" title={item.marketValue}>
                           {item.marketValue}
                         </td>
-                        <td className="px-2 xl:px-3 py-2.5 sm:py-3 whitespace-nowrap">
-                          {getStatusBadge(item.status)}
+                        <td className="px-2 xl:px-3 py-2.5 sm:py-3 font-mono text-[11px] text-slate-700 whitespace-nowrap truncate" title={item.coordinates || `${item.latitude}, ${item.longitude}`}>
+                          <div className="flex items-center gap-1">
+                            <span className="material-symbols-outlined text-[14px] text-secondary">explore</span>
+                            <span>{item.latitude || item.coordinates?.split(',')[0]}</span>
+                          </div>
+                          <span className="text-[10px] text-gray-500 block pl-4.5">{item.longitude || item.coordinates?.split(',')[1]}</span>
                         </td>
                         <td className="px-2 xl:px-3 py-2.5 sm:py-3 text-right whitespace-nowrap">
                           <div className="inline-flex items-center justify-end gap-2 xl:gap-2.5">
@@ -583,7 +525,7 @@ export default function CompanyPropertyMasterPage() {
       </div>
 
       {/* =========================================================================
-          MODAL: ADD NEW PROPERTY
+          MODAL: ADD NEW PROPERTY RECORD (WITH MANDATORY LATITUDE & LONGITUDE)
          ========================================================================= */}
       {isAddModalOpen && (
         <div
@@ -592,7 +534,7 @@ export default function CompanyPropertyMasterPage() {
           className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs animate-in fade-in duration-200"
         >
           <div
-            className="w-full max-w-2xl bg-surface-container-lowest border border-outline-variant rounded-lg shadow-2xl overflow-hidden flex flex-col max-h-[90vh] animate-in zoom-in-95 duration-150"
+            className="w-full max-w-2xl bg-surface-container-lowest border border-outline-variant rounded-lg shadow-2xl overflow-hidden flex flex-col max-h-[92vh] animate-in zoom-in-95 duration-150"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Modal Header */}
@@ -606,7 +548,7 @@ export default function CompanyPropertyMasterPage() {
                     Add New Property Record
                   </h3>
                   <p className="font-body text-body-sm text-on-surface-variant mt-0.5">
-                    Register a property parcel for collateral valuation and land audits
+                    Enter mandatory GPS coordinates to autofill postal address, revenue district, and taluk
                   </p>
                 </div>
               </div>
@@ -621,11 +563,91 @@ export default function CompanyPropertyMasterPage() {
 
             {/* Modal Form Body */}
             <form onSubmit={handleSaveNewProperty} className="flex-1 overflow-y-auto p-5 space-y-4 text-[13px]">
+              {/* GPS Coordinates Header Card (Mandatory Lat & Long with Autofill) */}
+              <div className="p-3.5 rounded-lg border border-primary/30 bg-primary-container/15 flex flex-col gap-2.5">
+                <div className="flex items-center justify-between gap-2 flex-wrap">
+                  <div className="flex items-center gap-2 text-primary font-semibold text-[13px]">
+                    <span className="material-symbols-outlined text-[19px]">explore</span>
+                    <span>GPS Coordinates (Mandatory) &amp; Auto-Fill</span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => handleAutoFillFromCoordinates()}
+                    disabled={isGeoLoading}
+                    className="inline-flex items-center gap-1.5 px-3 py-1 rounded bg-primary text-white text-[12px] font-semibold hover:bg-primary/90 transition-colors shadow-xs cursor-pointer disabled:opacity-50"
+                  >
+                    <span className={`material-symbols-outlined text-[16px] ${isGeoLoading ? 'animate-spin' : ''}`}>
+                      {isGeoLoading ? 'sync' : 'auto_fix_high'}
+                    </span>
+                    <span>{isGeoLoading ? 'Resolving...' : 'Auto-fill Location from Lat/Long'}</span>
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {/* Latitude * */}
+                  <div>
+                    <label className="block font-label text-label-sm text-on-surface font-semibold mb-1">
+                      Latitude <span className="text-red-600 font-bold">*</span>
+                    </label>
+                    <div className="relative">
+                      <input
+                        type="text"
+                        required
+                        placeholder="e.g. 12.7894° N or 12.7894"
+                        value={formData.latitude}
+                        onChange={(e) => setFormData({ ...formData, latitude: e.target.value })}
+                        onBlur={() => {
+                          if (formData.latitude && formData.longitude && !formData.district) {
+                            handleAutoFillFromCoordinates();
+                          }
+                        }}
+                        className="w-full rounded border border-outline-variant bg-surface pl-3 pr-8 py-2 font-mono text-[13px] text-primary focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none"
+                      />
+                      <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 text-[12px] font-mono">
+                        LAT
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Longitude * */}
+                  <div>
+                    <label className="block font-label text-label-sm text-on-surface font-semibold mb-1">
+                      Longitude <span className="text-red-600 font-bold">*</span>
+                    </label>
+                    <div className="relative">
+                      <input
+                        type="text"
+                        required
+                        placeholder="e.g. 80.2215° E or 80.2215"
+                        value={formData.longitude}
+                        onChange={(e) => setFormData({ ...formData, longitude: e.target.value })}
+                        onBlur={() => {
+                          if (formData.latitude && formData.longitude && !formData.district) {
+                            handleAutoFillFromCoordinates();
+                          }
+                        }}
+                        className="w-full rounded border border-outline-variant bg-surface pl-3 pr-8 py-2 font-mono text-[13px] text-primary focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none"
+                      />
+                      <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 text-[12px] font-mono">
+                        LON
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                {geoNotice && (
+                  <p className="text-[12px] font-medium text-primary flex items-center gap-1.5 animate-in fade-in">
+                    <span className="material-symbols-outlined text-[16px]">info</span>
+                    <span>{geoNotice}</span>
+                  </p>
+                )}
+              </div>
+
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {/* Property / Survey No. */}
                 <div className="sm:col-span-2">
                   <label className="block font-label text-label-sm text-on-surface font-semibold mb-1">
-                    Property / Survey No. <span className="text-error">*</span>
+                    Property / Survey No. <span className="text-red-600 font-bold">*</span>
                   </label>
                   <input
                     type="text"
@@ -640,7 +662,7 @@ export default function CompanyPropertyMasterPage() {
                 {/* Owner / Title Holder */}
                 <div>
                   <label className="block font-label text-label-sm text-on-surface font-semibold mb-1">
-                    Owner / Title Holder <span className="text-error">*</span>
+                    Owner / Title Holder <span className="text-red-600 font-bold">*</span>
                   </label>
                   <input
                     type="text"
@@ -668,6 +690,76 @@ export default function CompanyPropertyMasterPage() {
                     <option value="Industrial">Industrial</option>
                     <option value="Agricultural">Agricultural</option>
                   </select>
+                </div>
+
+                {/* Postal Address of Property (Auto-filled by Lat/Long) */}
+                <div className="sm:col-span-2">
+                  <label className="block font-label text-label-sm text-on-surface font-semibold mb-1">
+                    Postal Address of Property <span className="text-gray-400 font-normal">(Autofilled from Lat &amp; Long)</span>
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="e.g. Plot No. 14, Sri Sai Nagar Main Road, Kelambakkam, Chengalpattu — 603103"
+                    value={formData.postalAddress}
+                    onChange={(e) => setFormData({ ...formData, postalAddress: e.target.value })}
+                    className="w-full rounded border border-outline-variant bg-surface px-3 py-2 font-body text-body-sm text-on-surface focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none"
+                  />
+                </div>
+
+                {/* District (Autofilled) */}
+                <div>
+                  <label className="block font-label text-label-sm text-on-surface font-semibold mb-1">
+                    District <span className="text-gray-400 font-normal">(Autofilled)</span>
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="e.g. Chengalpattu"
+                    value={formData.district}
+                    onChange={(e) => setFormData({ ...formData, district: e.target.value })}
+                    className="w-full rounded border border-outline-variant bg-surface px-3 py-2 font-body text-body-sm text-on-surface focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none"
+                  />
+                </div>
+
+                {/* Taluk / Village (Autofilled) */}
+                <div>
+                  <label className="block font-label text-label-sm text-on-surface font-semibold mb-1">
+                    Taluk
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="e.g. Thiruporur"
+                    value={formData.taluk}
+                    onChange={(e) => setFormData({ ...formData, taluk: e.target.value })}
+                    className="w-full rounded border border-outline-variant bg-surface px-3 py-2 font-body text-body-sm text-on-surface focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none"
+                  />
+                </div>
+
+                {/* Village */}
+                <div>
+                  <label className="block font-label text-label-sm text-on-surface font-semibold mb-1">
+                    Village
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="e.g. Kelambakkam"
+                    value={formData.village}
+                    onChange={(e) => setFormData({ ...formData, village: e.target.value })}
+                    className="w-full rounded border border-outline-variant bg-surface px-3 py-2 font-body text-body-sm text-on-surface focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none"
+                  />
+                </div>
+
+                {/* Local Body Jurisdiction */}
+                <div>
+                  <label className="block font-label text-label-sm text-on-surface font-semibold mb-1">
+                    Local Body Jurisdiction
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="e.g. Kelambakkam Town Panchayat"
+                    value={formData.localBody}
+                    onChange={(e) => setFormData({ ...formData, localBody: e.target.value })}
+                    className="w-full rounded border border-outline-variant bg-surface px-3 py-2 font-body text-body-sm text-on-surface focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none"
+                  />
                 </div>
 
                 {/* Extent & Unit */}
@@ -711,34 +803,6 @@ export default function CompanyPropertyMasterPage() {
                   />
                 </div>
 
-                {/* Location: District */}
-                <div>
-                  <label className="block font-label text-label-sm text-on-surface font-semibold mb-1">
-                    District
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="e.g. Chengalpattu"
-                    value={formData.district}
-                    onChange={(e) => setFormData({ ...formData, district: e.target.value })}
-                    className="w-full rounded border border-outline-variant bg-surface px-3 py-2 font-body text-body-sm text-on-surface focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none"
-                  />
-                </div>
-
-                {/* Location: Taluk & Village */}
-                <div>
-                  <label className="block font-label text-label-sm text-on-surface font-semibold mb-1">
-                    Taluk / Village
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="e.g. Thiruporur / Kelambakkam"
-                    value={formData.taluk}
-                    onChange={(e) => setFormData({ ...formData, taluk: e.target.value })}
-                    className="w-full rounded border border-outline-variant bg-surface px-3 py-2 font-body text-body-sm text-on-surface focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none"
-                  />
-                </div>
-
                 {/* Status */}
                 <div>
                   <label className="block font-label text-label-sm text-on-surface font-semibold mb-1">
@@ -753,20 +817,6 @@ export default function CompanyPropertyMasterPage() {
                     <option value="In Review">In Review</option>
                     <option value="Draft">Draft</option>
                   </select>
-                </div>
-
-                {/* Coordinates */}
-                <div>
-                  <label className="block font-label text-label-sm text-on-surface font-semibold mb-1">
-                    Latitude / Longitude
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="e.g. 12.7894° N, 80.2215° E"
-                    value={formData.coordinates}
-                    onChange={(e) => setFormData({ ...formData, coordinates: e.target.value })}
-                    className="w-full rounded border border-outline-variant bg-surface px-3 py-2 font-body text-body-sm text-on-surface focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none"
-                  />
                 </div>
 
                 {/* Landmark */}
@@ -806,7 +856,7 @@ export default function CompanyPropertyMasterPage() {
       )}
 
       {/* =========================================================================
-          MODAL: EDIT PROPERTY
+          MODAL: EDIT PROPERTY (WITH MANDATORY LATITUDE & LONGITUDE)
          ========================================================================= */}
       {isEditModalOpen && selectedProperty && (
         <div
@@ -815,7 +865,7 @@ export default function CompanyPropertyMasterPage() {
           className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs animate-in fade-in duration-200"
         >
           <div
-            className="w-full max-w-2xl bg-surface-container-lowest border border-outline-variant rounded-lg shadow-2xl overflow-hidden flex flex-col max-h-[90vh] animate-in zoom-in-95 duration-150"
+            className="w-full max-w-2xl bg-surface-container-lowest border border-outline-variant rounded-lg shadow-2xl overflow-hidden flex flex-col max-h-[92vh] animate-in zoom-in-95 duration-150"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Modal Header */}
@@ -829,7 +879,7 @@ export default function CompanyPropertyMasterPage() {
                     Edit Property Record — {selectedProperty.code}
                   </h3>
                   <p className="font-body text-body-sm text-on-surface-variant mt-0.5">
-                    Update property identification, measurements, and registration values
+                    Update property identification, measurements, and GPS coordinates
                   </p>
                 </div>
               </div>
@@ -844,11 +894,68 @@ export default function CompanyPropertyMasterPage() {
 
             {/* Modal Form Body */}
             <form onSubmit={handleUpdateProperty} className="flex-1 overflow-y-auto p-5 space-y-4 text-[13px]">
+              {/* GPS Coordinates Header Card */}
+              <div className="p-3.5 rounded-lg border border-primary/30 bg-primary-container/15 flex flex-col gap-2.5">
+                <div className="flex items-center justify-between gap-2 flex-wrap">
+                  <div className="flex items-center gap-2 text-primary font-semibold text-[13px]">
+                    <span className="material-symbols-outlined text-[19px]">explore</span>
+                    <span>GPS Coordinates (Mandatory) &amp; Auto-Fill</span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => handleAutoFillFromCoordinates()}
+                    disabled={isGeoLoading}
+                    className="inline-flex items-center gap-1.5 px-3 py-1 rounded bg-primary text-white text-[12px] font-semibold hover:bg-primary/90 transition-colors shadow-xs cursor-pointer disabled:opacity-50"
+                  >
+                    <span className={`material-symbols-outlined text-[16px] ${isGeoLoading ? 'animate-spin' : ''}`}>
+                      {isGeoLoading ? 'sync' : 'auto_fix_high'}
+                    </span>
+                    <span>{isGeoLoading ? 'Resolving...' : 'Auto-fill Location from Lat/Long'}</span>
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <label className="block font-label text-label-sm text-on-surface font-semibold mb-1">
+                      Latitude <span className="text-red-600 font-bold">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="e.g. 12.7894° N"
+                      value={formData.latitude}
+                      onChange={(e) => setFormData({ ...formData, latitude: e.target.value })}
+                      className="w-full rounded border border-outline-variant bg-surface px-3 py-2 font-mono text-[13px] text-primary focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block font-label text-label-sm text-on-surface font-semibold mb-1">
+                      Longitude <span className="text-red-600 font-bold">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="e.g. 80.2215° E"
+                      value={formData.longitude}
+                      onChange={(e) => setFormData({ ...formData, longitude: e.target.value })}
+                      className="w-full rounded border border-outline-variant bg-surface px-3 py-2 font-mono text-[13px] text-primary focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none"
+                    />
+                  </div>
+                </div>
+
+                {geoNotice && (
+                  <p className="text-[12px] font-medium text-primary flex items-center gap-1.5">
+                    <span className="material-symbols-outlined text-[16px]">info</span>
+                    <span>{geoNotice}</span>
+                  </p>
+                )}
+              </div>
+
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {/* Property / Survey No. */}
                 <div className="sm:col-span-2">
                   <label className="block font-label text-label-sm text-on-surface font-semibold mb-1">
-                    Property / Survey No. <span className="text-error">*</span>
+                    Property / Survey No. <span className="text-red-600 font-bold">*</span>
                   </label>
                   <input
                     type="text"
@@ -859,10 +966,9 @@ export default function CompanyPropertyMasterPage() {
                   />
                 </div>
 
-                {/* Owner / Title Holder */}
                 <div>
                   <label className="block font-label text-label-sm text-on-surface font-semibold mb-1">
-                    Owner / Title Holder <span className="text-error">*</span>
+                    Owner / Title Holder <span className="text-red-600 font-bold">*</span>
                   </label>
                   <input
                     type="text"
@@ -873,7 +979,6 @@ export default function CompanyPropertyMasterPage() {
                   />
                 </div>
 
-                {/* Property Type */}
                 <div>
                   <label className="block font-label text-label-sm text-on-surface font-semibold mb-1">
                     Property Type
@@ -891,7 +996,66 @@ export default function CompanyPropertyMasterPage() {
                   </select>
                 </div>
 
-                {/* Extent & Unit */}
+                <div className="sm:col-span-2">
+                  <label className="block font-label text-label-sm text-on-surface font-semibold mb-1">
+                    Postal Address of Property
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.postalAddress}
+                    onChange={(e) => setFormData({ ...formData, postalAddress: e.target.value })}
+                    className="w-full rounded border border-outline-variant bg-surface px-3 py-2 font-body text-body-sm text-on-surface focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none"
+                  />
+                </div>
+
+                <div>
+                  <label className="block font-label text-label-sm text-on-surface font-semibold mb-1">
+                    District
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.district}
+                    onChange={(e) => setFormData({ ...formData, district: e.target.value })}
+                    className="w-full rounded border border-outline-variant bg-surface px-3 py-2 font-body text-body-sm text-on-surface focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none"
+                  />
+                </div>
+
+                <div>
+                  <label className="block font-label text-label-sm text-on-surface font-semibold mb-1">
+                    Taluk
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.taluk}
+                    onChange={(e) => setFormData({ ...formData, taluk: e.target.value })}
+                    className="w-full rounded border border-outline-variant bg-surface px-3 py-2 font-body text-body-sm text-on-surface focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none"
+                  />
+                </div>
+
+                <div>
+                  <label className="block font-label text-label-sm text-on-surface font-semibold mb-1">
+                    Village
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.village}
+                    onChange={(e) => setFormData({ ...formData, village: e.target.value })}
+                    className="w-full rounded border border-outline-variant bg-surface px-3 py-2 font-body text-body-sm text-on-surface focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none"
+                  />
+                </div>
+
+                <div>
+                  <label className="block font-label text-label-sm text-on-surface font-semibold mb-1">
+                    Local Body Jurisdiction
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.localBody}
+                    onChange={(e) => setFormData({ ...formData, localBody: e.target.value })}
+                    className="w-full rounded border border-outline-variant bg-surface px-3 py-2 font-body text-body-sm text-on-surface focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none"
+                  />
+                </div>
+
                 <div>
                   <label className="block font-label text-label-sm text-on-surface font-semibold mb-1">
                     Extent Area
@@ -917,7 +1081,6 @@ export default function CompanyPropertyMasterPage() {
                   </div>
                 </div>
 
-                {/* Estimated Market / Guideline Value */}
                 <div>
                   <label className="block font-label text-label-sm text-on-surface font-semibold mb-1">
                     Estimated / Market Value (₹)
@@ -930,20 +1093,6 @@ export default function CompanyPropertyMasterPage() {
                   />
                 </div>
 
-                {/* Location: District */}
-                <div>
-                  <label className="block font-label text-label-sm text-on-surface font-semibold mb-1">
-                    District
-                  </label>
-                  <input
-                    type="text"
-                    value={formData.district}
-                    onChange={(e) => setFormData({ ...formData, district: e.target.value })}
-                    className="w-full rounded border border-outline-variant bg-surface px-3 py-2 font-body text-body-sm text-on-surface focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none"
-                  />
-                </div>
-
-                {/* Status */}
                 <div>
                   <label className="block font-label text-label-sm text-on-surface font-semibold mb-1">
                     Verification Status
@@ -959,7 +1108,6 @@ export default function CompanyPropertyMasterPage() {
                   </select>
                 </div>
 
-                {/* Landmark */}
                 <div className="sm:col-span-2">
                   <label className="block font-label text-label-sm text-on-surface font-semibold mb-1">
                     Landmark &amp; Notes
@@ -1044,6 +1192,17 @@ export default function CompanyPropertyMasterPage() {
                 <span className="text-on-surface-variant">Owner: <strong className="text-on-surface">{selectedProperty.owner}</strong></span>
               </div>
 
+              {/* Geo-Coordinates Box */}
+              <div className="p-3 rounded border border-primary/30 bg-primary-container/20 flex items-center justify-between gap-2">
+                <div>
+                  <span className="block text-[11px] font-semibold text-primary uppercase">Mandatory GPS Coordinates</span>
+                  <span className="font-mono text-[13px] font-bold text-primary">
+                    Lat: {selectedProperty.latitude || selectedProperty.coordinates?.split(',')[0]} &nbsp;|&nbsp; Lon: {selectedProperty.longitude || selectedProperty.coordinates?.split(',')[1]}
+                  </span>
+                </div>
+                <span className="material-symbols-outlined text-primary text-[24px]">pin_drop</span>
+              </div>
+
               <div className="grid grid-cols-2 gap-3">
                 <div className="p-2.5 rounded border border-outline-variant bg-surface">
                   <span className="block text-[11px] text-on-surface-variant font-medium">Property Type</span>
@@ -1065,12 +1224,16 @@ export default function CompanyPropertyMasterPage() {
 
               <div className="space-y-2 border-t border-outline-variant pt-3 text-[12.5px]">
                 <div className="flex justify-between py-1 border-b border-outline-variant/40">
+                  <span className="text-on-surface-variant">Postal Address:</span>
+                  <span className="font-medium text-on-surface text-right max-w-[280px]">{selectedProperty.postalAddress || selectedProperty.property}</span>
+                </div>
+                <div className="flex justify-between py-1 border-b border-outline-variant/40">
                   <span className="text-on-surface-variant">Taluk / Village:</span>
                   <span className="font-medium text-on-surface">{selectedProperty.taluk || 'Thiruporur'} / {selectedProperty.village || 'Kelambakkam'}</span>
                 </div>
                 <div className="flex justify-between py-1 border-b border-outline-variant/40">
-                  <span className="text-on-surface-variant">Geo-Coordinates:</span>
-                  <span className="font-mono text-primary">{selectedProperty.coordinates || '12.7894° N, 80.2215° E'}</span>
+                  <span className="text-on-surface-variant">Local Body:</span>
+                  <span className="font-medium text-on-surface">{selectedProperty.localBody || 'Town Panchayat'}</span>
                 </div>
                 <div className="flex justify-between py-1 border-b border-outline-variant/40">
                   <span className="text-on-surface-variant">Landmark:</span>

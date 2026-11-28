@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Link, useSearchParams, useNavigate } from 'react-router-dom';
 import CompanyAdminSidebar from '../../components/company-admin/CompanyAdminSidebar';
 import WordDocumentPreviewModal from '../../components/company-admin/WordDocumentPreviewModal';
+import { getStoredProperties } from '../../utils/propertyStore';
+import { reverseGeocodeLocation, parseCoordinates, formatLat, formatLon } from '../../utils/geoUtils';
 
 const locationData = {
   Chengalpattu: {
@@ -123,6 +125,12 @@ export default function ValuationFormPartAPage() {
   const [longitude, setLongitude] = useState('80.2215° E');
   const [localBody, setLocalBody] = useState('Kelambakkam Town Panchayat');
 
+  // Property Master integration state
+  const [availableProperties, setAvailableProperties] = useState(() => getStoredProperties());
+  const [selectedPropertyId, setSelectedPropertyId] = useState('');
+  const [propertyNotice, setPropertyNotice] = useState('');
+  const [isGeoResolving, setIsGeoResolving] = useState(false);
+
   // Card 3: Documents Verified State
   const [verifiedDocs] = useState(initialVerifiedDocs);
   const [remarks, setRemarks] = useState(
@@ -139,6 +147,127 @@ export default function ValuationFormPartAPage() {
     document.title = `Valuation Form — Part A — ${bankName} — TrueArk`;
   }, [bankName]);
 
+  // Refresh available properties when window regains focus (e.g. after adding property in another tab)
+  useEffect(() => {
+    const handleFocus = () => {
+      setAvailableProperties(getStoredProperties());
+    };
+    window.addEventListener('focus', handleFocus);
+    return () => window.removeEventListener('focus', handleFocus);
+  }, []);
+
+  // Handle Selection of a property from Property Master
+  const handleSelectPropertyFromMaster = async (propId) => {
+    setSelectedPropertyId(propId);
+    if (!propId) return;
+
+    const prop = availableProperties.find((p) => p.id === propId || p.code === propId);
+    if (!prop) return;
+
+    // 1. Owner & Applicant particulars
+    if (prop.owner) {
+      setOwnerName(prop.owner);
+      setPersonMetAtSite(`Mr. ${prop.owner} (Owner)`);
+    }
+
+    // 2. Revenue & cadastral survey
+    if (prop.surveyNo) setSurveyNo(prop.surveyNo);
+    else if (prop.property) {
+      const match = prop.property.match(/S\.?No\.?\s*([0-9/A-Za-z]+)/i);
+      if (match) setSurveyNo(match[1]);
+    }
+    if (prop.subDivision) setSubDivision(prop.subDivision);
+    if (prop.tsNo) setTsNo(prop.tsNo);
+    if (prop.sroOffice) setSroOffice(prop.sroOffice);
+    if (prop.tenure) setTenure(prop.tenure);
+
+    // 3. Classification
+    if (prop.propertyType) {
+      const ptLower = prop.propertyType.toLowerCase();
+      if (ptLower.includes('plot') || ptLower.includes('vacant')) {
+        setClassification('Vacant Residential Plot');
+      } else if (ptLower.includes('commercial')) {
+        setClassification('Commercial Complex');
+      } else if (ptLower.includes('industrial')) {
+        setClassification('Industrial Shed & Land');
+      } else {
+        setClassification('Residential Land & Building (G+1)');
+      }
+    }
+
+    // 4. Coordinates
+    const latVal = prop.latitude || (prop.coordinates ? prop.coordinates.split(',')[0].trim() : '');
+    const lonVal = prop.longitude || (prop.coordinates ? prop.coordinates.split(',')[1]?.trim() : '');
+    if (latVal) setLatitude(latVal);
+    if (lonVal) setLongitude(lonVal);
+
+    // 5. Postal Address, District, Taluk, Village, Local Body
+    if (prop.postalAddress) setPostalAddress(prop.postalAddress);
+    if (prop.district) setSelectedDistrict(prop.district);
+    if (prop.taluk) setSelectedTaluk(prop.taluk);
+    if (prop.village) setSelectedVillage(prop.village);
+    if (prop.localBody) setLocalBody(prop.localBody);
+
+    // 6. Reverse-geocode if any address or local body detail is missing or needs coordinate synchronization
+    if (latVal && lonVal && (!prop.postalAddress || !prop.district || !prop.localBody)) {
+      try {
+        setIsGeoResolving(true);
+        const resolved = await reverseGeocodeLocation(latVal, lonVal);
+        if (resolved) {
+          if (!prop.postalAddress && resolved.postalAddress) setPostalAddress(resolved.postalAddress);
+          if (!prop.district && resolved.district) setSelectedDistrict(resolved.district);
+          if (!prop.taluk && resolved.taluk) setSelectedTaluk(resolved.taluk);
+          if (!prop.village && resolved.village) setSelectedVillage(resolved.village);
+          if (!prop.localBody && resolved.localBody) setLocalBody(resolved.localBody);
+        }
+      } catch (err) {
+        console.error('Reverse geocode error:', err);
+      } finally {
+        setIsGeoResolving(false);
+      }
+    }
+
+    setPropertyNotice(`Selected ${prop.code} (${prop.property}) — Location details auto-filled from GPS coordinates.`);
+    setTimeout(() => setPropertyNotice(''), 5500);
+  };
+
+  // Reverse geocode from current or entered Lat & Lon in Part A
+  const handleReverseGeocodePartA = async (latInput, lonInput) => {
+    const latToUse = latInput !== undefined ? latInput : latitude;
+    const lonToUse = lonInput !== undefined ? lonInput : longitude;
+
+    if (!String(latToUse).trim() || !String(lonToUse).trim()) {
+      setPropertyNotice('Please enter both Latitude and Longitude to auto-fill location.');
+      setTimeout(() => setPropertyNotice(''), 4000);
+      return;
+    }
+
+    try {
+      setIsGeoResolving(true);
+      setPropertyNotice('Resolving location details from GPS coordinates...');
+      const resolved = await reverseGeocodeLocation(latToUse, lonToUse);
+
+      if (resolved) {
+        if (resolved.postalAddress) setPostalAddress(resolved.postalAddress);
+        if (resolved.district) setSelectedDistrict(resolved.district);
+        if (resolved.taluk) setSelectedTaluk(resolved.taluk);
+        if (resolved.village) setSelectedVillage(resolved.village);
+        if (resolved.localBody) setLocalBody(resolved.localBody);
+        if (resolved.latitudeFormatted) setLatitude(resolved.latitudeFormatted);
+        if (resolved.longitudeFormatted) setLongitude(resolved.longitudeFormatted);
+        if (resolved.sroOffice && !sroOffice) setSroOffice(resolved.sroOffice);
+
+        setPropertyNotice(`Location auto-filled successfully from coordinates (${resolved.source || 'GPS Intelligence'})!`);
+      } else {
+        setPropertyNotice('Coordinates registered. You can adjust the location fields if needed.');
+      }
+    } catch (err) {
+      setPropertyNotice('Could not reach online geocoding. Fallback values applied.');
+    } finally {
+      setIsGeoResolving(false);
+      setTimeout(() => setPropertyNotice(''), 5500);
+    }
+  };
   // Handle District Change
   const handleDistrictChange = (e) => {
     const newDistrict = e.target.value;
@@ -170,9 +299,29 @@ export default function ValuationFormPartAPage() {
     }, 400);
   };
 
-  const districts = Object.keys(locationData);
-  const taluks = Object.keys(locationData[selectedDistrict] || {});
-  const villages = (locationData[selectedDistrict] && locationData[selectedDistrict][selectedTaluk]) || [];
+  const districts = useMemo(() => {
+    const list = Object.keys(locationData);
+    if (selectedDistrict && !list.includes(selectedDistrict)) {
+      return [selectedDistrict, ...list];
+    }
+    return list;
+  }, [selectedDistrict]);
+
+  const taluks = useMemo(() => {
+    const list = Object.keys(locationData[selectedDistrict] || {});
+    if (selectedTaluk && !list.includes(selectedTaluk)) {
+      return [selectedTaluk, ...list];
+    }
+    return list;
+  }, [selectedDistrict, selectedTaluk]);
+
+  const villages = useMemo(() => {
+    const list = (locationData[selectedDistrict] && locationData[selectedDistrict][selectedTaluk]) || [];
+    if (selectedVillage && !list.includes(selectedVillage)) {
+      return [selectedVillage, ...list];
+    }
+    return list;
+  }, [selectedDistrict, selectedTaluk, selectedVillage]);
 
   return (
     <div className="h-screen flex bg-surface text-on-surface font-body antialiased overflow-hidden relative">
@@ -437,16 +586,93 @@ export default function ValuationFormPartAPage() {
 
         {/* Card 2: Property Identification & Location */}
         <section className="bg-surface-container-lowest border border-outline-variant rounded-md p-4 sm:p-5 shadow-sm flex flex-col gap-3.5">
-          <div className="flex items-center gap-3 border-b border-outline-variant pb-2.5">
-            <span className="w-8 h-8 rounded bg-secondary-container text-on-secondary-container flex items-center justify-center shrink-0">
-              <span className="material-symbols-outlined text-title-md">pin_drop</span>
-            </span>
-            <div>
-              <h2 className="font-headline text-headline-sm text-primary">Property Identification &amp; Location</h2>
-              <p className="font-body text-body-sm text-on-surface-variant">
-                Revenue survey references, municipal address, SRO jurisdiction, and GIS coordinates.
-              </p>
+          <div className="flex items-center justify-between border-b border-outline-variant pb-2.5 flex-wrap gap-2">
+            <div className="flex items-center gap-3">
+              <span className="w-8 h-8 rounded bg-secondary-container text-on-secondary-container flex items-center justify-center shrink-0">
+                <span className="material-symbols-outlined text-title-md">pin_drop</span>
+              </span>
+              <div>
+                <h2 className="font-headline text-headline-sm text-primary">Property Identification &amp; Location</h2>
+                <p className="font-body text-body-sm text-on-surface-variant">
+                  Revenue survey references, municipal address, SRO jurisdiction, and GIS coordinates.
+                </p>
+              </div>
             </div>
+
+            <Link
+              to="/company-admin/masters/property"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary hover:underline px-2.5 py-1 rounded bg-primary/5 border border-primary/20 hover:bg-primary/10 transition-colors"
+              title="Open Property Master in a new tab"
+            >
+              <span className="material-symbols-outlined text-[15px]">real_estate_agent</span>
+              <span>Open Property Master</span>
+              <span className="material-symbols-outlined text-[13px]">open_in_new</span>
+            </Link>
+          </div>
+
+          {/* Select Property from Property Master Banner */}
+          <div className="bg-surface-container-low/70 border border-primary/25 rounded-lg p-3 sm:p-3.5 flex flex-col gap-2.5">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div className="flex items-center gap-2">
+                <span className="material-symbols-outlined text-[20px] text-primary">domain</span>
+                <label htmlFor="property-master-select" className="font-headline text-[13px] sm:text-[14px] font-semibold text-primary cursor-pointer">
+                  Select Property from Property Master
+                </label>
+                <span className="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-secondary-container text-on-secondary-container">
+                  GPS Auto-Fill
+                </span>
+              </div>
+              <span className="text-[12px] text-on-surface-variant">
+                Select a registered property to autofill its coordinates &amp; location details
+              </span>
+            </div>
+
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5">
+              <div className="relative flex-1">
+                <select
+                  id="property-master-select"
+                  value={selectedPropertyId}
+                  onChange={(e) => handleSelectPropertyFromMaster(e.target.value)}
+                  className="w-full rounded border border-outline-variant bg-surface-container-lowest pl-3 pr-9 py-2 font-body text-body-sm text-on-surface font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none cursor-pointer"
+                >
+                  <option value="">-- Select Property from Property Master --</option>
+                  {availableProperties.map((p) => (
+                    <option key={p.id} value={p.id}>
+                      {p.code} — {p.property} ({p.owner}) • {p.district}
+                    </option>
+                  ))}
+                </select>
+                <span className="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none text-[20px]">
+                  unfold_more
+                </span>
+              </div>
+
+              {selectedPropertyId && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSelectedPropertyId('');
+                    setPropertyNotice('Selection cleared. You can manually enter or edit property data.');
+                    setTimeout(() => setPropertyNotice(''), 3000);
+                  }}
+                  className="inline-flex items-center justify-center gap-1 px-3 py-2 rounded border border-outline-variant hover:bg-surface-container-low text-on-surface-variant text-[12px] font-medium cursor-pointer transition-colors"
+                >
+                  <span className="material-symbols-outlined text-[15px]">close</span>
+                  <span>Clear Selection</span>
+                </button>
+              )}
+            </div>
+
+            {propertyNotice && (
+              <div className="p-2 sm:px-3 rounded bg-secondary-container/60 border border-secondary/30 text-on-secondary-container font-medium text-[12px] flex items-center gap-2 animate-in fade-in duration-150">
+                <span className={`material-symbols-outlined text-[17px] text-secondary ${isGeoResolving ? 'animate-spin' : ''}`}>
+                  {isGeoResolving ? 'sync' : 'verified'}
+                </span>
+                <span className="flex-1">{propertyNotice}</span>
+              </div>
+            )}
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5 sm:gap-4">
@@ -517,23 +743,25 @@ export default function ValuationFormPartAPage() {
               />
             </label>
 
+            {/* Row 1 of Image: Postal Address of Property (3 columns) */}
             <label className="flex flex-col gap-1.5 md:col-span-3">
               <span className="font-label text-label-md text-on-surface">Postal Address of Property</span>
               <input
                 type="text"
                 value={postalAddress}
                 onChange={(e) => setPostalAddress(e.target.value)}
+                placeholder="Plot No., Street Name, Locality, City/District — PIN"
                 className="w-full rounded border border-outline-variant bg-surface-container-lowest px-3 py-2 font-body text-body-md text-on-surface focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none"
               />
             </label>
 
-            {/* Cascading Location Selectors */}
+            {/* Row 2 of Image: Cascading Location Selectors - District, Taluk, Village */}
             <label className="flex flex-col gap-1.5">
               <span className="font-label text-label-md text-on-surface">District</span>
               <select
                 value={selectedDistrict}
                 onChange={handleDistrictChange}
-                className="w-full rounded border border-outline-variant bg-surface-container-lowest px-3 py-2 font-body text-body-md text-on-surface focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none"
+                className="w-full rounded border border-outline-variant bg-surface-container-lowest px-3 py-2 font-body text-body-md text-on-surface focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none cursor-pointer"
               >
                 {districts.map((d) => (
                   <option key={d} value={d}>
@@ -548,7 +776,7 @@ export default function ValuationFormPartAPage() {
               <select
                 value={selectedTaluk}
                 onChange={handleTalukChange}
-                className="w-full rounded border border-outline-variant bg-surface-container-lowest px-3 py-2 font-body text-body-md text-on-surface focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none"
+                className="w-full rounded border border-outline-variant bg-surface-container-lowest px-3 py-2 font-body text-body-md text-on-surface focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none cursor-pointer"
               >
                 {taluks.map((t) => (
                   <option key={t} value={t}>
@@ -563,7 +791,7 @@ export default function ValuationFormPartAPage() {
               <select
                 value={selectedVillage}
                 onChange={(e) => setSelectedVillage(e.target.value)}
-                className="w-full rounded border border-outline-variant bg-surface-container-lowest px-3 py-2 font-body text-body-md text-on-surface focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none"
+                className="w-full rounded border border-outline-variant bg-surface-container-lowest px-3 py-2 font-body text-body-md text-on-surface focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none cursor-pointer"
               >
                 {villages.map((v) => (
                   <option key={v} value={v}>
@@ -573,32 +801,66 @@ export default function ValuationFormPartAPage() {
               </select>
             </label>
 
+            {/* Row 3 of Image: Latitude, Longitude, Local Body Jurisdiction */}
             <label className="flex flex-col gap-1.5">
-              <span className="font-label text-label-md text-on-surface">Latitude</span>
+              <div className="flex items-center justify-between">
+                <span className="font-label text-label-md text-on-surface">Latitude</span>
+                <span className="text-[11px] font-mono text-gray-400">e.g. 12.7894° N</span>
+              </div>
               <input
                 type="text"
                 value={latitude}
                 onChange={(e) => setLatitude(e.target.value)}
+                onBlur={() => {
+                  if (latitude && longitude && (!postalAddress || !localBody)) {
+                    handleReverseGeocodePartA();
+                  }
+                }}
+                placeholder="12.7894° N"
                 className="w-full rounded border border-outline-variant bg-surface-container-lowest px-3 py-2 font-mono text-[13px] text-primary tabular-nums focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none"
               />
             </label>
 
             <label className="flex flex-col gap-1.5">
-              <span className="font-label text-label-md text-on-surface">Longitude</span>
+              <div className="flex items-center justify-between">
+                <span className="font-label text-label-md text-on-surface">Longitude</span>
+                <span className="text-[11px] font-mono text-gray-400">e.g. 80.2215° E</span>
+              </div>
               <input
                 type="text"
                 value={longitude}
                 onChange={(e) => setLongitude(e.target.value)}
+                onBlur={() => {
+                  if (latitude && longitude && (!postalAddress || !localBody)) {
+                    handleReverseGeocodePartA();
+                  }
+                }}
+                placeholder="80.2215° E"
                 className="w-full rounded border border-outline-variant bg-surface-container-lowest px-3 py-2 font-mono text-[13px] text-primary tabular-nums focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none"
               />
             </label>
 
             <label className="flex flex-col gap-1.5">
-              <span className="font-label text-label-md text-on-surface">Local Body Jurisdiction</span>
+              <div className="flex items-center justify-between">
+                <span className="font-label text-label-md text-on-surface">Local Body Jurisdiction</span>
+                <button
+                  type="button"
+                  onClick={() => handleReverseGeocodePartA()}
+                  disabled={isGeoResolving}
+                  className="inline-flex items-center gap-1 text-[11px] font-medium text-primary hover:underline cursor-pointer disabled:opacity-50"
+                  title="Auto-fill location details from coordinates"
+                >
+                  <span className={`material-symbols-outlined text-[13px] ${isGeoResolving ? 'animate-spin' : ''}`}>
+                    {isGeoResolving ? 'sync' : 'auto_fix_high'}
+                  </span>
+                  <span>{isGeoResolving ? 'Resolving...' : 'Auto-fill'}</span>
+                </button>
+              </div>
               <input
                 type="text"
                 value={localBody}
                 onChange={(e) => setLocalBody(e.target.value)}
+                placeholder="e.g. Kelambakkam Town Panchayat"
                 className="w-full rounded border border-outline-variant bg-surface-container-lowest px-3 py-2 font-body text-body-md text-on-surface focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none"
               />
             </label>
