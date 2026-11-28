@@ -630,24 +630,19 @@ export default function ValuationFormPartAPage() {
             </div>
 
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5">
-              <div className="relative flex-1">
-                <select
-                  id="property-master-select"
-                  value={selectedPropertyId}
-                  onChange={(e) => handleSelectPropertyFromMaster(e.target.value)}
-                  className="w-full rounded border border-outline-variant bg-surface-container-lowest pl-3 pr-9 py-2 font-body text-body-sm text-on-surface font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none cursor-pointer"
-                >
-                  <option value="">-- Select Property from Property Master --</option>
-                  {availableProperties.map((p) => (
-                    <option key={p.id} value={p.id}>
-                      {p.code} — {p.property} ({p.owner}) • {p.district}
-                    </option>
-                  ))}
-                </select>
-                <span className="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none text-[20px]">
-                  unfold_more
-                </span>
-              </div>
+              <select
+                id="property-master-select"
+                value={selectedPropertyId}
+                onChange={(e) => handleSelectPropertyFromMaster(e.target.value)}
+                className="flex-1 w-full rounded border border-outline-variant bg-surface-container-lowest px-3 py-2 font-body text-body-sm text-on-surface font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none cursor-pointer"
+              >
+                <option value="">-- Select Property from Property Master --</option>
+                {availableProperties.map((p) => (
+                  <option key={p.id} value={p.id}>
+                    {p.code} — {p.property} ({p.owner}) • {p.district}
+                  </option>
+                ))}
+              </select>
 
               {selectedPropertyId && (
                 <button
@@ -657,7 +652,7 @@ export default function ValuationFormPartAPage() {
                     setPropertyNotice('Selection cleared. You can manually enter or edit property data.');
                     setTimeout(() => setPropertyNotice(''), 3000);
                   }}
-                  className="inline-flex items-center justify-center gap-1 px-3 py-2 rounded border border-outline-variant hover:bg-surface-container-low text-on-surface-variant text-[12px] font-medium cursor-pointer transition-colors"
+                  className="inline-flex items-center justify-center gap-1 px-3 py-2 rounded border border-outline-variant hover:bg-surface-container-low text-on-surface-variant text-[12px] font-medium cursor-pointer transition-colors whitespace-nowrap"
                 >
                   <span className="material-symbols-outlined text-[15px]">close</span>
                   <span>Clear Selection</span>
