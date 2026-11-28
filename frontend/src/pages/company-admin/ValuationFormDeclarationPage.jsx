@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useSearchParams, useNavigate } from 'react-router-dom';
+import CompanyAdminSidebar from '../../components/company-admin/CompanyAdminSidebar';
+import WordDocumentPreviewModal from '../../components/company-admin/WordDocumentPreviewModal';
 
 export default function ValuationFormDeclarationPage() {
   const [searchParams] = useSearchParams();
@@ -24,6 +26,8 @@ export default function ValuationFormDeclarationPage() {
   // UI Feedback States
   const [draftSaved, setDraftSaved] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [showWordPreview, setShowWordPreview] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
     document.title = `Valuation Form — Form-A: Declaration — ${bankName} — TrueArk`;
@@ -43,39 +47,50 @@ export default function ValuationFormDeclarationPage() {
     setShowSuccessModal(true);
   };
 
-  const handleGeneratePdf = () => {
-    navigate('/company-admin/reports');
+  const handlePreviewWord = () => {
+    setShowWordPreview(true);
   };
 
+
   return (
-    <div className="min-h-screen flex flex-col bg-surface text-on-surface font-body antialiased">
-      {/* Top Sticky Header */}
-      <header className="sticky top-0 z-30 bg-surface-container-lowest border-b border-outline-variant shadow-xs">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-2.5 sm:py-3 flex flex-wrap items-center justify-between gap-3">
-          <div className="flex items-center gap-3 sm:gap-4 min-w-0">
-            <Link
-              to="/company-admin/valuation"
-              className="shrink-0 flex items-center hover:opacity-90 transition-opacity"
-              title="Back to Valuations"
-            >
-              <img
-                src="/company-logo.png"
-                alt="TrueArk"
-                className="h-8 sm:h-9 w-auto object-contain"
-              />
-            </Link>
-            <span className="h-5 sm:h-6 w-px bg-outline-variant shrink-0" aria-hidden="true" />
-            <div className="min-w-0">
-              <div className="flex items-center gap-2 sm:gap-2.5 flex-wrap">
-                <h1 className="font-headline text-[15px] sm:text-[16px] lg:text-[17px] font-semibold text-primary truncate">
-                  Bank Valuation Form — {bankName}
-                </h1>
-                <span className="inline-flex items-center px-2 py-0.5 rounded bg-surface-container-low border border-outline-variant font-mono text-[11px] sm:text-[12px] text-on-surface-variant tabular-nums">
-                  #TA-2026-089
-                </span>
+    <div className="h-screen flex bg-surface text-on-surface font-body antialiased overflow-hidden relative">
+      {/* Left Sidebar (Company Admin Portal) */}
+      <CompanyAdminSidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+
+      {/* Main Workspace */}
+      <div className="flex-1 min-w-0 flex flex-col h-screen overflow-y-auto overflow-x-hidden">
+        {/* Top Sticky Header */}
+        <header className="sticky top-0 z-30 bg-surface-container-lowest border-b border-outline-variant shadow-xs shrink-0">
+          <div className="px-4 sm:px-6 py-2.5 sm:py-3 flex flex-wrap items-center justify-between gap-3">
+            <div className="flex items-center gap-3 sm:gap-4 min-w-0">
+              <button
+                type="button"
+                onClick={() => setSidebarOpen((prev) => !prev)}
+                className="lg:hidden inline-flex items-center justify-center w-8 h-8 rounded text-on-surface-variant hover:bg-surface-container-low hover:text-primary transition-colors shrink-0 cursor-pointer"
+                aria-label="Open sidebar menu"
+              >
+                <span className="material-symbols-outlined text-[20px]">menu</span>
+              </button>
+              <Link
+                to="/company-admin/valuation"
+                className="inline-flex items-center gap-1.5 text-on-surface-variant hover:text-primary text-[13px] font-medium transition-colors shrink-0"
+                title="Back to Valuations list"
+              >
+                <span className="material-symbols-outlined text-[18px]">arrow_back</span>
+                <span className="hidden sm:inline">Valuations</span>
+              </Link>
+              <span className="h-5 sm:h-6 w-px bg-outline-variant shrink-0" aria-hidden="true" />
+              <div className="min-w-0">
+                <div className="flex items-center gap-2 sm:gap-2.5 flex-wrap">
+                  <h1 className="font-headline text-[15px] sm:text-[16px] lg:text-[17px] font-semibold text-primary truncate">
+                    Bank Valuation Form — {bankName}
+                  </h1>
+                  <span className="inline-flex items-center px-2 py-0.5 rounded bg-surface-container-low border border-outline-variant font-mono text-[11px] sm:text-[12px] text-on-surface-variant tabular-nums">
+                    #TA-2026-089
+                  </span>
+                </div>
               </div>
             </div>
-          </div>
 
           <div className="flex items-center gap-2 sm:gap-3 shrink-0">
             <button
@@ -91,12 +106,14 @@ export default function ValuationFormDeclarationPage() {
             </button>
 
             <button
+              id="preview-doc-btn"
               type="button"
-              onClick={handleGeneratePdf}
-              className="inline-flex items-center justify-center gap-1.5 px-3.5 sm:px-4 py-2 rounded bg-tertiary text-on-tertiary font-label text-label-md hover:opacity-95 transition-colors duration-state-change whitespace-nowrap cursor-pointer shadow-xs"
+              onClick={handlePreviewWord}
+              className="inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded bg-primary text-white font-label text-label-md hover:bg-primary/90 transition-colors duration-state-change whitespace-nowrap cursor-pointer shadow-xs font-semibold"
+              title="Preview document in legal format before downloading as Word or PDF"
             >
-              <span className="material-symbols-outlined text-[16px]">picture_as_pdf</span>
-              <span>Generate Official PDF</span>
+              <span className="material-symbols-outlined text-[18px]">visibility</span>
+              <span>Preview Document</span>
             </button>
           </div>
         </div>
@@ -385,6 +402,16 @@ export default function ValuationFormDeclarationPage() {
               <div className="flex items-center gap-3">
                 <button
                   type="button"
+                  onClick={handlePreviewWord}
+                  className="inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded bg-surface-container-lowest border border-primary text-primary font-label text-label-md hover:bg-surface-container-low transition-colors cursor-pointer font-semibold"
+                  title="Preview document in legal format before submitting"
+                >
+                  <span className="material-symbols-outlined text-[18px]">visibility</span>
+                  <span>Preview Document</span>
+                </button>
+
+                <button
+                  type="button"
                   onClick={handleSaveDraft}
                   className="inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded bg-surface-container-lowest border border-outline-variant text-primary font-label text-label-md hover:bg-surface-container-low transition-colors cursor-pointer"
                 >
@@ -441,25 +468,67 @@ export default function ValuationFormDeclarationPage() {
               </div>
             </div>
 
-            <div className="flex items-center gap-3 pt-2">
-              <button
-                type="button"
-                onClick={() => navigate('/company-admin/valuation')}
-                className="flex-1 py-2 px-3 rounded border border-outline-variant bg-surface-container-lowest text-primary font-label text-label-md hover:bg-surface-container-low transition-colors"
-              >
-                Valuation Queue
-              </button>
-              <button
-                type="button"
-                onClick={() => navigate('/company-admin/reports')}
-                className="flex-1 py-2 px-3 rounded bg-tertiary text-on-tertiary font-label text-label-md hover:opacity-95 transition-colors shadow-xs"
-              >
-                View Certified Report
-              </button>
+            <div className="flex flex-col gap-2 pt-2">
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowSuccessModal(false);
+                    setShowWordPreview(true);
+                  }}
+                  className="flex-1 py-2 px-3 rounded bg-black text-white font-label text-label-md hover:bg-gray-800 transition-colors shadow-xs flex items-center justify-center gap-1.5"
+                >
+                  <span className="material-symbols-outlined text-[18px]">visibility</span>
+                  <span>Preview Word File</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowSuccessModal(false);
+                    setShowWordPreview(true);
+                  }}
+                  className="py-2 px-3 rounded border border-outline-variant bg-surface-container-lowest text-primary font-label text-label-md hover:bg-surface-container-low transition-colors flex items-center justify-center gap-1.5"
+                  title="Download .doc file with custom page sequence"
+                >
+                  <span className="material-symbols-outlined text-[18px]">download</span>
+                  <span>Download .doc</span>
+                </button>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => navigate('/company-admin/valuation')}
+                  className="flex-1 py-1.5 px-3 rounded border border-outline-variant bg-surface text-on-surface-variant font-label text-label-sm hover:bg-surface-container-low transition-colors"
+                >
+                  Valuation Queue
+                </button>
+                <button
+                  type="button"
+                  onClick={() => navigate('/company-admin/reports')}
+                  className="flex-1 py-1.5 px-3 rounded bg-tertiary text-on-tertiary font-label text-label-sm hover:opacity-95 transition-colors shadow-xs"
+                >
+                  View Certified Report
+                </button>
+              </div>
             </div>
           </div>
         </div>
       )}
+
+      {/* 8-Page Word Document Preview Modal with Custom Re-ordering & Location Photo Attachment */}
+      <WordDocumentPreviewModal
+        isOpen={showWordPreview}
+        onClose={() => setShowWordPreview(false)}
+        bankName={bankName}
+        valuerName={valuerName}
+        ibbiRegNo={ibbiRegNo}
+        empanelmentCode={empanelmentCode}
+        dateOfDeclaration={dateOfDeclaration}
+        dateOfInspection="13.05.2026"
+        placeOfSigning={placeOfSigning}
+      />
     </div>
-  );
+  </div>
+);
 }
