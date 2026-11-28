@@ -99,8 +99,6 @@ export default function ValuationFormPartAPage() {
   const [purpose, setPurpose] = useState('Mortgage / Collateral Security');
   const [inspectionDate, setInspectionDate] = useState('2026-11-24');
   const [reportDate, setReportDate] = useState('2026-11-26');
-  const [bankBranch, setBankBranch] = useState(bankName);
-  const [loanRefNo, setLoanRefNo] = useState('CB/HTAF/2026/LN-4418');
   const [borrowerName, setBorrowerName] = useState('Raghavan & Sons Agro Enterprises Pvt. Ltd.');
   const [ownerName, setOwnerName] = useState('Mr. Karthik Raghavan S/o Late V. Raghavan');
   const [personMetAtSite, setPersonMetAtSite] = useState('Mr. Karthik Raghavan (Owner)');
@@ -140,13 +138,6 @@ export default function ValuationFormPartAPage() {
   useEffect(() => {
     document.title = `Valuation Form — Part A — ${bankName} — TrueArk`;
   }, [bankName]);
-
-  // Update bank branch when bankParam changes
-  useEffect(() => {
-    if (bankParam) {
-      setBankBranch(bankParam);
-    }
-  }, [bankParam]);
 
   // Handle District Change
   const handleDistrictChange = (e) => {
@@ -409,26 +400,6 @@ export default function ValuationFormPartAPage() {
                 value={reportDate}
                 onChange={(e) => setReportDate(e.target.value)}
                 className="w-full rounded border border-outline-variant bg-surface-container-lowest px-3 py-2 font-mono text-[13px] text-on-surface tabular-nums focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none"
-              />
-            </label>
-
-            <label className="flex flex-col gap-1.5">
-              <span className="font-label text-label-md text-on-surface">Bank &amp; Branch Name</span>
-              <input
-                type="text"
-                value={bankBranch}
-                onChange={(e) => setBankBranch(e.target.value)}
-                className="w-full rounded border border-outline-variant bg-surface-container-lowest px-3 py-2 font-body text-body-md text-on-surface focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none"
-              />
-            </label>
-
-            <label className="flex flex-col gap-1.5">
-              <span className="font-label text-label-md text-on-surface">Bank Loan Reference No.</span>
-              <input
-                type="text"
-                value={loanRefNo}
-                onChange={(e) => setLoanRefNo(e.target.value)}
-                className="w-full rounded border border-outline-variant bg-surface-container-lowest px-3 py-2 font-mono text-[13px] text-primary focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none"
               />
             </label>
 
