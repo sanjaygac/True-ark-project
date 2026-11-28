@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useSearchParams, useNavigate } from 'react-router-dom';
 import CompanyAdminSidebar from '../../components/company-admin/CompanyAdminSidebar';
 import WordDocumentPreviewModal from '../../components/company-admin/WordDocumentPreviewModal';
+import SearchableSelect from '../../components/common/SearchableSelect';
 
 const bankDirectory = [
   {
@@ -118,23 +119,20 @@ export default function ValuationFormDeclarationPage() {
   const branchOptions = activeBankEntry.branches;
   const bankName = `${selectedBank} — ${selectedBranch}`;
 
-  const handleBankChange = (e) => {
-    const newBank = e.target.value;
+  const handleBankChange = (newBank) => {
     setSelectedBank(newBank);
     const entry = bankDirectory.find((item) => item.bank === newBank) || bankDirectory[0];
     setSelectedBranch(entry.branches[0].branch);
     setSelectedIfsc(entry.branches[0].ifsc);
   };
 
-  const handleBranchChange = (e) => {
-    const newBranch = e.target.value;
+  const handleBranchChange = (newBranch) => {
     setSelectedBranch(newBranch);
     const matched = branchOptions.find((item) => item.branch === newBranch);
     if (matched) setSelectedIfsc(matched.ifsc);
   };
 
-  const handleIfscChange = (e) => {
-    const newIfsc = e.target.value;
+  const handleIfscChange = (newIfsc) => {
     setSelectedIfsc(newIfsc);
     const matched = branchOptions.find((item) => item.ifsc === newIfsc);
     if (matched) setSelectedBranch(matched.branch);
@@ -382,50 +380,52 @@ export default function ValuationFormDeclarationPage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5 sm:gap-4">
-            <label className="flex flex-col gap-1.5">
+            <div className="flex flex-col gap-1.5">
               <span className="font-label text-label-sm text-on-surface font-semibold">Select Bank</span>
-              <select
+              <SearchableSelect
                 value={selectedBank}
                 onChange={handleBankChange}
-                className="w-full rounded border border-outline-variant bg-surface-container-lowest px-3 py-2 font-body text-body-sm text-on-surface focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none transition-colors"
-              >
-                {bankDirectory.map((entry) => (
-                  <option key={entry.bank} value={entry.bank}>
-                    {entry.bank}
-                  </option>
-                ))}
-              </select>
-            </label>
+                options={bankDirectory.map((entry) => ({
+                  value: entry.bank,
+                  label: entry.bank,
+                }))}
+                placeholder="Select bank"
+                searchPlaceholder="Search bank..."
+                ariaLabel="Select Bank"
+              />
+            </div>
 
-            <label className="flex flex-col gap-1.5">
+            <div className="flex flex-col gap-1.5">
               <span className="font-label text-label-sm text-on-surface font-semibold">Bank Branch</span>
-              <select
+              <SearchableSelect
                 value={selectedBranch}
                 onChange={handleBranchChange}
-                className="w-full rounded border border-outline-variant bg-surface-container-lowest px-3 py-2 font-body text-body-sm text-on-surface focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none transition-colors"
-              >
-                {branchOptions.map((item) => (
-                  <option key={item.branch} value={item.branch}>
-                    {item.branch}
-                  </option>
-                ))}
-              </select>
-            </label>
+                options={branchOptions.map((item) => ({
+                  value: item.branch,
+                  label: item.branch,
+                  subtitle: item.ifsc,
+                }))}
+                placeholder="Select branch"
+                searchPlaceholder="Search branch or IFSC..."
+                ariaLabel="Bank Branch"
+              />
+            </div>
 
-            <label className="flex flex-col gap-1.5">
+            <div className="flex flex-col gap-1.5">
               <span className="font-label text-label-sm text-on-surface font-semibold">IFSC No.</span>
-              <select
+              <SearchableSelect
                 value={selectedIfsc}
                 onChange={handleIfscChange}
-                className="w-full rounded border border-outline-variant bg-surface-container-lowest px-3 py-2 font-mono text-[12px] text-primary focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none transition-colors"
-              >
-                {branchOptions.map((item) => (
-                  <option key={item.ifsc} value={item.ifsc}>
-                    {item.ifsc}
-                  </option>
-                ))}
-              </select>
-            </label>
+                options={branchOptions.map((item) => ({
+                  value: item.ifsc,
+                  label: item.ifsc,
+                  subtitle: item.branch,
+                }))}
+                placeholder="Select IFSC"
+                searchPlaceholder="Search IFSC or branch..."
+                ariaLabel="IFSC No."
+              />
+            </div>
           </div>
         </section>
 
